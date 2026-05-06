@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+:root,
+[data-theme="dark"] {
+  --bg-base: #0f1117;
+  --bg-card: #16181f;
+  --bg-elevated: #1e2130;
+  --border: #2a2d3a;
+  --text-primary: #f0f2f5;
+  --text-secondary: #8a8d9a;
+  --accent: #10b981;
+  --scrollbar: #2a2d3a;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg-base: #f7f8fb;
+  --bg-card: #ffffff;
+  --bg-elevated: #f0f2f7;
+  --border: #e2e5ec;
+  --text-primary: #15171c;
+  --text-secondary: #5b6171;
+  --accent: #059669;
+  --scrollbar: #c8cdd6;
+  color-scheme: light;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar) transparent;
+}
+
+@keyframes pz-orbit {
+  from { transform: rotateZ(0deg); }
+  to   { transform: rotateZ(360deg); }
+}
+@keyframes pz-aria-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.35; }
+  50%      { transform: scale(1.08); opacity: 0.55; }
+}
+
+/* Story reaction feedback: emoji floats up and fades */
+@keyframes story-react-burst {
+  0%   { transform: translate(-50%, 0) scale(0.6); opacity: 0; }
+  20%  { transform: translate(-50%, -10px) scale(1.4); opacity: 1; }
+  100% { transform: translate(-50%, -110px) scale(1); opacity: 0; }
+}
+/* "Reaction sent" inline confirmation: visible briefly then fades */
+@keyframes story-react-confirm {
+  0%   { opacity: 0; transform: translateY(4px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── Light-mode remap for Tailwind gray literals used across the app ────────
+   The codebase was authored dark-first using direct gray classes (bg-gray-950,
+   text-gray-400 etc). These overrides make those classes feel native in light
+   mode without rewriting every component. Brand colors (emerald, rose, amber)
+   are kept as-is so the visual identity is consistent across themes.
+*/
+[data-theme="light"] .bg-gray-950 { background-color: #f7f8fb !important; }
+[data-theme="light"] .bg-gray-900 { background-color: #ffffff !important; }
+[data-theme="light"] .bg-gray-800 { background-color: #eef0f5 !important; }
+[data-theme="light"] .bg-gray-800\/50 { background-color: rgba(238,240,245,0.6) !important; }
+[data-theme="light"] .bg-gray-900\/40 { background-color: rgba(255,255,255,0.6) !important; }
+[data-theme="light"] .bg-gray-900\/50 { background-color: rgba(255,255,255,0.7) !important; }
+[data-theme="light"] .bg-gray-900\/60 { background-color: rgba(255,255,255,0.8) !important; }
+
+[data-theme="light"] .border-gray-800 { border-color: #e2e5ec !important; }
+[data-theme="light"] .border-gray-700 { border-color: #d4d8e0 !important; }
+[data-theme="light"] .border-gray-900 { border-color: #e2e5ec !important; }
+[data-theme="light"] .border-white\/10 { border-color: rgba(0,0,0,0.08) !important; }
+
+[data-theme="light"] .text-gray-100 { color: #15171c !important; }
+[data-theme="light"] .text-gray-200 { color: #1f2330 !important; }
+[data-theme="light"] .text-gray-300 { color: #2a2f3d !important; }
+[data-theme="light"] .text-gray-400 { color: #4a5060 !important; }
+[data-theme="light"] .text-gray-500 { color: #5b6171 !important; }
+[data-theme="light"] .text-gray-600 { color: #6f7585 !important; }
+[data-theme="light"] .text-white   { color: #15171c !important; }
+
+[data-theme="light"] .placeholder-gray-600::placeholder { color: #9aa0ad !important; }
+[data-theme="light"] .placeholder-gray-500::placeholder { color: #8a90a0 !important; }
+
+[data-theme="light"] .hover\:bg-gray-800:hover { background-color: #eef0f5 !important; }
+[data-theme="light"] .hover\:bg-gray-900:hover { background-color: #f0f2f7 !important; }
+[data-theme="light"] .hover\:border-gray-700:hover { border-color: #c8cdd6 !important; }
+[data-theme="light"] .hover\:border-gray-600:hover { border-color: #b6bcc8 !important; }
+[data-theme="light"] .hover\:text-gray-100:hover { color: #15171c !important; }
+[data-theme="light"] .hover\:text-white:hover { color: #15171c !important; }
+
+[data-theme="light"] .divide-gray-800 > :not([hidden]) ~ :not([hidden]) { border-color: #e2e5ec !important; }
+[data-theme="light"] .ring-gray-800 { --tw-ring-color: #e2e5ec !important; }
+
+[data-theme="light"] .from-gray-950 { --tw-gradient-from: #f7f8fb !important; }
+[data-theme="light"] .to-gray-950   { --tw-gradient-to:   #f7f8fb !important; }
+[data-theme="light"] .from-gray-900 { --tw-gradient-from: #ffffff !important; }
+[data-theme="light"] .to-gray-900   { --tw-gradient-to:   #ffffff !important; }
+[data-theme="light"] .via-gray-900  { --tw-gradient-via:  #ffffff !important; }
+
+/* ── LogoAnimated (rocket landing → moon rising → "P") ──────────────── */
+@keyframes pza-rocket-land {
+  0%   { transform: translateY(calc(-1 * var(--pza-drop, 58px))); }
+  100% { transform: translateY(0); }
+}
+@keyframes pza-moon-rise {
+  0%   { transform: translateY(var(--pza-rise, 34px)) scale(0.85); opacity: 0; }
+  100% { transform: translateY(0)                     scale(1);    opacity: 1; }
+}
+@keyframes pza-flame-shell {
+  0%   { transform: scaleY(0); opacity: 0; }
+  10%  { transform: scaleY(1.55); opacity: 1; }
+  78%  { transform: scaleY(1.15); opacity: 0.95; }
+  100% { transform: scaleY(0.4);  opacity: 0.6; }
+}
+@keyframes pza-flame-flicker {
+  0%, 100% { transform: scale(1, 1); }
+  20%      { transform: scale(0.96, 1.08); }
+  45%      { transform: scale(1.04, 0.94); }
+  70%      { transform: scale(0.98, 1.05); }
+}
+@keyframes pza-glow {
+  0%, 60%  { opacity: 0; transform: scale(0.7); }
+  78%      { opacity: 1; transform: scale(1.05); }
+  100%     { opacity: 0.55; transform: scale(1); }
+}
+@keyframes pza-pad {
+  0%, 55%  { opacity: 0; }
+  78%      { opacity: 1; }
+  100%     { opacity: 0.5; }
+}
+@keyframes pza-letter {
+  0%   { transform: translateY(8px); opacity: 0; }
+  100% { transform: translateY(0);   opacity: 1; }
+}
+.pza-rocket {
+  animation: pza-rocket-land 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  transform-box: view-box;
+  will-change: transform;
+}
+.pza-moon {
+  animation: pza-moon-rise 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+  transform-box: view-box;
+  transform-origin: 10px 10px;
+  will-change: transform, opacity;
+}
+.pza-flame-shell {
+  animation: pza-flame-shell 1.5s ease-out both;
+  transform-box: view-box;
+  transform-origin: 5px 30px;
+  will-change: transform, opacity;
+}
+.pza-flame-flicker {
+  animation: pza-flame-flicker 0.42s ease-in-out infinite;
+  transform-box: view-box;
+  transform-origin: 5px 30px;
+  will-change: transform;
+}
+.pza-glow {
+  animation: pza-glow 1.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-box: view-box;
+  transform-origin: 10px 10px;
+  will-change: transform, opacity;
+}
+.pza-pad {
+  animation: pza-pad 1.4s ease-out both;
+}
+.pza-letter {
+  animation: pza-letter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pza-rocket, .pza-moon, .pza-flame-shell, .pza-flame-flicker,
+  .pza-glow, .pza-pad, .pza-letter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,581 @@
+{
+  "language": "ka",
+  "generatedAt": "2026-04-28",
+  "entries": [
+    {
+      "id": "fed-rate-decision",
+      "name": "Fed Interest Rate Decision",
+      "abbreviation": "FOMC",
+      "category": "central-bank",
+      "country": "US",
+      "frequency": "8 times per year (every ~6 weeks)",
+      "definition": "The Federal Reserve's Federal Open Market Committee (FOMC) sets the target range for the federal funds rate — the overnight rate banks charge each other. This is the most important interest rate in global finance.",
+      "whyItMatters": "It directly affects mortgage rates, business borrowing, the dollar's strength, and the discount rate used to value every stock on Earth. A surprise hike or cut can move every market within seconds.",
+      "marketReaction": {
+        "higher": "Surprise hike: USD strengthens, stocks fall (especially growth/tech), bond yields rise, gold typically dips.",
+        "lower": "Surprise cut or dovish hold: USD weakens, stocks rally, bond prices rise, gold strengthens."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "QQQ",
+        "TLT",
+        "GOLD",
+        "EURUSD"
+      ]
+    },
+    {
+      "id": "fomc-press-conference",
+      "name": "FOMC Press Conference",
+      "abbreviation": "FOMC PC",
+      "category": "central-bank",
+      "country": "US",
+      "frequency": "Follows each FOMC meeting (8x/year)",
+      "definition": "30 minutes after the rate decision, the Fed Chair takes questions from reporters. The tone — hawkish (favoring tighter policy) or dovish (favoring easier policy) — often moves markets more than the rate decision itself.",
+      "whyItMatters": "Markets parse every word for hints about the next meeting. A single phrase ('we are not even thinking about thinking about raising rates') can re-rate trillions of dollars in assets.",
+      "marketReaction": {
+        "higher": "Hawkish tone (signals more hikes): USD up, stocks down, yields rise.",
+        "lower": "Dovish tone (signals cuts or pause): USD down, stocks rally, yields fall."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT",
+        "GOLD"
+      ]
+    },
+    {
+      "id": "fomc-minutes",
+      "name": "FOMC Meeting Minutes",
+      "abbreviation": "FOMC Minutes",
+      "category": "central-bank",
+      "country": "US",
+      "frequency": "3 weeks after each FOMC meeting",
+      "definition": "Detailed summary of the discussion at the most recent FOMC meeting. Reveals the range of views among the 12 voting members and any dissent.",
+      "whyItMatters": "Sometimes contradicts the public statement and shows where the committee is split. Surprises about hawkish or dovish dissent can shift rate-cut expectations.",
+      "marketReaction": {
+        "higher": "Hawkish minutes (members worried about inflation): USD up, stocks dip, yields rise.",
+        "lower": "Dovish minutes (members worried about growth): USD down, stocks rally, yields fall."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "id": "ecb-rate-decision",
+      "name": "ECB Interest Rate Decision",
+      "abbreviation": "ECB",
+      "category": "central-bank",
+      "country": "EU",
+      "frequency": "8 times per year",
+      "definition": "The European Central Bank sets the deposit rate, main refinancing rate, and marginal lending facility rate for the 20-country Eurozone.",
+      "whyItMatters": "Sets monetary policy for the world's second-largest currency bloc. Drives EUR/USD, European bond yields, and the Euro Stoxx index.",
+      "marketReaction": {
+        "higher": "Hawkish surprise: EUR strengthens, European stocks fall, bund yields rise.",
+        "lower": "Dovish surprise: EUR weakens, European stocks rally, bund yields fall."
+      },
+      "watchedAssets": [
+        "EURUSD",
+        "EURGBP",
+        "DAX",
+        "BUND"
+      ]
+    },
+    {
+      "id": "boe-rate-decision",
+      "name": "BoE Interest Rate Decision",
+      "abbreviation": "BoE",
+      "category": "central-bank",
+      "country": "GB",
+      "frequency": "8 times per year",
+      "definition": "The Bank of England's Monetary Policy Committee (MPC) sets the Bank Rate. Voting splits among the 9 members are watched closely.",
+      "whyItMatters": "Drives GBP and UK bond yields. The MPC vote breakdown often signals the next move — a 5-4 vote vs. unanimous matters.",
+      "marketReaction": {
+        "higher": "Hawkish: GBP strengthens, UK stocks dip, gilt yields rise.",
+        "lower": "Dovish: GBP weakens, UK stocks rally, gilt yields fall."
+      },
+      "watchedAssets": [
+        "GBPUSD",
+        "EURGBP",
+        "FTSE",
+        "GILT"
+      ]
+    },
+    {
+      "id": "boj-rate-decision",
+      "name": "BoJ Interest Rate Decision",
+      "abbreviation": "BoJ",
+      "category": "central-bank",
+      "country": "JP",
+      "frequency": "8 times per year",
+      "definition": "The Bank of Japan sets short-term policy rates and has used yield curve control on 10-year JGB yields. Japan's policy is unique because rates were negative or zero for years.",
+      "whyItMatters": "Any shift away from ultra-loose policy moves the yen sharply and ripples through global carry trades.",
+      "marketReaction": {
+        "higher": "Hawkish surprise (rare): JPY strengthens sharply, Nikkei falls, JGB yields rise.",
+        "lower": "Continued dovish stance: JPY weakens, Nikkei rallies."
+      },
+      "watchedAssets": [
+        "USDJPY",
+        "EURJPY",
+        "NIKKEI"
+      ]
+    },
+    {
+      "id": "non-farm-payrolls",
+      "name": "Non-Farm Payrolls",
+      "abbreviation": "NFP",
+      "category": "employment",
+      "country": "US",
+      "frequency": "Monthly, first Friday at 8:30 AM ET",
+      "definition": "The monthly count of jobs added or lost in the US economy, excluding farm workers, government employees, private household staff, and non-profits.",
+      "whyItMatters": "The most-watched US labor market report. The Fed uses it to gauge economic strength and decide on rates. Massive volatility in the 5 minutes after the release.",
+      "marketReaction": {
+        "higher": "Stronger than expected: USD typically strengthens (Fed may stay hawkish), stocks reaction depends on context — strong economy is good but rate-hike fears can dominate.",
+        "lower": "Weaker than expected: USD weakens (Fed may cut), stocks often rally on rate-cut hopes, gold strengthens."
+      },
+      "watchedAssets": [
+        "DXY",
+        "EURUSD",
+        "SPY",
+        "TLT",
+        "GOLD"
+      ]
+    },
+    {
+      "id": "unemployment-rate",
+      "name": "Unemployment Rate",
+      "abbreviation": "U-3",
+      "category": "employment",
+      "country": "US",
+      "frequency": "Monthly, released with NFP",
+      "definition": "Percentage of the labor force actively seeking work. Released alongside Non-Farm Payrolls.",
+      "whyItMatters": "Half of the Fed's dual mandate is 'maximum employment.' The Fed eyes 3.5–4.5% as roughly full employment in the US.",
+      "marketReaction": {
+        "higher": "Higher unemployment: USD weakens, stocks may rally on rate-cut hopes, bond yields fall.",
+        "lower": "Lower unemployment: USD strengthens (tight labor market = inflationary), bond yields rise."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "id": "initial-jobless-claims",
+      "name": "Initial Jobless Claims",
+      "abbreviation": "Claims",
+      "category": "employment",
+      "country": "US",
+      "frequency": "Weekly, every Thursday",
+      "definition": "Number of Americans filing for unemployment benefits for the first time in the past week.",
+      "whyItMatters": "The most timely labor market indicator — only one week stale. A sustained rise above ~250K signals labor market weakness.",
+      "marketReaction": {
+        "higher": "Higher claims: USD weakens slightly, stocks may rally on rate-cut hopes.",
+        "lower": "Lower claims: USD strengthens slightly, signals tight labor market."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY"
+      ]
+    },
+    {
+      "id": "average-hourly-earnings",
+      "name": "Average Hourly Earnings",
+      "abbreviation": "AHE",
+      "category": "employment",
+      "country": "US",
+      "frequency": "Monthly, released with NFP",
+      "definition": "Year-over-year change in average hourly wages for private-sector workers. A leading indicator of consumer inflation.",
+      "whyItMatters": "Wage growth feeds directly into services inflation. The Fed watches this closely — wages rising faster than productivity is a red flag.",
+      "marketReaction": {
+        "higher": "Stronger wages: USD up (Fed stays hawkish), stocks down (rate fears), bond yields rise.",
+        "lower": "Weaker wages: USD down, stocks rally, bond yields fall."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "id": "cpi-yoy",
+      "name": "CPI YoY",
+      "abbreviation": "CPI",
+      "category": "inflation",
+      "country": "US",
+      "frequency": "Monthly, around the 12th",
+      "definition": "Year-over-year change in the Consumer Price Index — the cost of a basket of goods and services bought by typical urban households.",
+      "whyItMatters": "Headline inflation. The Fed targets 2% (using PCE, but CPI moves markets more). Above 3% = restrictive policy; below 2% = stimulus likely.",
+      "marketReaction": {
+        "higher": "Hot CPI: USD strengthens (Fed hawkish), stocks fall, bond yields rise, gold mixed.",
+        "lower": "Cool CPI: USD weakens (Fed dovish), stocks rally, bond yields fall."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "QQQ",
+        "TLT",
+        "GOLD"
+      ]
+    },
+    {
+      "id": "core-cpi",
+      "name": "Core CPI YoY",
+      "abbreviation": "Core CPI",
+      "category": "inflation",
+      "country": "US",
+      "frequency": "Monthly, released with CPI",
+      "definition": "CPI excluding volatile food and energy prices. The Fed watches Core more than headline because it shows the underlying trend.",
+      "whyItMatters": "Removes noise from oil shocks and weather. If Core stays sticky while headline falls, the Fed stays hawkish.",
+      "marketReaction": {
+        "higher": "Sticky Core CPI: USD up, stocks down, yields up. More important than headline for Fed pricing.",
+        "lower": "Cooling Core CPI: USD down, stocks up, yields down."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "id": "core-pce",
+      "name": "Core PCE Price Index YoY",
+      "abbreviation": "Core PCE",
+      "category": "inflation",
+      "country": "US",
+      "frequency": "Monthly, last week of the month",
+      "definition": "The Fed's preferred inflation gauge — Personal Consumption Expenditures index excluding food and energy.",
+      "whyItMatters": "This is THE number the Fed targets at 2%. More accurate than CPI for actual consumer behavior because it accounts for substitution.",
+      "marketReaction": {
+        "higher": "Hot Core PCE: USD up, stocks down, yields up. Confirms Fed hawkish stance.",
+        "lower": "Cool Core PCE: USD down, stocks rally, yields down. Validates rate-cut hopes."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT",
+        "GOLD"
+      ]
+    },
+    {
+      "id": "ppi",
+      "name": "Producer Price Index",
+      "abbreviation": "PPI",
+      "category": "inflation",
+      "country": "US",
+      "frequency": "Monthly, day before CPI",
+      "definition": "Wholesale prices charged by producers — a leading indicator of consumer inflation 1-3 months ahead.",
+      "whyItMatters": "If producer prices are rising fast, those costs eventually pass to consumers. Markets use it to handicap the next CPI.",
+      "marketReaction": {
+        "higher": "Hot PPI: previews hot CPI — USD up, stocks down, yields up.",
+        "lower": "Cool PPI: previews cool CPI — USD down, stocks up, yields down."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "id": "gdp-qoq",
+      "name": "GDP QoQ",
+      "abbreviation": "GDP",
+      "category": "growth",
+      "country": "US",
+      "frequency": "Quarterly (advance, second, final estimates)",
+      "definition": "Quarter-over-quarter change in Gross Domestic Product, annualized. The broadest measure of economic activity.",
+      "whyItMatters": "Defines whether the economy is in recession (two consecutive negative quarters) or expanding. Less market-moving than higher-frequency data because it's released months after the quarter ends.",
+      "marketReaction": {
+        "higher": "Strong GDP: USD up, stocks may rally on growth, bond yields rise.",
+        "lower": "Weak GDP: USD down, stocks may fall on recession fears OR rally on rate-cut hopes — depends on context."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "id": "retail-sales",
+      "name": "Retail Sales MoM",
+      "abbreviation": "Retail Sales",
+      "category": "consumer",
+      "country": "US",
+      "frequency": "Monthly, around the 15th",
+      "definition": "Month-over-month change in total sales at retail and food service establishments. Measures consumer spending — ~70% of US GDP.",
+      "whyItMatters": "Consumer spending is the engine of the US economy. Strong retail sales = strong economy = Fed stays hawkish.",
+      "marketReaction": {
+        "higher": "Strong retail sales: USD up, stocks may rally on growth, bond yields rise.",
+        "lower": "Weak retail sales: USD down, stocks fall on recession fears, bond yields fall."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "XLY"
+      ]
+    },
+    {
+      "id": "ism-manufacturing-pmi",
+      "name": "ISM Manufacturing PMI",
+      "abbreviation": "ISM Mfg",
+      "category": "manufacturing",
+      "country": "US",
+      "frequency": "Monthly, first business day",
+      "definition": "Survey of US manufacturing executives. A reading above 50 indicates expansion; below 50 indicates contraction.",
+      "whyItMatters": "Leading indicator of manufacturing health. Sustained readings below 48 historically precede recessions.",
+      "marketReaction": {
+        "higher": "Above 50 expanding: USD up, stocks rally on growth, yields rise.",
+        "lower": "Below 50 contracting: USD down, stocks may fall, yields fall on rate-cut hopes."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "XLI",
+        "TLT"
+      ]
+    },
+    {
+      "id": "ism-services-pmi",
+      "name": "ISM Services PMI",
+      "abbreviation": "ISM Svc",
+      "category": "manufacturing",
+      "country": "US",
+      "frequency": "Monthly, third business day",
+      "definition": "Survey of US services-sector executives. Services are ~80% of the US economy, so this matters more than manufacturing PMI.",
+      "whyItMatters": "Services are stickier than manufacturing — strong services PMI means inflation pressure persists.",
+      "marketReaction": {
+        "higher": "Strong services PMI: USD up, stocks rally on growth, bond yields rise.",
+        "lower": "Weak services PMI: USD down, stocks fall, yields fall."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "id": "consumer-confidence",
+      "name": "Consumer Confidence",
+      "abbreviation": "CCI",
+      "category": "sentiment",
+      "country": "US",
+      "frequency": "Monthly, last Tuesday",
+      "definition": "Survey by the Conference Board measuring how consumers feel about current and future economic conditions.",
+      "whyItMatters": "Confident consumers spend more. A drop signals weaker future retail sales and growth.",
+      "marketReaction": {
+        "higher": "Higher confidence: USD up modestly, stocks rally on growth optimism.",
+        "lower": "Lower confidence: USD down modestly, stocks may fall on recession fears."
+      },
+      "watchedAssets": [
+        "SPY",
+        "XLY"
+      ]
+    },
+    {
+      "id": "michigan-sentiment",
+      "name": "Michigan Consumer Sentiment",
+      "abbreviation": "Mich Sentiment",
+      "category": "sentiment",
+      "country": "US",
+      "frequency": "Monthly (preliminary mid-month, final end-month)",
+      "definition": "University of Michigan survey of consumer attitudes. Includes 1-year and 5-year inflation expectations — the latter is closely watched by the Fed.",
+      "whyItMatters": "The 5-year inflation expectation embedded here is one of the Fed's favorite anchors. If it un-anchors above 3%, the Fed gets hawkish.",
+      "marketReaction": {
+        "higher": "Higher inflation expectations: USD up, stocks down, bond yields rise.",
+        "lower": "Lower inflation expectations: USD down, stocks rally, yields fall."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "id": "building-permits",
+      "name": "Building Permits",
+      "abbreviation": "Permits",
+      "category": "housing",
+      "country": "US",
+      "frequency": "Monthly, around the 17th",
+      "definition": "Number of new residential construction permits issued. A leading indicator of housing starts.",
+      "whyItMatters": "Permits today become construction in 1-3 months. Tracks the housing market's trajectory.",
+      "marketReaction": {
+        "higher": "More permits: housing strong, USD up modestly, homebuilder stocks rally.",
+        "lower": "Fewer permits: housing weak, homebuilder stocks fall."
+      },
+      "watchedAssets": [
+        "XHB",
+        "ITB"
+      ]
+    },
+    {
+      "id": "existing-home-sales",
+      "name": "Existing Home Sales",
+      "abbreviation": "EHS",
+      "category": "housing",
+      "country": "US",
+      "frequency": "Monthly, around the 20th",
+      "definition": "Annualized rate of existing-home sale closings (completed transactions, not pending).",
+      "whyItMatters": "Largest part of the US housing market. Reflects mortgage-rate sensitivity — rises when rates fall.",
+      "marketReaction": {
+        "higher": "Strong sales: housing recovering, homebuilder stocks rally.",
+        "lower": "Weak sales: housing slumping, homebuilder stocks fall."
+      },
+      "watchedAssets": [
+        "XHB",
+        "ITB"
+      ]
+    },
+    {
+      "id": "trade-balance",
+      "name": "Trade Balance",
+      "abbreviation": "Trade",
+      "category": "trade",
+      "country": "US",
+      "frequency": "Monthly, around the 5th",
+      "definition": "Difference between exports and imports. The US runs a persistent trade deficit (imports > exports).",
+      "whyItMatters": "Tracks competitiveness and demand for the dollar. A widening deficit can pressure USD long-term.",
+      "marketReaction": {
+        "higher": "Smaller deficit / larger surplus: USD up modestly, stocks neutral.",
+        "lower": "Larger deficit: USD down modestly, stocks neutral."
+      },
+      "watchedAssets": [
+        "DXY"
+      ]
+    },
+    {
+      "id": "durable-goods-orders",
+      "name": "Durable Goods Orders",
+      "abbreviation": "Durables",
+      "category": "manufacturing",
+      "country": "US",
+      "frequency": "Monthly, around the 27th",
+      "definition": "New orders for items expected to last 3+ years (cars, appliances, machinery, aircraft). Often quoted ex-transportation to remove aircraft volatility.",
+      "whyItMatters": "Leading indicator of business investment. Rising orders = expansion; falling = recession risk.",
+      "marketReaction": {
+        "higher": "Strong durables: USD up, stocks rally on growth.",
+        "lower": "Weak durables: USD down, stocks may fall, recession concerns rise."
+      },
+      "watchedAssets": [
+        "DXY",
+        "SPY",
+        "XLI"
+      ]
+    },
+    {
+      "id": "manufacturing-pmi-flash",
+      "name": "Manufacturing PMI Flash",
+      "abbreviation": "Mfg PMI Flash",
+      "category": "manufacturing",
+      "country": "GLOBAL",
+      "frequency": "Monthly, ~22nd of the month",
+      "definition": "S&P Global's preliminary manufacturing survey for major economies (US, EU, UK, Japan). Released ~10 days before final.",
+      "whyItMatters": "First glimpse of manufacturing trends each month. 50 separates expansion from contraction.",
+      "marketReaction": {
+        "higher": "Above 50 expanding: local currency up, local stocks rally.",
+        "lower": "Below 50 contracting: local currency down, local stocks may fall."
+      },
+      "watchedAssets": [
+        "DXY",
+        "EURUSD",
+        "GBPUSD"
+      ]
+    },
+    {
+      "id": "composite-pmi-flash",
+      "name": "Composite PMI Flash",
+      "abbreviation": "Comp PMI",
+      "category": "manufacturing",
+      "country": "GLOBAL",
+      "frequency": "Monthly, with Manufacturing PMI Flash",
+      "definition": "Combined manufacturing + services PMI, weighted by sector size. Best single read on overall economic momentum.",
+      "whyItMatters": "Single number summarizing the whole economy's trajectory. Sustained readings below 48 signal recession risk.",
+      "marketReaction": {
+        "higher": "Above 50: local currency up, stocks rally.",
+        "lower": "Below 50: local currency down, stocks fall, rate-cut hopes rise."
+      },
+      "watchedAssets": [
+        "DXY",
+        "EURUSD",
+        "SPY"
+      ]
+    },
+    {
+      "id": "zew-economic-sentiment",
+      "name": "ZEW Economic Sentiment",
+      "abbreviation": "ZEW",
+      "category": "sentiment",
+      "country": "DE",
+      "frequency": "Monthly, mid-month",
+      "definition": "Survey of ~350 financial analysts about Germany's expected economic conditions over the next 6 months.",
+      "whyItMatters": "Germany is the Eurozone's largest economy. ZEW is a leading indicator of Eurozone GDP and a key driver of EUR.",
+      "marketReaction": {
+        "higher": "Higher ZEW: EUR strengthens, DAX rallies.",
+        "lower": "Lower ZEW: EUR weakens, DAX falls."
+      },
+      "watchedAssets": [
+        "EURUSD",
+        "DAX"
+      ]
+    },
+    {
+      "id": "ifo-business-climate",
+      "name": "Ifo Business Climate",
+      "abbreviation": "Ifo",
+      "category": "sentiment",
+      "country": "DE",
+      "frequency": "Monthly, last week",
+      "definition": "Survey of ~9000 German firms about current conditions and expectations for the next 6 months.",
+      "whyItMatters": "Tracks the actual business pulse of Germany — broader than ZEW which surveys analysts. Strong predictor of German GDP.",
+      "marketReaction": {
+        "higher": "Stronger Ifo: EUR strengthens, DAX rallies.",
+        "lower": "Weaker Ifo: EUR weakens, DAX falls."
+      },
+      "watchedAssets": [
+        "EURUSD",
+        "DAX"
+      ]
+    },
+    {
+      "id": "china-manufacturing-pmi",
+      "name": "China Manufacturing PMI",
+      "abbreviation": "China PMI",
+      "category": "manufacturing",
+      "country": "CN",
+      "frequency": "Monthly, end of month (official) and start of month (Caixin)",
+      "definition": "Two versions: official NBS PMI (large state-owned firms) and Caixin PMI (smaller private firms). Both release the same metric: 50 = expansion threshold.",
+      "whyItMatters": "China is the world's factory and largest commodities consumer. Strong China PMI lifts copper, oil, iron ore, and AUD/NZD.",
+      "marketReaction": {
+        "higher": "Above 50: AUD/NZD strengthen, copper/oil rally, China-exposed stocks rally.",
+        "lower": "Below 50: AUD/NZD weaken, commodities fall, recession fears."
+      },
+      "watchedAssets": [
+        "AUDUSD",
+        "NZDUSD",
+        "COPPER",
+        "OIL"
+      ]
+    },
+    {
+      "id": "rba-rate-decision",
+      "name": "RBA Interest Rate Decision",
+      "abbreviation": "RBA",
+      "category": "central-bank",
+      "country": "AU",
+      "frequency": "8 times per year (first Tuesday of most months)",
+      "definition": "Reserve Bank of Australia sets the cash rate. Australia is highly sensitive to commodity prices and China demand.",
+      "whyItMatters": "Drives AUD and Australian bond yields. AUD is also a proxy for risk sentiment and China exposure.",
+      "marketReaction": {
+        "higher": "Hawkish: AUD up, ASX falls, AGB yields rise.",
+        "lower": "Dovish: AUD down, ASX rallies, yields fall."
+      },
+      "watchedAssets": [
+        "AUDUSD",
+        "AUDJPY",
+        "ASX"
+      ]
+    }
+  ]
+}

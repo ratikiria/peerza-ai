@@ -1,0 +1,23 @@
+# Railway service configuration. Railway auto-detects the Dockerfile and uses
+# it to build; this file only adds runtime + lifecycle settings.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Restart on crash, but back off if it keeps crashing.
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5
+
+# Health check endpoint Next.js answers cheaply.
+healthcheckPath = "/api/health"
+healthcheckTimeout = 60
+
+# How many concurrent web instances. Bump to 2+ once Redis is wired so
+# rate-limit state and session caches are shared.
+numReplicas = 1
+
+# Idle scale-down lets Railway pause the service when no traffic. Disable
+# in production once you have real users — pause-and-cold-start hurts SLO.
+sleepApplication = false

@@ -1,0 +1,830 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── AUTH ────────────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String    @unique
+  name          String
+  passwordHash  String?
+  image         String?
+  bio           String?
+  interests     String[]
+  isVerified       Boolean   @default(false)
+  isPremium        Boolean   @default(false)
+  isPro            Boolean   @default(false)
+  proExpiresAt     DateTime?
+  aiQuestionsToday Int       @default(0)
+  aiQuotaResetAt   DateTime?
+  showTrackRecord  Boolean   @default(true)
+  hideFollowList   Boolean   @default(false)
+  country          String?
+  locale           String?   @default("en")
+  coverImage       String?
+  links            Json?
+  notificationPrefs    Json?
+  birthDate            DateTime?
+  securityQuestion     String?
+  securityAnswerHash   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts               Account[]
+  sessions               Session[]
+  posts                  Post[]
+  likes                  Like[]
+  comments               Comment[]
+  commentLikes           CommentLike[]
+  sentMessages           Message[]      @relation("SentMessages")
+  receivedMessages       Message[]      @relation("ReceivedMessages")
+  conversations          ConversationParticipant[]
+  following              Follow[]       @relation("Following")
+  followers              Follow[]       @relation("Followers")
+  connections            Connection[]   @relation("ConnectionRequester")
+  connectedTo            Connection[]   @relation("ConnectionReceiver")
+  notifications          Notification[] @relation("NotificationReceiver")
+  triggeredNotifications Notification[] @relation("NotificationTriggerer")
+  callsInitiated         Call[]         @relation("CallInitiator")
+  callsReceived          Call[]         @relation("CallReceiver")
+  subscription             Subscription?
+  proMembership            ProMembership?
+  aiSessions               AISession[]
+  stories                  Story[]
+  storyViews               StoryView[]
+  storyReactions           StoryReaction[]
+  storyRepliesSent         StoryReply[]           @relation("StoryReplyAuthor")
+  challengesCreated        Challenge[]            @relation("ChallengeCreator")
+  challengeParticipations  ChallengeParticipant[]
+  challengeMessages        ChallengeMessage[]     @relation("ChallengeMessageAuthor")
+  brandsOwned              Brand[]                @relation("BrandOwner")
+  adImpressions            AdImpression[]
+  adClicks                 AdClick[]
+  gameResults              GameResult[]
+  pollsCreated             Poll[]                 @relation("PollAuthor")
+  pollVotes                PollVote[]
+  portfolios               Portfolio[]
+  duelsChallenged          GameDuel[]             @relation("DuelChallenger")
+  duelsReceived            GameDuel[]             @relation("DuelChallengee")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── SOCIAL ──────────────────────────────────────────────────────────────────
+
+model Post {
+  id                String   @id @default(cuid())
+  content           String
+  imageUrl          String?
+  videoUrl          String?
+  videoMime         String?
+  pollId            String?
+  analysis          Json?
+  topics            String[] @default([])
+  pinned            Boolean  @default(false)
+  tickerOnly        Boolean  @default(false)
+  authorId          String
+  originalPostId    String?
+  outcomeStatus     OutcomeStatus @default(OPEN)
+  outcomeAt         DateTime?
+  outcomeReturnPct  Float?
+  outcomeCheckedAt  DateTime?
+  editedAt          DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  author       User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes        Like[]
+  comments     Comment[]
+  originalPost Post?     @relation("PostReposts", fields: [originalPostId], references: [id], onDelete: SetNull)
+  reposts      Post[]    @relation("PostReposts")
+  poll         Poll?     @relation(fields: [pollId], references: [id], onDelete: SetNull)
+
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([originalPostId])
+  @@index([outcomeStatus, outcomeCheckedAt])
+}
+
+enum OutcomeStatus {
+  OPEN
+  TARGET_HIT
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  reaction  String   @default("👍")
+  createdAt DateTime @default(now())
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String?
+  imageUrl  String?
+  postId    String
+  authorId  String
+  parentId  String?
+  editedAt  DateTime?
+  createdAt DateTime @default(now())
+
+  post      Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent    Comment?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[]     @relation("CommentReplies")
+  likes     CommentLike[]
+
+  @@index([postId])
+  @@index([parentId])
+}
+
+model CommentLike {
+  id        String   @id @default(cuid())
+  commentId String
+  userId    String
+  reaction  String   @default("👍")
+  createdAt DateTime @default(now())
+
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower    User     @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Connection {
+  id          String           @id @default(cuid())
+  requesterId String
+  receiverId  String
+  status      ConnectionStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  requester   User             @relation("ConnectionRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  receiver    User             @relation("ConnectionReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, receiverId])
+}
+
+enum ConnectionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// ─── MESSAGING ───────────────────────────────────────────────────────────────
+
+model Conversation {
+  id        String   @id @default(cuid())
+  isGroup   Boolean  @default(false)
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@index([updatedAt])
+}
+
+model ConversationParticipant {
+  id             String    @id @default(cuid())
+  conversationId String
+  userId         String
+  joinedAt       DateTime  @default(now())
+  lastReadAt     DateTime?
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String      @id @default(cuid())
+  conversationId String?
+  content        String?
+  voiceUrl       String?
+  mediaUrl       String?
+  mediaMime      String?
+  pollId         String?
+  type           MessageType @default(TEXT)
+  senderId       String
+  receiverId     String
+  isRead         Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+
+  sender       User          @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver     User          @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  conversation Conversation? @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  poll         Poll?         @relation(fields: [pollId], references: [id], onDelete: SetNull)
+
+  @@index([conversationId, createdAt])
+  @@index([senderId, receiverId])
+  @@index([createdAt])
+}
+
+enum MessageType {
+  TEXT
+  VOICE
+  IMAGE
+  VIDEO
+  POLL
+}
+
+// ─── POLLS ───────────────────────────────────────────────────────────────────
+
+model Poll {
+  id        String   @id @default(cuid())
+  authorId  String
+  question  String
+  options   String[]
+  createdAt DateTime @default(now())
+
+  author   User       @relation("PollAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  votes    PollVote[]
+  messages Message[]
+  posts    Post[]
+
+  @@index([authorId])
+}
+
+model PollVote {
+  id          String   @id @default(cuid())
+  pollId      String
+  userId      String
+  optionIndex Int
+  createdAt   DateTime @default(now())
+
+  poll Poll @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([pollId, userId])
+  @@index([pollId])
+}
+
+// ─── CALLS ───────────────────────────────────────────────────────────────────
+
+model Call {
+  id          String     @id @default(cuid())
+  initiatorId String
+  receiverId  String
+  status      CallStatus @default(RINGING)
+  kind        CallKind   @default(AUDIO)
+  startedAt   DateTime?
+  endedAt     DateTime?
+  createdAt   DateTime   @default(now())
+
+  initiator   User       @relation("CallInitiator", fields: [initiatorId], references: [id], onDelete: Cascade)
+  receiver    User       @relation("CallReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+enum CallStatus {
+  RINGING
+  ACTIVE
+  ENDED
+  MISSED
+  DECLINED
+}
+
+enum CallKind {
+  AUDIO
+  VIDEO
+}
+
+// ─── NOTIFICATIONS ───────────────────────────────────────────────────────────
+
+model Notification {
+  id          String           @id @default(cuid())
+  type        NotificationType
+  receiverId  String
+  triggeredBy String
+  entityId    String?
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  receiver    User             @relation("NotificationReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  triggerer   User             @relation("NotificationTriggerer", fields: [triggeredBy], references: [id], onDelete: Cascade)
+
+  @@index([receiverId, isRead])
+}
+
+enum NotificationType {
+  FOLLOW
+  CONNECTION_REQUEST
+  CONNECTION_ACCEPTED
+  POST_LIKE
+  POST_COMMENT
+  POST_SHARE
+  MESSAGE
+  CALL
+  STORY_REACTION
+  STORY_REPLY
+  GAME_DUEL_INVITE
+  GAME_DUEL_RESULT
+}
+
+// ─── STORIES ─────────────────────────────────────────────────────────────────
+
+model Story {
+  id        String      @id @default(cuid())
+  mediaUrl  String
+  caption   String?
+  authorId  String
+  expiresAt DateTime
+  createdAt DateTime    @default(now())
+
+  author    User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  views     StoryView[]
+  reactions StoryReaction[]
+  replies   StoryReply[]
+
+  @@index([authorId])
+  @@index([expiresAt])
+}
+
+model StoryView {
+  id       String   @id @default(cuid())
+  storyId  String
+  viewerId String
+  viewedAt DateTime @default(now())
+
+  story    Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  viewer   User     @relation(fields: [viewerId], references: [id], onDelete: Cascade)
+
+  @@unique([storyId, viewerId])
+}
+
+model StoryReaction {
+  id        String   @id @default(cuid())
+  storyId   String
+  userId    String
+  emoji     String
+  createdAt DateTime @default(now())
+
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([storyId, userId])
+  @@index([storyId])
+}
+
+model StoryReply {
+  id         String   @id @default(cuid())
+  storyId    String
+  fromUserId String
+  text       String
+  createdAt  DateTime @default(now())
+
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  from  User  @relation("StoryReplyAuthor", fields: [fromUserId], references: [id], onDelete: Cascade)
+
+  @@index([storyId])
+}
+
+// ─── INVESTMENT SIMULATION ───────────────────────────────────────────────────
+
+model Challenge {
+  id                 String               @id @default(cuid())
+  name               String
+  description        String?
+  creatorId          String
+  type               ChallengeType        @default(PUBLIC)
+  style              ChallengeStyle       @default(MIXED)
+  password           String?
+  startDate          DateTime
+  endDate            DateTime
+  virtualCapital     Float                @default(100000)
+  assetClasses       String[]
+  maxParticipants    Int?
+  leaderboardVisible Boolean              @default(true)
+  status             ChallengeStatus      @default(UPCOMING)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  creator            User                 @relation("ChallengeCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  participants       ChallengeParticipant[]
+  messages           ChallengeMessage[]
+
+  @@index([creatorId])
+  @@index([status])
+  @@index([startDate])
+}
+
+model ChallengeMessage {
+  id          String   @id @default(cuid())
+  challengeId String
+  authorId    String
+  body        String
+  createdAt   DateTime @default(now())
+
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  author      User      @relation("ChallengeMessageAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([challengeId, createdAt])
+  @@index([authorId])
+}
+
+enum ChallengeType {
+  PUBLIC
+  PRIVATE
+  PASSWORD_PROTECTED
+}
+
+enum ChallengeStyle {
+  INVESTMENT
+  TRADING
+  MIXED
+}
+
+enum ChallengeStatus {
+  UPCOMING
+  ACTIVE
+  ENDED
+}
+
+model ChallengeParticipant {
+  id          String    @id @default(cuid())
+  challengeId String
+  userId      String
+  cashBalance Float
+  joinedAt    DateTime  @default(now())
+
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  holdings    Holding[]
+  trades      Trade[]
+
+  @@unique([challengeId, userId])
+  @@index([challengeId])
+  @@index([userId])
+}
+
+model Holding {
+  id            String               @id @default(cuid())
+  participantId String
+  symbol        String
+  name          String
+  assetType     String
+  priceKey      String
+  quantity      Float
+  avgCost       Float
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  participant   ChallengeParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([participantId, symbol])
+  @@index([participantId])
+}
+
+model Trade {
+  id            String               @id @default(cuid())
+  participantId String
+  symbol        String
+  name          String
+  assetType     String
+  priceKey      String
+  side          TradeSide
+  quantity      Float
+  price         Float
+  total         Float
+  createdAt     DateTime             @default(now())
+
+  participant   ChallengeParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@index([participantId])
+  @@index([createdAt])
+}
+
+enum TradeSide {
+  BUY
+  SELL
+}
+
+// ─── AI TUTOR ────────────────────────────────────────────────────────────────
+
+model Subscription {
+  id        String             @id @default(cuid())
+  userId    String             @unique
+  plan      SubscriptionPlan
+  status    SubscriptionStatus @default(ACTIVE)
+  startDate DateTime           @default(now())
+  endDate   DateTime
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum SubscriptionPlan {
+  THREE_MONTHS
+  SIX_MONTHS
+  TWELVE_MONTHS
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+// Pro membership — $10/mo Pro badge + cosmetic perks. Distinct from
+// Subscription (which gates AI Tutor Premium).
+model ProMembership {
+  id                   String              @id @default(cuid())
+  userId               String              @unique
+  status               ProStatus           @default(ACTIVE)
+  billingCycle         ProBillingCycle
+  paymentMethod        ProPaymentMethod
+  priceUSD             Float
+  startedAt            DateTime            @default(now())
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean             @default(false)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?             @unique
+  cryptoChargeId       String?             @unique
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  user                 User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([currentPeriodEnd])
+}
+
+enum ProStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+  PAST_DUE
+}
+
+enum ProBillingCycle {
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+enum ProPaymentMethod {
+  CARD
+  CRYPTO
+}
+
+model AISession {
+  id        String   @id @default(cuid())
+  userId    String
+  messages  Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ─── ADVERTISING ─────────────────────────────────────────────────────────────
+
+model Brand {
+  id              String    @id @default(cuid())
+  ownerId         String
+  name            String
+  slug            String    @unique
+  legalName       String?
+  bio             String?
+  logoUrl         String?
+  website         String?
+  country         String    // ISO country code where the brand is registered
+  regulator       String?   // e.g. "FINRA", "FCA", "BaFin", "Self-regulated"
+  licenseNumber   String?   // CRD #, SEC #, FCA reference, etc.
+  verifiedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  owner           User      @relation("BrandOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  ads             Ad[]
+
+  @@index([ownerId])
+  @@index([country])
+}
+
+model Ad {
+  id                    String    @id @default(cuid())
+  brandId               String
+  // Content
+  headline              String
+  body                  String
+  imageUrl              String?
+  ctaLabel              String    // "Learn more", "Open account", etc.
+  ctaUrl                String
+  // Targeting
+  topics                String[]  @default([])     // crypto, stocks, forex, options
+  placements            AdPlacement[] @default([FEED])  // surfaces this creative is eligible for
+  allowedCountries      String[]  @default([])     // empty = all (subject to restrictedCountries)
+  restrictedCountries   String[]  @default([])     // explicit deny — applied AFTER allowedCountries
+  // Schedule + budget
+  startsAt              DateTime?
+  endsAt                DateTime?
+  budgetUsd             Float?
+  spentUsd              Float     @default(0)
+  // Lifecycle
+  status                AdStatus  @default(DRAFT)
+  reviewNotes           String?
+  reviewedAt            DateTime?
+  reviewedBy            String?   // "ai" or a user id when human-reviewed
+  riskFlags             String[]  @default([])     // tags like "performance_claim", "missing_disclaimer"
+  // Disclaimer (required for finance ads)
+  disclaimer            String?
+
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  brand                 Brand          @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  impressions           AdImpression[]
+  clicks                AdClick[]
+
+  @@index([brandId])
+  @@index([status])
+  @@index([startsAt, endsAt])
+}
+
+enum AdPlacement {
+  FEED        // in-feed card slotted between posts
+  SIDEBAR     // compact card in the right-rail widget panel
+  WORKSPACE   // bottom of workspace left rail (high-intent traders)
+}
+
+enum AdStatus {
+  DRAFT             // not yet submitted
+  PENDING_REVIEW    // submitted, awaiting AI/human review
+  HUMAN_QUEUE       // AI flagged for human review
+  APPROVED          // ready to run (within schedule window)
+  REJECTED          // failed review with reason in reviewNotes
+  PAUSED            // approved but advertiser paused
+  COMPLETED         // budget exhausted or end date passed
+}
+
+model AdImpression {
+  id        String   @id @default(cuid())
+  adId      String
+  userId    String?  // null when viewer is anonymous (future)
+  createdAt DateTime @default(now())
+
+  ad        Ad       @relation(fields: [adId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([adId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model AdClick {
+  id        String   @id @default(cuid())
+  adId      String
+  userId    String?
+  createdAt DateTime @default(now())
+
+  ad        Ad       @relation(fields: [adId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([adId, createdAt])
+}
+
+model GameResult {
+  id              String   @id @default(cuid())
+  userId          String
+  gameId          String   // "guess-direction" | "build-portfolio"
+  startingBalance Float
+  finalBalance    Float
+  pnl             Float
+  returnPct       Float
+  roundsPlayed    Int
+  winRate         Float    // 0..1 — fraction of rounds with positive P&L
+  durationSec     Int
+  scenarios       String[] @default([])
+  completedAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, gameId])
+  @@index([userId, completedAt])
+  @@index([gameId, returnPct])
+}
+
+// Async head-to-head: same gameId, same seed, two scores. Challenger plays
+// first (their score is locked in at creation). Challengee plays via the
+// duel link and the second score lands. No realtime, no ops loop.
+model GameDuel {
+  id             String   @id @default(cuid())
+  gameId         String   // "guess-direction" | "build-portfolio" | "read-tape"
+  seed           String   // deterministic RNG seed shared by both sides
+  challengerId   String
+  challengeeId   String
+  challengerPct  Float    // challenger's returnPct, locked at creation
+  challengeePct  Float?   // null until challengee finishes
+  challengeeAt   DateTime?
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+
+  challenger User @relation("DuelChallenger", fields: [challengerId], references: [id], onDelete: Cascade)
+  challengee User @relation("DuelChallengee",  fields: [challengeeId], references: [id], onDelete: Cascade)
+
+  @@index([challengerId])
+  @@index([challengeeId])
+  @@index([expiresAt])
+}
+
+// ─── REAL PORTFOLIO (educational health-check, NOT investment advice) ────────
+
+model Portfolio {
+  id           String             @id @default(cuid())
+  userId       String
+  name         String             @default("My Portfolio")
+  baseCurrency String             @default("USD")
+  isPublic     Boolean            @default(false)   // future: share to feed
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  holdings     PortfolioHolding[]
+
+  @@index([userId])
+}
+
+model PortfolioHolding {
+  id          String   @id @default(cuid())
+  portfolioId String
+  symbol      String              // display symbol — "AAPL", "BTC", "VOO"
+  name        String
+  assetType   String              // "stock" | "crypto" | "etf" | "bond" | "cash"
+  priceKey    String              // CoinGecko id or Stooq symbol (matches /api/market/prices)
+  quantity    Float
+  avgCost     Float?              // optional — required only for unrealized P&L
+  sector      String?             // "Technology", "Energy", … — for sector-mix analysis
+  region      String?             // "US", "EU", "EM", "Global" — for geographic analysis
+  addedAt     DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@unique([portfolioId, symbol])
+  @@index([portfolioId])
+}
