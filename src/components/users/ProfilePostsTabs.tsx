@@ -11,7 +11,7 @@ interface Post {
   imageUrl?: string | null
   videoUrl?: string | null
   videoMime?: string | null
-  analysis?: { ticker?: string } | null
+  analysis?: unknown
   pinned?: boolean
   [key: string]: unknown
 }

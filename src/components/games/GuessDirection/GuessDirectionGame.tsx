@@ -417,7 +417,7 @@ export default function GuessDirectionGame() {
     )
   }
 
-  const showReveal = phase === "revealed" && lastResult
+  const showReveal = phase === "revealed" && !!lastResult
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">

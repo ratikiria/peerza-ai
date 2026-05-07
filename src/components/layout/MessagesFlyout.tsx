@@ -200,10 +200,10 @@ export default function MessagesFlyout({ active }: { active: boolean }) {
                     className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-[var(--bg-base)]"
                   >
                     <div className="relative flex-shrink-0">
-                      {c.partner.image ? (
+                      {c.partner!.image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={c.partner.image}
+                          src={c.partner!.image}
                           alt=""
                           className="w-10 h-10 rounded-full object-cover"
                         />
@@ -237,7 +237,7 @@ export default function MessagesFlyout({ active }: { active: boolean }) {
                             fontWeight: isUnread ? 700 : 500,
                           }}
                         >
-                          {c.partner.name}
+                          {c.partner!.name}
                         </p>
                         <span className="text-[10px] flex-shrink-0" style={{ color: "var(--text-secondary)" }}>
                           {c.lastMessage ? relTime(c.lastMessage.createdAt) : ""}

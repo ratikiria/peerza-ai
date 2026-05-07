@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 
 interface Comment {
   id: string
-  content: string
+  content: string | null
   createdAt: string
   author: {
     id: string

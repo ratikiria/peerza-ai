@@ -44,6 +44,7 @@ interface PostAnalysis {
   conviction?: number
   catalyst?: string
   position?: string
+  logoUrl?: string | null
 }
 
 interface OriginalPost {

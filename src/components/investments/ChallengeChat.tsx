@@ -280,7 +280,7 @@ export default function ChallengeChat({ challengeId, isParticipant }: Props) {
           {sending ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
         </button>
 
-        {showEmoji && emojiData && (
+        {showEmoji && !!emojiData && (
           <div
             ref={emojiContainerRef}
             className="absolute bottom-full mb-2 right-0 z-50 rounded-2xl shadow-2xl overflow-hidden"

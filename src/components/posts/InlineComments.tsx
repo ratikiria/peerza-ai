@@ -10,7 +10,7 @@ import GifPicker, { PICKER_W, PICKER_H } from "./GifPicker"
 const REACTIONS = ["👍", "❤️", "😂", "😮", "😢", "😡", "🔥"] as const
 
 const EmojiPicker = dynamic(
-  () => import("@emoji-mart/react").then((m) => ({ default: m.default as any })),
+  () => import("@emoji-mart/react").then((m) => ({ default: m.default as unknown as React.ComponentType<Record<string, unknown>> })),
   { ssr: false }
 )
 
@@ -102,7 +102,7 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
     return () => document.removeEventListener("mousedown", onClick)
   }, [])
 
-  function calcPos(btnRef: React.RefObject<HTMLButtonElement>): { top: number; left: number } | null {
+  function calcPos(btnRef: React.RefObject<HTMLButtonElement | null>): { top: number; left: number } | null {
     const rect = btnRef.current?.getBoundingClientRect()
     if (!rect) return null
     const top  = rect.top - PICKER_H - 10  // above the button

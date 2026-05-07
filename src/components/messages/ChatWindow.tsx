@@ -455,7 +455,7 @@ export default function ChatWindow({ currentUserId, partnerId }: ChatWindowProps
           </form>
         )}
 
-        {showEmoji && emojiData && (
+        {showEmoji && !!emojiData && (
           <div
             ref={emojiContainerRef}
             className="absolute bottom-full mb-2 right-0 z-50 rounded-2xl shadow-2xl overflow-hidden"

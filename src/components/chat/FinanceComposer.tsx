@@ -269,7 +269,7 @@ export default function FinanceComposer({ conversationId, isGroup = false, onSen
         className="relative flex flex-col gap-1.5 px-3 py-2 flex-shrink-0"
         style={{ borderTop: "1px solid var(--border)", background: "var(--bg-elevated)" }}
       >
-        {showEmoji && emojiData && (
+        {showEmoji && !!emojiData && (
           <div
             ref={emojiContainerRef}
             className="absolute bottom-full mb-2 right-2 z-50 rounded-2xl shadow-2xl overflow-hidden"
