@@ -1,8 +1,15 @@
 import type { Metadata } from "next"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale, getMessages } from "next-intl/server"
+import { Noto_Sans_Georgian } from "next/font/google"
 import "./globals.css"
 import Providers from "@/components/Providers"
+
+const notoGeorgian = Noto_Sans_Georgian({
+  subsets: ["georgian"],
+  variable: "--font-georgian",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "Peerza.ai — The AI community for Finance & Investing",
@@ -53,7 +60,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className="h-full" suppressHydrationWarning>
+    <html lang={locale} className={`h-full ${notoGeorgian.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
