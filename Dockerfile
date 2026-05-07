@@ -54,12 +54,16 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/dotenv ./node_modules/dotenv
-# npm's bin symlink so `npx prisma` resolves the CLI at boot.
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+# npm bin shims. The Prisma 7 CLI loads prisma_schema_build_bg.wasm
+# relative to its own location, so we need the whole .bin directory
+# (and the wasm sibling files), not just the prisma entry point.
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin ./node_modules/.bin
 
 USER nextjs
 EXPOSE 3000
 
-# Run pending migrations on boot, then start. Railway's auto-deploy handles
+# Run pending migrations on boot, then start. Invoke prisma via node
+# directly (not npx) so __dirname resolves inside node_modules/prisma/build,
+# where the CLI's wasm files actually live. Railway's auto-deploy handles
 # both web service and DB linkage; DATABASE_URL must be set in env.
-CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
+CMD ["sh", "-c", "node node_modules/prisma/build/index.js migrate deploy && node server.js"]
