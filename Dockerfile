@@ -54,6 +54,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/dotenv ./node_modules/dotenv
+# Transitive: @prisma/config (bundled inside prisma) requires `effect` at runtime.
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/effect ./node_modules/effect
 # npm bin shims. The Prisma 7 CLI loads prisma_schema_build_bg.wasm
 # relative to its own location, so we need the whole .bin directory
 # (and the wasm sibling files), not just the prisma entry point.
