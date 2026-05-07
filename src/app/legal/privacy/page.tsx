@@ -9,11 +9,13 @@ export default function PrivacyPage() {
   return (
     <>
       <h1>Privacy Policy</h1>
-      <p className="meta">Last updated: April 30, 2026</p>
+      <p className="meta">Last updated: May 8, 2026</p>
 
       <p>
         This Privacy Policy explains what personal data Peerza.ai collects, why we collect it,
-        and the choices you have. It applies to everyone who uses the platform.
+        and the choices you have. It applies to everyone who uses the platform. Peerza.ai is
+        operated by Peerza, Inc., a Delaware corporation, which is the data controller for the
+        purposes of GDPR and the &quot;business&quot; for the purposes of the CCPA/CPRA.
       </p>
 
       <h2>1. Data we collect</h2>
@@ -103,7 +105,7 @@ export default function PrivacyPage() {
         <li>Lodge a complaint with your local data-protection authority.</li>
       </ul>
       <p>
-        To exercise any of these rights, email <a href="mailto:privacy@peerza.ai">privacy@peerza.ai</a>.
+        To exercise any of these rights, email <a href="mailto:legal@peerza.ai">legal@peerza.ai</a>.
         We will respond within 30 days.
       </p>
 
@@ -129,7 +131,7 @@ export default function PrivacyPage() {
 
       <h2>10. Contact</h2>
       <p>
-        Questions about your privacy? Email <a href="mailto:privacy@peerza.ai">privacy@peerza.ai</a>.
+        Questions about your privacy? Email <a href="mailto:legal@peerza.ai">legal@peerza.ai</a>.
       </p>
     </>
   )

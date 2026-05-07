@@ -35,19 +35,20 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           <LegalLink href="/legal/disclaimer" label="Financial Disclaimer" />
         </nav>
 
-        {/* Draft banner */}
+        {/* Review banner */}
         <div
           className="rounded-xl px-4 py-3 mb-8 text-[11px] leading-relaxed"
           style={{
-            background: "rgba(245, 158, 11, 0.08)",
-            border: "1px solid rgba(245, 158, 11, 0.3)",
+            background: "rgba(16, 185, 129, 0.06)",
+            border: "1px solid rgba(16, 185, 129, 0.25)",
             color: "var(--text-primary)",
           }}
         >
-          <strong style={{ color: "#f59e0b" }}>Draft — needs legal review.</strong>{" "}
-          This document is a plain-language template that describes how Peerza.ai actually works.
-          It has not been reviewed by a lawyer and must not be relied on as legal advice.
-          A licensed attorney must review and finalize this before public launch.
+          <strong style={{ color: "#10b981" }}>Plain-language summary, subject to ongoing legal review.</strong>{" "}
+          We have written these documents in clear language to describe how Peerza.ai actually works.
+          They are subject to attorney review and may be updated; the version on this page is the one
+          that applies to your use of the service. Email{" "}
+          <a href="mailto:legal@peerza.ai">legal@peerza.ai</a> with any questions.
         </div>
 
         <article className="legal-prose">{children}</article>
@@ -56,7 +57,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           className="mt-16 pt-6 text-xs flex flex-wrap gap-x-4 gap-y-2 justify-between"
           style={{ borderTop: "1px solid var(--border)", color: "var(--text-secondary)" }}
         >
-          <span>© {new Date().getFullYear()} Peerza.ai (TradersHub)</span>
+          <span>© {new Date().getFullYear()} Peerza, Inc.</span>
           <div className="flex gap-4">
             <Link href="/legal/terms" className="hover:text-emerald-400 transition-colors">Terms</Link>
             <Link href="/legal/privacy" className="hover:text-emerald-400 transition-colors">Privacy</Link>

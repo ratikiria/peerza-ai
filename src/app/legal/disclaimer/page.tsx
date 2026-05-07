@@ -9,13 +9,13 @@ export default function DisclaimerPage() {
   return (
     <>
       <h1>Financial Disclaimer</h1>
-      <p className="meta">Last updated: April 30, 2026</p>
+      <p className="meta">Last updated: May 8, 2026</p>
 
       <p>
         <strong>
-          Peerza.ai is an educational social platform. Nothing on this site is financial,
-          investment, legal, accounting, or tax advice. We are not a brokerage, exchange, or
-          regulated financial adviser.
+          Peerza.ai (operated by Peerza, Inc., a Delaware corporation) is an educational
+          social platform. Nothing on this site is financial, investment, legal, accounting,
+          or tax advice. We are not a brokerage, exchange, or regulated financial adviser.
         </strong>
       </p>
 

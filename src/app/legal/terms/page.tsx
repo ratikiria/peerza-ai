@@ -9,12 +9,13 @@ export default function TermsPage() {
   return (
     <>
       <h1>Terms of Service</h1>
-      <p className="meta">Last updated: April 30, 2026</p>
+      <p className="meta">Last updated: May 8, 2026</p>
 
       <p>
         These Terms of Service (the &quot;Terms&quot;) form a binding agreement between you and
-        Peerza.ai, operated by TradersHub (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By creating an account or using
-        the platform you agree to these Terms. If you do not agree, do not use Peerza.ai.
+        Peerza, Inc., a Delaware corporation that operates Peerza.ai (&quot;Peerza&quot;,
+        &quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By creating an account or using the platform you
+        agree to these Terms. If you do not agree, do not use Peerza.ai.
       </p>
 
       <h2>1. Who can use Peerza.ai</h2>
@@ -129,11 +130,15 @@ export default function TermsPage() {
         are operated by automated software.
       </p>
 
-      <h2>14. Governing law</h2>
+      <h2>14. Governing law and disputes</h2>
       <p>
-        These Terms are governed by the laws of [JURISDICTION TO BE FILLED IN BY COUNSEL]. Any
-        dispute will be resolved in the courts of that jurisdiction, except where mandatory
-        consumer-protection laws give you the right to use your local courts.
+        These Terms are governed by the laws of the State of Delaware, USA, without regard to
+        its conflict-of-laws rules. Any dispute arising out of or relating to these Terms or
+        your use of Peerza.ai will be brought exclusively in the state or federal courts located
+        in New Castle County, Delaware, and you consent to personal jurisdiction there. This
+        clause does not limit any non-waivable right you may have, under mandatory
+        consumer-protection laws of your country of residence, to bring proceedings in your
+        local courts.
       </p>
 
       <h2>15. Contact</h2>
