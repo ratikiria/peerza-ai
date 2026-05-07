@@ -46,20 +46,16 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/src/generated ./src/generated
 
-# Prisma 7 reads prisma.config.ts at boot, which imports dotenv/config and
-# prisma/config. Next.js standalone tracing doesn't pick these up because
-# nothing in the app bundle imports them — they're only used by the
-# `prisma migrate deploy` step in CMD. Copy them explicitly.
+# Prisma 7 reads prisma.config.ts at boot, which transitively pulls in
+# @prisma/config + effect + fast-check + ... Next.js standalone tracing
+# skips this whole subtree because no app code imports it (it's only
+# used by `prisma migrate deploy` in CMD). Hand-picking subdirs always
+# misses some transitive dep, so install them fresh — npm resolves the
+# full tree in one shot.
 COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/dotenv ./node_modules/dotenv
-# Transitive: @prisma/config (bundled inside prisma) requires `effect` at runtime.
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/effect ./node_modules/effect
-# npm bin shims. The Prisma 7 CLI loads prisma_schema_build_bg.wasm
-# relative to its own location, so we need the whole .bin directory
-# (and the wasm sibling files), not just the prisma entry point.
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin ./node_modules/.bin
+RUN npm install --no-save --no-audit --no-fund --omit=dev \
+      prisma@^7.8.0 dotenv@^17.4.2 \
+ && chown -R nextjs:nodejs /app/node_modules
 
 USER nextjs
 EXPOSE 3000
