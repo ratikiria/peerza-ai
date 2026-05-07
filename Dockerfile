@@ -46,6 +46,15 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/src/generated ./src/generated
 
+# Prisma 7 reads prisma.config.ts at boot, which imports dotenv/config and
+# prisma/config. Next.js standalone tracing doesn't pick these up because
+# nothing in the app bundle imports them — they're only used by the
+# `prisma migrate deploy` step in CMD. Copy them explicitly.
+COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/dotenv ./node_modules/dotenv
+
 USER nextjs
 EXPOSE 3000
 
