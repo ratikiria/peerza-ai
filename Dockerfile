@@ -53,7 +53,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/src/generated ./src/generated
 # misses some transitive dep, so install them fresh — npm resolves the
 # full tree in one shot.
 COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
-RUN npm install --no-save --no-audit --no-fund --omit=dev \
+RUN npm install --no-save --no-audit --no-fund --omit=dev --legacy-peer-deps \
       prisma@^7.8.0 dotenv@^17.4.2 \
  && chown -R nextjs:nodejs /app/node_modules
 
