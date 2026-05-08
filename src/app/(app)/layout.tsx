@@ -32,9 +32,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-base)" }}>
-      {needsVerification && fresh?.email && <VerifyEmailBanner email={fresh.email} />}
       <Navbar user={navUser} />
       <main className="pt-16">
+        {needsVerification && fresh?.email && <VerifyEmailBanner email={fresh.email} />}
         {children}
       </main>
       <IncomingCallOverlay />
