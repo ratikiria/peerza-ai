@@ -39,6 +39,7 @@ async function uniqueUsername(seed: string): Promise<string> {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
