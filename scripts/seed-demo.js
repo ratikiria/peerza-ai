@@ -7,13 +7,13 @@ const bcrypt = require("bcryptjs")
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
 const db = new PrismaClient({ adapter })
 
-const MAIN_USER = "rati123"
+const MAIN_USER = "ratikiria"
 
 const USERS = [
   {
     name: "Alex Chen",
-    username: "alexchen_fx",
-    email: "alex@finsocial.dev",
+    username: "human",
+    email: "human@peerza.ai",
     bio: "Forex & crypto trader. 7 years in the markets. Sharing setups and analysis daily. Risk management first 🎯",
     interests: ["Forex", "Crypto"],
     posts: [

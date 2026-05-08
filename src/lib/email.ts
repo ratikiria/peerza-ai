@@ -84,6 +84,30 @@ export function welcomeEmail(name: string, url = "https://peerza.ai") {
   }
 }
 
+export function verifyEmailEmail(name: string, verifyUrl: string) {
+  return {
+    subject: "Verify your Peerza email",
+    html: `
+      <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#15171c">
+        <h2 style="margin:0 0 16px">One quick step, ${escape(name)}.</h2>
+        <p style="line-height:1.55;color:#3a3f4a">
+          Confirm this is your email so we can keep your Peerza account secure
+          and let you reset your password if you ever need to.
+        </p>
+        <p style="margin:24px 0">
+          <a href="${verifyUrl}" style="display:inline-block;background:#10b981;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:600">
+            Verify email
+          </a>
+        </p>
+        <p style="font-size:13px;color:#7a7f8a">
+          Link expires in 24 hours. Didn't sign up? Ignore this email.
+        </p>
+      </div>
+    `,
+    text: `Verify your Peerza email: ${verifyUrl} (valid for 24 hours)`,
+  }
+}
+
 export function passwordResetEmail(resetUrl: string) {
   return {
     subject: "Reset your Peerza password",

@@ -7,6 +7,7 @@ import ChatDock from "@/components/chat/ChatDock"
 import CommandPalette from "@/components/search/CommandPalette"
 import ToastHost from "@/components/notifications/ToastHost"
 import GuidedTour from "@/components/onboarding/GuidedTour"
+import VerifyEmailBanner from "@/components/auth/VerifyEmailBanner"
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -16,7 +17,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   // the canonical fields from the DB so the Navbar reflects the current values.
   const fresh = await db.user.findUnique({
     where: { id: session.user.id },
-    select: { name: true, username: true, isPremium: true, isPro: true },
+    select: { name: true, username: true, email: true, isPremium: true, isPro: true, emailVerifiedAt: true },
   })
 
   const navUser = {
@@ -27,8 +28,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     isPro: fresh?.isPro ?? false,
   }
 
+  const needsVerification = !fresh?.emailVerifiedAt
+
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-base)" }}>
+      {needsVerification && fresh?.email && <VerifyEmailBanner email={fresh.email} />}
       <Navbar user={navUser} />
       <main className="pt-16">
         {children}

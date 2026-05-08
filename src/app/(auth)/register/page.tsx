@@ -29,6 +29,7 @@ export default function RegisterPage() {
   const [bMonth, setBMonth] = useState("")
   const [bDay, setBDay] = useState("")
   const [bYear, setBYear] = useState("")
+  const [gender, setGender] = useState("")
   const [securityQuestion, setSecurityQuestion] = useState("")
   const [securityAnswer, setSecurityAnswer] = useState("")
   const [showPass, setShowPass] = useState(false)
@@ -75,6 +76,7 @@ export default function RegisterPage() {
         ...form,
         interests,
         birthDate,
+        ...(gender ? { gender } : {}),
         securityQuestion,
         securityAnswer: securityAnswer.trim(),
       }),
@@ -270,6 +272,35 @@ export default function RegisterPage() {
           <p className="text-[10px] mt-1" style={{ color: "var(--text-secondary)" }}>
             {t("register_age_hint")}
           </p>
+        </div>
+
+        {/* Gender */}
+        <div>
+          <label className="block text-xs font-semibold mb-2 uppercase tracking-wide" style={{ color: "var(--text-secondary)" }}>
+            {t("register_gender")} <span className="normal-case font-normal">{t("register_interests_optional")}</span>
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { value: "female", label: t("register_gender_female") },
+              { value: "male", label: t("register_gender_male") },
+              { value: "other", label: t("register_gender_other") },
+              { value: "prefer_not_to_say", label: t("register_gender_pnts") },
+            ].map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setGender(gender === opt.value ? "" : opt.value)}
+                className="text-xs font-medium px-3 py-1.5 rounded-full transition-all"
+                style={{
+                  background: gender === opt.value ? "rgba(16,185,129,0.2)" : "var(--bg-base)",
+                  border: `1px solid ${gender === opt.value ? "#10b981" : "var(--border)"}`,
+                  color: gender === opt.value ? "#10b981" : "var(--text-secondary)",
+                }}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Security question */}

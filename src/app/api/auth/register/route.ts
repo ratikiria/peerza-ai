@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
+import { randomBytes } from "crypto"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { isValidSecurityQuestion } from "@/lib/security-questions"
 import { consume, getClientIp, tooManyRequests } from "@/lib/rate-limit"
+import { sendEmail, welcomeEmail, verifyEmailEmail } from "@/lib/email"
 
 const MIN_AGE_YEARS = 13
 const REGISTER_MAX = 5
@@ -22,6 +24,7 @@ const registerSchema = z.object({
       const d = new Date(s)
       return !Number.isNaN(d.getTime())
     }, "Invalid date"),
+  gender: z.enum(["female", "male", "other", "prefer_not_to_say"]).optional(),
   securityQuestion: z.string().refine(isValidSecurityQuestion, "Invalid security question"),
   securityAnswer: z.string().min(2).max(120),
 })
@@ -55,7 +58,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const { name, username, email, password, interests, birthDate, securityQuestion, securityAnswer } = parsed.data
+    const { name, username, email, password, interests, birthDate, gender, securityQuestion, securityAnswer } = parsed.data
 
     const dob = new Date(birthDate)
     if (ageInYears(dob) < MIN_AGE_YEARS) {
@@ -88,11 +91,33 @@ export async function POST(req: Request) {
         passwordHash,
         interests: interests ?? [],
         birthDate: dob,
+        gender,
         securityQuestion,
         securityAnswerHash,
       },
       select: { id: true, email: true, username: true, name: true },
     })
+
+    // Fire-and-forget welcome + verification emails — don't block the response
+    // and don't fail registration if Resend has a hiccup.
+    const baseUrl = process.env.NEXTAUTH_URL || `https://${req.headers.get("host") || "peerza.ai"}`
+    const verifyToken = randomBytes(32).toString("hex")
+    db.emailVerificationToken
+      .create({
+        data: {
+          userId: user.id,
+          token: verifyToken,
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        },
+      })
+      .then(() => {
+        const verifyUrl = `${baseUrl}/api/auth/verify-email/${verifyToken}`
+        return Promise.all([
+          sendEmail({ to: email, ...welcomeEmail(name, baseUrl) }),
+          sendEmail({ to: email, ...verifyEmailEmail(name, verifyUrl) }),
+        ])
+      })
+      .catch((e) => console.error("[register] email pipeline failed:", e))
 
     return NextResponse.json(user, { status: 201 })
   } catch (err) {

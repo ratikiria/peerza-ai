@@ -10,6 +10,7 @@ declare module "next-auth" {
       image?: string | null
       isPremium: boolean
       isPro: boolean
+      isEmailVerified: boolean
     }
   }
 }

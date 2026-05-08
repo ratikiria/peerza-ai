@@ -87,6 +87,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           image: user.image,
           isPremium: user.isPremium,
           isPro: user.isPro,
+          isEmailVerified: !!user.emailVerifiedAt,
         }
       },
     }),
@@ -103,28 +104,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 name: (profile.name as string) || (profile.email as string).split("@")[0],
                 username: await uniqueUsername(((profile.email as string).split("@")[0])),
                 image: (profile.picture as string) ?? null,
+                emailVerifiedAt: new Date(),
               },
             })
         token.id        = dbUser.id
         token.username  = dbUser.username
         token.isPremium = dbUser.isPremium
         token.isPro     = dbUser.isPro
+        token.isEmailVerified = !!dbUser.emailVerifiedAt
       } else if (user) {
         token.id        = user.id
         token.username  = (user as any).username
         token.isPremium = (user as any).isPremium
         token.isPro     = (user as any).isPro ?? false
+        token.isEmailVerified = (user as any).isEmailVerified ?? false
       }
       if (trigger === "update" && token.id) {
         const fresh = await db.user.findUnique({
           where: { id: token.id as string },
-          select: { name: true, username: true, isPremium: true, isPro: true },
+          select: { name: true, username: true, isPremium: true, isPro: true, emailVerifiedAt: true },
         })
         if (fresh) {
           token.name      = fresh.name
           token.username  = fresh.username
           token.isPremium = fresh.isPremium
           token.isPro     = fresh.isPro
+          token.isEmailVerified = !!fresh.emailVerifiedAt
         }
         // If client passed explicit data via update(data), trust it as the freshest source.
         if (session && typeof session === "object") {
@@ -146,6 +151,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.username = token.username as string
         session.user.isPremium = token.isPremium as boolean
         session.user.isPro    = (token.isPro as boolean) ?? false
+        session.user.isEmailVerified = (token.isEmailVerified as boolean) ?? false
         session.user.image    = token.picture  as string | null
       }
       return session
