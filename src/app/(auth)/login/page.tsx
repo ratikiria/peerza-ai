@@ -32,7 +32,7 @@ export default function LoginPage() {
   }
 
   function fillDemo() {
-    setEmail("alex@finsocial.dev")
+    setEmail("human@peerza.ai")
     setPassword("demo1234")
     setError("")
   }
