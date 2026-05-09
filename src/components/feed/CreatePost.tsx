@@ -831,10 +831,12 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   {content.length}/1000
                 </span>
                 <button type="submit" disabled={!canSubmit}
-                  className="flex items-center gap-2 text-sm font-semibold px-4 py-1.5 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  aria-label={loading ? "Posting" : "Post"}
+                  title={loading ? "Posting" : "Post"}
+                  className="flex items-center justify-center gap-2 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 w-9 h-9 rounded-full sm:w-auto sm:h-auto sm:rounded-xl sm:px-4 sm:py-1.5"
                   style={{ background: "#10b981", color: "#0f1117" }}>
                   <Send size={14} />
-                  {loading ? "Posting…" : "Post"}
+                  <span className="hidden sm:inline">{loading ? "Posting…" : "Post"}</span>
                 </button>
               </div>
             </div>
