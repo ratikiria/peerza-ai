@@ -824,21 +824,25 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   title="Add a poll">
                   <BarChart3 size={15} /> <span className="hidden sm:inline">Poll</span>
                 </button>
+
+                {/* Remaining-character countdown */}
+                <span
+                  className="text-xs font-medium tabular-nums px-2"
+                  style={{ color: 1000 - content.length < 100 ? "#f59e0b" : "var(--text-secondary)" }}
+                  title={`${1000 - content.length} characters remaining`}
+                >
+                  {1000 - content.length}
+                </span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <span className="text-xs" style={{ color: content.length > 900 ? "#f59e0b" : "var(--text-secondary)" }}>
-                  {content.length}/1000
-                </span>
-                <button type="submit" disabled={!canSubmit}
-                  aria-label={loading ? "Posting" : "Post"}
-                  title={loading ? "Posting" : "Post"}
-                  className="flex items-center justify-center gap-2 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 w-9 h-9 rounded-full sm:w-auto sm:h-auto sm:rounded-xl sm:px-4 sm:py-1.5"
-                  style={{ background: "#10b981", color: "#0f1117" }}>
-                  <Send size={14} />
-                  <span className="hidden sm:inline">{loading ? "Posting…" : "Post"}</span>
-                </button>
-              </div>
+              <button type="submit" disabled={!canSubmit}
+                aria-label={loading ? "Posting" : "Post"}
+                title={loading ? "Posting" : "Post"}
+                className="flex items-center justify-center gap-2 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 w-9 h-9 rounded-full sm:w-auto sm:h-auto sm:rounded-xl sm:px-4 sm:py-1.5"
+                style={{ background: "#10b981", color: "#0f1117" }}>
+                <Send size={14} />
+                <span className="hidden sm:inline">{loading ? "Posting…" : "Post"}</span>
+              </button>
             </div>
           )}
         </form>
