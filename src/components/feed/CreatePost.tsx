@@ -386,7 +386,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
             </div>
 
             {/* Text input */}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <textarea
                 ref={textareaRef}
                 value={content}
@@ -766,8 +766,8 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
 
           {/* Actions bar */}
           {(focused || content || imageData || videoData || poll || showAnalysis) && (
-            <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
-              <div className="flex items-center gap-0.5">
+            <div className="flex items-center justify-between flex-wrap gap-y-2 mt-3 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
+              <div className="flex items-center gap-0.5 min-w-0 flex-wrap">
 
                 {/* Photo */}
                 <button type="button" onClick={() => fileRef.current?.click()}
