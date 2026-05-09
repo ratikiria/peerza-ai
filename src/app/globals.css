@@ -25,6 +25,10 @@
   color-scheme: light;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg-base);
   color: var(--text-primary);
