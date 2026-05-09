@@ -774,7 +774,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
                   style={{ color: imageData ? "#10b981" : "var(--text-secondary)" }}
                   title="Upload photo">
-                  <ImageIcon size={15} /> Photo
+                  <ImageIcon size={15} /> <span className="hidden sm:inline">Photo</span>
                 </button>
 
                 {/* Video */}
@@ -782,7 +782,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
                   style={{ color: videoData ? "#10b981" : "var(--text-secondary)" }}
                   title="Upload video (≤20 MB, ~30 sec)">
-                  <Film size={15} /> Video
+                  <Film size={15} /> <span className="hidden sm:inline">Video</span>
                 </button>
 
                 {/* GIF */}
@@ -792,7 +792,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                     className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
                     style={{ color: showGif ? "#10b981" : "var(--text-secondary)" }}
                     title="Add GIF">
-                    <Film size={15} /> GIF
+                    <Film size={15} /> <span className="hidden sm:inline">GIF</span>
                   </button>
                 </div>
 
@@ -803,7 +803,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                     className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
                     style={{ color: showEmoji ? "#10b981" : "var(--text-secondary)" }}
                     title="Emoji">
-                    <Smile size={15} /> Emoji
+                    <Smile size={15} /> <span className="hidden sm:inline">Emoji</span>
                   </button>
                 </div>
 
@@ -813,7 +813,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
                   style={{ color: showAnalysis ? "#10b981" : "var(--text-secondary)" }}
                   title="Share a trade idea">
-                  <BarChart2 size={15} /> Trade idea
+                  <BarChart2 size={15} /> <span className="hidden sm:inline">Trade idea</span>
                 </button>
 
                 {/* Poll */}
@@ -822,7 +822,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
                   style={{ color: poll ? "#10b981" : "var(--text-secondary)" }}
                   title="Add a poll">
-                  <BarChart3 size={15} /> Poll
+                  <BarChart3 size={15} /> <span className="hidden sm:inline">Poll</span>
                 </button>
               </div>
 
