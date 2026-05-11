@@ -23,8 +23,8 @@ export default function ThemeToggle() {
   useEffect(() => {
     try {
       const v = localStorage.getItem(STORAGE_KEY)
-      if (v === "light" || v === "dark") setMode(v)
-      else setMode("system")
+      if (v === "light" || v === "dark" || v === "system") setMode(v)
+      else setMode("dark")
     } catch {}
     setMounted(true)
   }, [])
@@ -41,10 +41,9 @@ export default function ThemeToggle() {
 
   function pick(next: Mode) {
     setMode(next)
-    try {
-      if (next === "system") localStorage.removeItem(STORAGE_KEY)
-      else localStorage.setItem(STORAGE_KEY, next)
-    } catch {}
+    // Persist "system" explicitly — absence of a key means "never set", which
+    // now resolves to dark (the brand default), not to OS preference.
+    try { localStorage.setItem(STORAGE_KEY, next) } catch {}
     applyResolved(next)
   }
 

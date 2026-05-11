@@ -10,7 +10,7 @@ function shortAddr(a: string) {
 }
 
 export default function WalletConnect() {
-  const { available, connected, publicKey, balance, connecting, connect, disconnect, refreshBalance, connection } = usePhantom()
+  const { available, connected, publicKey, balance, connecting, connectError, connect, disconnect, refreshBalance, connection } = usePhantom()
   const [copied, setCopied] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [airdropping, setAirdropping] = useState(false)
@@ -77,11 +77,19 @@ export default function WalletConnect() {
             className="inline-flex items-center gap-2 rounded-xl bg-purple-500 hover:bg-purple-400 disabled:bg-purple-700 text-white font-bold px-5 py-3 text-sm tracking-wide transition-colors shadow-lg shadow-purple-500/30"
           >
             <Wallet size={16} />
-            {connecting ? "Connecting…" : available ? "Connect Phantom" : "Install Phantom"}
+            {connecting ? "Connecting…" : "Connect Phantom"}
           </button>
-          {!available && (
+          {connectError && (
+            <p className="text-xs text-rose-300 leading-relaxed">
+              {connectError}{" "}
+              <a href="https://phantom.app/" target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:underline">
+                Get Phantom →
+              </a>
+            </p>
+          )}
+          {!connectError && !available && (
             <p className="text-xs text-gray-500">
-              Phantom not detected.{" "}
+              Don't have Phantom yet?{" "}
               <a href="https://phantom.app/" target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:underline">
                 Install the extension →
               </a>

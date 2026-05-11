@@ -93,6 +93,24 @@ body {
 [data-theme="light"] .placeholder-gray-600::placeholder { color: #9aa0ad !important; }
 [data-theme="light"] .placeholder-gray-500::placeholder { color: #8a90a0 !important; }
 
+/* Opacity variants of text-white: in dark mode these read as muted/secondary
+   text over a near-black background; in light mode they'd otherwise render as
+   semi-transparent white (invisible on white). Remap to a dark base with
+   matching tonal hierarchy. text-white/0 is intentionally transparent (story
+   viewer hover-only arrows) — leave it alone. */
+[data-theme="light"] .text-white\/85 { color: rgba(21,23,28,0.92) !important; }
+[data-theme="light"] .text-white\/80 { color: rgba(21,23,28,0.88) !important; }
+[data-theme="light"] .text-white\/70 { color: rgba(21,23,28,0.78) !important; }
+[data-theme="light"] .text-white\/60 { color: rgba(21,23,28,0.7) !important; }
+[data-theme="light"] .text-white\/50 { color: rgba(21,23,28,0.62) !important; }
+[data-theme="light"] .text-white\/40 { color: rgba(21,23,28,0.55) !important; }
+[data-theme="light"] .text-white\/30 { color: rgba(21,23,28,0.48) !important; }
+[data-theme="light"] .text-white\/20 { color: rgba(21,23,28,0.4) !important; }
+
+[data-theme="light"] .hover\:text-white\/40:hover { color: rgba(21,23,28,0.55) !important; }
+[data-theme="light"] .hover\:text-white\/70:hover { color: rgba(21,23,28,0.78) !important; }
+[data-theme="light"] .hover\:text-white\/80:hover { color: rgba(21,23,28,0.88) !important; }
+
 [data-theme="light"] .hover\:bg-gray-800:hover { background-color: #eef0f5 !important; }
 [data-theme="light"] .hover\:bg-gray-900:hover { background-color: #f0f2f7 !important; }
 [data-theme="light"] .hover\:border-gray-700:hover { border-color: #c8cdd6 !important; }

@@ -42,14 +42,17 @@ export const viewport = {
   viewportFit: "cover" as const,
 }
 
-// Pre-paint script: reads the theme from localStorage (or system pref) and sets
-// `data-theme` on <html> before React hydrates. Prevents a flash of the wrong
-// theme on first paint. Wrapped in a try so a corrupt value never crashes paint.
+// Pre-paint script: reads the theme from localStorage and sets `data-theme` on
+// <html> before React hydrates. Dark is the brand default — light is opt-in via
+// settings, and "system" means follow OS pref (only when explicitly chosen).
+// Wrapped in a try so a corrupt value never crashes paint.
 const THEME_INIT = `
 try {
   var t = localStorage.getItem("peerza-theme-v1");
-  if (t !== "light" && t !== "dark") {
+  if (t === "system") {
     t = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  } else if (t !== "light" && t !== "dark") {
+    t = "dark";
   }
   document.documentElement.setAttribute("data-theme", t);
 } catch (e) {}

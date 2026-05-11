@@ -175,8 +175,8 @@ export default function StoryViewerModal({ mode, stories, startIndex = 0, author
                 )}
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">{headerAuthor.name}</p>
-                <p className="text-[10px] text-white/70">{formatRelativeTime(current.createdAt)}</p>
+                <p className="text-xs font-semibold" style={{ color: "#fff" }}>{headerAuthor.name}</p>
+                <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.7)" }}>{formatRelativeTime(current.createdAt)}</p>
               </div>
             </Link>
           </div>
@@ -260,7 +260,7 @@ export default function StoryViewerModal({ mode, stories, startIndex = 0, author
               bottom: isOther ? 110 : 56,
               background: "linear-gradient(transparent, rgba(0,0,0,0.75))",
             }}>
-            <p className="text-sm text-white text-center">{current.caption}</p>
+            <p className="text-sm text-center" style={{ color: "#fff" }}>{current.caption}</p>
           </div>
         )}
 

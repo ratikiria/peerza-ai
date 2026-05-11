@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server"
-import Logo, { LogoMark } from "@/components/brand/Logo"
+import LogoAnimated from "@/components/brand/LogoAnimated"
 import AuthShowcase from "@/components/auth/AuthShowcase"
 import LiveTicker from "@/components/auth/LiveTicker"
 import LocaleSwitcher from "@/components/settings/LocaleSwitcher"
@@ -55,10 +55,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
             <div className="relative w-full max-w-md my-auto">
               {/* Mobile logo */}
               <div className="flex flex-col items-center mb-6 lg:hidden">
-                <div className="flex items-center justify-center gap-2.5">
-                  <LogoMark size={40} />
-                  <Logo size="md" />
-                </div>
+                <LogoAnimated size={44} loop loopInterval={9000} />
                 <p className="text-[11px] mt-2 font-medium" style={{ color: "var(--text-secondary)" }}>
                   {t("tagline")}
                 </p>

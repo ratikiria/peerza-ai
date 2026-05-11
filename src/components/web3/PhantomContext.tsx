@@ -30,6 +30,8 @@ interface PhantomState {
   publicKey: string | null
   balance: number | null
   connecting: boolean
+  /** Last connect() failure reason, or null. UI surfaces this inline. */
+  connectError: string | null
   connect: () => Promise<void>
   disconnect: () => Promise<void>
   refreshBalance: () => Promise<void>
@@ -51,14 +53,50 @@ export function PhantomProvider({ children }: { children: React.ReactNode }) {
   const [publicKey, setPublicKey] = useState<string | null>(null)
   const [balance, setBalance] = useState<number | null>(null)
   const [connecting, setConnecting] = useState(false)
+  const [connectError, setConnectError] = useState<string | null>(null)
 
   const connection = useMemo(() => new Connection(RPC_URL, "confirmed"), [])
 
   useEffect(() => {
-    const check = () => setAvailable(!!getProvider())
+    // Phantom can inject `window.phantom.solana` either before our React mount
+    // (legacy timing) or asynchronously after hydration (production builds —
+    // we've seen this fail to detect with a single 500ms poll on www.peerza.ai
+    // while the same browser + extension works on localhost). Robust strategy:
+    //   1. Poll aggressively for the first ~3s, then slow down — covers both
+    //      pre-mount and post-mount injection without burning CPU forever.
+    //   2. Listen for Wallet Standard's "register-wallet" event — modern
+    //      Phantom dispatches this on init and re-dispatches on app-ready.
+    //   3. Dispatch "wallet-standard:app-ready" so wallets that initialised
+    //      before us re-announce themselves.
+    let interval: number | null = null
+    let slowInterval: number | null = null
+    let stopFast: number | null = null
+
+    const check = () => {
+      const present = !!getProvider()
+      setAvailable((prev) => (prev === present ? prev : present))
+    }
     check()
-    const t = setInterval(check, 500)
-    return () => clearInterval(t)
+
+    interval = window.setInterval(check, 100)
+    stopFast = window.setTimeout(() => {
+      if (interval) window.clearInterval(interval)
+      interval = null
+      slowInterval = window.setInterval(check, 1000)
+    }, 3000)
+
+    const onRegister = () => check()
+    window.addEventListener("wallet-standard:register-wallet", onRegister)
+    try {
+      window.dispatchEvent(new Event("wallet-standard:app-ready"))
+    } catch {}
+
+    return () => {
+      if (interval) window.clearInterval(interval)
+      if (slowInterval) window.clearInterval(slowInterval)
+      if (stopFast) window.clearTimeout(stopFast)
+      window.removeEventListener("wallet-standard:register-wallet", onRegister)
+    }
   }, [])
 
   useEffect(() => {
@@ -96,15 +134,38 @@ export function PhantomProvider({ children }: { children: React.ReactNode }) {
   }, [refreshBalance])
 
   const connect = useCallback(async () => {
-    const p = getProvider()
-    if (!p) {
-      window.open("https://phantom.app/", "_blank")
-      return
-    }
+    setConnectError(null)
     setConnecting(true)
     try {
+      // Phantom may still be injecting at click time (especially right after
+      // a hard reload on production). Give it up to ~2s to appear before
+      // surfacing an error. We don't auto-redirect to phantom.app anymore —
+      // that was confusing users who already had Phantom installed but
+      // hit a transient detection miss.
+      let p = getProvider()
+      if (!p) {
+        const start = Date.now()
+        while (!p && Date.now() - start < 2000) {
+          await new Promise((r) => setTimeout(r, 100))
+          p = getProvider()
+        }
+      }
+      if (!p) {
+        setConnectError(
+          "Phantom not detected in this browser. Make sure the extension is installed and enabled, then refresh the page."
+        )
+        return
+      }
       const res = await p.connect()
       setPublicKey(res.publicKey.toString())
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Connection failed"
+      // User rejected the popup — no need to alarm them.
+      if (/reject|user/i.test(msg)) {
+        setConnectError(null)
+      } else {
+        setConnectError(msg)
+      }
     } finally {
       setConnecting(false)
     }
@@ -124,6 +185,7 @@ export function PhantomProvider({ children }: { children: React.ReactNode }) {
     publicKey,
     balance,
     connecting,
+    connectError,
     connect,
     disconnect,
     refreshBalance,

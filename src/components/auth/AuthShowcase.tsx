@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { TrendingUp, Briefcase, Brain, Gamepad2, Users } from "lucide-react"
-import Logo, { LogoMark } from "@/components/brand/Logo"
+import LogoAnimated from "@/components/brand/LogoAnimated"
 import CountryFlag from "@/components/layout/CountryFlag"
 
 const HEADLINE_WORDS = [
@@ -53,10 +53,7 @@ export default function AuthShowcase() {
       <div className="relative flex-1 flex flex-col justify-between p-8 gap-5">
         {/* Logo + your country flag */}
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5 animate-[pz-rocket-bob_3.5s_ease-in-out_infinite]">
-            <LogoMark size={40} />
-            <Logo size="md" />
-          </div>
+          <LogoAnimated size={44} loop loopInterval={9000} />
           <CountryFlag />
         </div>
 
