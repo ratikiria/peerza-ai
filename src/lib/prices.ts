@@ -89,6 +89,27 @@ async function fetchCoinGecko(id: string): Promise<number | null> {
   }
 }
 
+// CoinGecko rate-limits or blocks requests from many cloud datacenter IPs
+// (Railway included — observed 2026-05-12, empty list returned in prod).
+// Yahoo Finance serves crypto pairs at /v8/finance/chart/BTC-USD reliably
+// from any IP, so we keep it as a fallback for the common cryptos.
+const CRYPTO_TO_YAHOO: Record<string, string> = {
+  bitcoin:      "BTC-USD",
+  ethereum:     "ETH-USD",
+  solana:       "SOL-USD",
+  binancecoin:  "BNB-USD",
+  cardano:      "ADA-USD",
+  ripple:       "XRP-USD",
+  dogecoin:     "DOGE-USD",
+  polkadot:     "DOT-USD",
+  "avalanche-2": "AVAX-USD",
+  chainlink:    "LINK-USD",
+  polygon:      "MATIC-USD",
+  litecoin:     "LTC-USD",
+  cosmos:       "ATOM-USD",
+  uniswap:      "UNI-USD",
+}
+
 /**
  * Fetch a single asset's current USD price for trade execution.
  *
@@ -100,7 +121,28 @@ async function fetchCoinGecko(id: string): Promise<number | null> {
  */
 export async function fetchAssetPrice(priceKey: string, assetType: string): Promise<number | null> {
   if (assetType === "crypto") {
-    return fetchCoinGecko(priceKey)
+    // Race CoinGecko + Yahoo crypto pair (e.g. BTC-USD). Whichever returns
+    // first with a valid price wins. Falls through fast when CoinGecko is
+    // rate-limited from a cloud IP.
+    const yahooSym = CRYPTO_TO_YAHOO[priceKey.toLowerCase()]
+    return new Promise((resolve) => {
+      let settled = false
+      let pending = yahooSym ? 2 : 1
+      function maybeFinish(value: number | null) {
+        if (settled) return
+        if (value != null) {
+          settled = true
+          resolve(value)
+          return
+        }
+        pending -= 1
+        if (pending === 0) resolve(null)
+      }
+      fetchCoinGecko(priceKey).then(maybeFinish, () => maybeFinish(null))
+      if (yahooSym) {
+        fetchYahoo(yahooSym).then(maybeFinish, () => maybeFinish(null))
+      }
+    })
   }
   const yahooSym = stooqToYahoo(priceKey)
   return new Promise((resolve) => {

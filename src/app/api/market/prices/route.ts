@@ -204,6 +204,38 @@ export async function GET(req: Request) {
   const stooqIds  = stooqParam.split(",").filter(Boolean)
   const expectedTotal = cryptoIds.length + stooqIds.length
 
+  // CoinGecko returns empty from many cloud datacenter IPs (Railway included —
+  // observed 2026-05-12). When that happens, fall back to Yahoo's crypto pairs
+  // (e.g. BTC-USD) which serve reliably from any IP.
+  const CRYPTO_TO_YAHOO: Record<string, string> = {
+    bitcoin:       "BTC-USD",
+    ethereum:      "ETH-USD",
+    solana:        "SOL-USD",
+    binancecoin:   "BNB-USD",
+    cardano:       "ADA-USD",
+    ripple:        "XRP-USD",
+    dogecoin:      "DOGE-USD",
+    polkadot:      "DOT-USD",
+    "avalanche-2": "AVAX-USD",
+    chainlink:     "LINK-USD",
+    polygon:       "MATIC-USD",
+    litecoin:      "LTC-USD",
+    cosmos:        "ATOM-USD",
+    uniswap:       "UNI-USD",
+  }
+  const CRYPTO_SYMBOL: Record<string, string> = {
+    bitcoin: "BTC", ethereum: "ETH", solana: "SOL", binancecoin: "BNB",
+    cardano: "ADA", ripple: "XRP", dogecoin: "DOGE", polkadot: "DOT",
+    "avalanche-2": "AVAX", chainlink: "LINK", polygon: "MATIC",
+    litecoin: "LTC", cosmos: "ATOM", uniswap: "UNI",
+  }
+  const CRYPTO_NAME: Record<string, string> = {
+    bitcoin: "Bitcoin", ethereum: "Ethereum", solana: "Solana", binancecoin: "BNB",
+    cardano: "Cardano", ripple: "XRP", dogecoin: "Dogecoin", polkadot: "Polkadot",
+    "avalanche-2": "Avalanche", chainlink: "Chainlink", polygon: "Polygon",
+    litecoin: "Litecoin", cosmos: "Cosmos", uniswap: "Uniswap",
+  }
+
   await Promise.allSettled([
     // CoinGecko for crypto (already in USD)
     cryptoIds.length > 0 && fetch(
@@ -249,6 +281,37 @@ export async function GET(req: Request) {
       })
     }),
   ])
+
+  // Yahoo fallback for any crypto id CoinGecko didn't return (rate-limited /
+  // blocked / empty). Without this, the trade form's BUY button stays
+  // disabled for crypto on hosts where CoinGecko is unreachable.
+  const gotCryptoIds = new Set(
+    prices.filter((p) => cryptoIds.includes(p.id)).map((p) => p.id),
+  )
+  const missingCrypto = cryptoIds.filter((id) => !gotCryptoIds.has(id))
+  if (missingCrypto.length > 0) {
+    await Promise.allSettled(
+      missingCrypto.map(async (id) => {
+        const yahooSym = CRYPTO_TO_YAHOO[id.toLowerCase()]
+        if (!yahooSym) return
+        const r = await fetchYahoo(yahooSym)
+        if (!r) return
+        const change = r.open !== 0
+          ? parseFloat((((r.close - r.open) / r.open) * 100).toFixed(2))
+          : 0
+        prices.push({
+          id,
+          symbol: CRYPTO_SYMBOL[id] ?? id.slice(0, 5).toUpperCase(),
+          name:   CRYPTO_NAME[id]   ?? (id.charAt(0).toUpperCase() + id.slice(1)),
+          price: r.close,
+          change,
+          up: change >= 0,
+          currency: "USD",
+          usdPrice: r.close,
+        })
+      }),
+    )
+  }
 
   // Only cache if every requested asset returned data — otherwise the next
   // poll will retry and pick up whatever was timing out / cold.
