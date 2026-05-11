@@ -11,7 +11,7 @@ const db = new PrismaClient({ adapter })
 const EXTRA_USERS = [
   { name: "Mike Reynolds",  username: "mike_swing",   email: "mike@finsocial.dev",   bio: "Swing trader, 5-day holds. Tech and energy plays.",                interests: ["Stocks"] },
   { name: "Lisa Park",      username: "lisa_options", email: "lisa@finsocial.dev",   bio: "Options strategist | iron condors and credit spreads only.",       interests: ["Options"] },
-  { name: "James Wu",       username: "james_crypto", email: "james@finsocial.dev",  bio: "Crypto maxi since 2017. BTC + select alts only.",                  interests: ["Crypto"] },
+  { name: "James Wu",       username: "james_crypto", email: "jameswu@finsocial.dev",  bio: "Crypto maxi since 2017. BTC + select alts only.",                interests: ["Crypto"] },
   { name: "Anna Kowalski",  username: "anna_value",   email: "anna@finsocial.dev",   bio: "Value investor. Cheap stocks with strong balance sheets.",         interests: ["Stocks"] },
   { name: "Raj Patel",      username: "raj_gold",     email: "raj@finsocial.dev",    bio: "Gold bug + commodity rotation. Hedging the dollar.",               interests: ["Commodities"] },
   { name: "Taylor Brooks",  username: "taylor_etf",   email: "taylor@finsocial.dev", bio: "Boring ETF investor — 3-fund portfolio, dollar-cost averaging.",   interests: ["ETFs"] },
@@ -75,11 +75,16 @@ async function main() {
     await ensureUser(u)
   }
 
-  // Step 2: pick 20 demo users to participate (the 10 from seed-demo + 10 extras here)
-  // We'll just pull all users with @finsocial.dev emails (excludes the main user @rati)
+  // Step 2: pick exactly the 20 demo users by username — the 10 from
+  // seed-demo.js plus the 10 EXTRA_USERS above. Email-suffix matching used to
+  // miss Alex Chen (`human@peerza.ai`) because his email isn't on @finsocial.dev.
+  const DEMO_USERNAMES = [
+    "human", "sarah_stocks", "marcus_trades", "emma_defi", "dparkfinance",
+    "olivia_quant", "jrodriguez_fx", "sofia_macro", "ryan_theta", "priya_invest",
+    ...EXTRA_USERS.map((u) => u.username),
+  ]
   const demoUsers = await db.user.findMany({
-    where: { email: { endsWith: "@finsocial.dev" }, NOT: { username: "rati123" } },
-    take: 20,
+    where: { username: { in: DEMO_USERNAMES } },
   })
 
   if (demoUsers.length < 10) {
@@ -88,13 +93,14 @@ async function main() {
   }
   console.log(`   ✓ ${demoUsers.length} demo users available`)
 
-  // Step 3: include the main user too
-  const mainUser = await db.user.findUnique({ where: { username: "rati123" } })
-  const allParticipants = mainUser ? [mainUser, ...demoUsers] : demoUsers
+  // Step 3: main user owns the challenge but does NOT participate — they have
+  // their own /portfolio for their real activity. Participants stay at 20.
+  const mainUser = await db.user.findUnique({ where: { username: "ratikiria" } })
+  const allParticipants = demoUsers
 
   // Step 4: get-or-create the demo challenge
   let challenge = await db.challenge.findFirst({
-    where: { name: CHALLENGE_NAME, creatorId: mainUser?.id ?? demoUsers[0].id },
+    where: { name: CHALLENGE_NAME },
   })
   if (challenge) {
     console.log(`\n🗑️  Resetting existing challenge "${CHALLENGE_NAME}"...`)
