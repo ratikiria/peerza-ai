@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
-import Logo, { LogoMark } from "@/components/brand/Logo"
 import LogoAnimated from "@/components/brand/LogoAnimated"
 import {
   ArrowRight,
@@ -81,8 +80,7 @@ function Nav() {
     <nav className="sticky top-0 z-30 backdrop-blur-xl border-b" style={{ background: "rgba(15,17,23,0.6)", borderColor: "rgba(255,255,255,0.06)" }}>
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <LogoMark size={32} />
-          <Logo size="md" />
+          <LogoAnimated size={32} loop loopInterval={9000} />
         </Link>
         <div className="flex items-center gap-2">
           <Link
@@ -389,8 +387,7 @@ function Footer() {
     <footer className="border-t mt-12" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
       <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-5">
         <div className="flex items-center gap-2.5">
-          <LogoMark size={28} />
-          <Logo size="sm" />
+          <LogoAnimated size={28} />
         </div>
         <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
           Peerza.ai © 2026 · Built for everyone curious about markets.
