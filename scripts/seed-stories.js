@@ -31,7 +31,7 @@ function makeStoryImage(bgFrom, bgTo, emoji, line1, line2) {
 // oldest→newest so list them in posting order.
 const STORY_QUEUES = [
   {
-    username: "alexchen_fx",
+    username: "human",
     stories: [
       { hoursAgo: 9, mediaUrl: makeStoryImage("#0f2027", "#2c5364", "📈", "EUR/USD Setup", "Key support at 1.0820"), caption: "Watching this level closely today 👀" },
       { hoursAgo: 5, mediaUrl: makeStoryImage("#0f2027", "#3a8dde", "🎯", "Entry Triggered", "Long from 1.0825"), caption: "In on the bounce — stop at 1.0790" },
