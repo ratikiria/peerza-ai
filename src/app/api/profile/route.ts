@@ -49,7 +49,19 @@ export async function PATCH(req: Request) {
   const body = await req.json()
   const parsed = profileSchema.safeParse(body)
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid data", details: parsed.error.flatten() }, { status: 400 })
+    // Build a human-readable error so the form can tell the user which field
+    // is too big / wrong, not just "Invalid data". Cover image hitting the
+    // size cap has been a real-world failure mode.
+    const issue = parsed.error.issues[0]
+    const path = issue?.path?.join(".") || "field"
+    const friendly: Record<string, string> = {
+      coverImage: "Cover photo is too large after compression. Try a smaller or simpler image.",
+      image: "Profile photo is too large after compression. Try a smaller image.",
+      name: "Display name is required (max 60 characters).",
+      bio: "Bio is too long (max 200 characters).",
+    }
+    const message = friendly[path] || `Invalid ${path}: ${issue?.message ?? "validation failed"}`
+    return NextResponse.json({ error: message, details: parsed.error.flatten() }, { status: 400 })
   }
 
   const { name, bio, image, coverImage, interests, showTrackRecord, hideFollowList, country, links } = parsed.data

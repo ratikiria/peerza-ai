@@ -27,14 +27,28 @@ async function resizeCover(file: File): Promise<string> {
     reader.onload = (e) => {
       const img = new Image()
       img.onload = () => {
+        // Cap BOTH dimensions so tall portrait photos (iPhone, 3024x4032 etc)
+        // don't slip through as 1600x2133 base64 strings that blow past the
+        // 2 MB API limit. 16:9-ish cover keeps proportions and stays small.
         const MAX_W = 1600
-        const ratio = Math.min(MAX_W / img.width, 1)
+        const MAX_H = 900
+        const ratio = Math.min(MAX_W / img.width, MAX_H / img.height, 1)
         const w = Math.round(img.width * ratio)
         const h = Math.round(img.height * ratio)
         const canvas = document.createElement("canvas")
         canvas.width = w; canvas.height = h
         canvas.getContext("2d")!.drawImage(img, 0, 0, w, h)
-        resolve(canvas.toDataURL("image/jpeg", 0.85))
+        // Iterative quality drop — keep the base64 string under ~1.6 MB so it
+        // sails comfortably below the 2 MB server schema cap. Real photos with
+        // a lot of detail can still produce surprisingly fat JPEGs at 0.85.
+        const TARGET = 1_600_000
+        let quality = 0.82
+        let dataUrl = canvas.toDataURL("image/jpeg", quality)
+        while (dataUrl.length > TARGET && quality > 0.45) {
+          quality -= 0.1
+          dataUrl = canvas.toDataURL("image/jpeg", quality)
+        }
+        resolve(dataUrl)
       }
       img.onerror = reject
       img.src = e.target?.result as string
