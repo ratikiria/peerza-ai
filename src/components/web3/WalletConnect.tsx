@@ -33,21 +33,65 @@ export default function WalletConnect() {
     if (!publicKey) return
     setAirdropping(true)
     setAirdropMsg(null)
+
+    // Server relay first — uses Railway's IP quota, which is a separate bucket
+    // from the user's home IP. Falls through to the web faucet UX if it fails.
     try {
-      const sig = await connection.requestAirdrop(new PublicKey(publicKey), 1_000_000_000)
-      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash()
-      await connection.confirmTransaction({ signature: sig, blockhash, lastValidBlockHeight }, "confirmed")
-      await refreshBalance()
-      setAirdropMsg({ type: "ok", text: "1 SOL airdropped to your wallet." })
+      const res = await fetch("/api/web3/airdrop", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recipient: publicKey }),
+      })
+      const data = await res.json().catch(() => ({}))
+
+      if (res.ok && data.signature) {
+        await refreshBalance()
+        setAirdropMsg({ type: "ok", text: `${data.amount ?? 1} SOL airdropped to your wallet.` })
+        return
+      }
+
+      // On 429 / rate-limit, copy the address and open the official faucet so
+      // the user can recover in one click instead of fumbling with the
+      // existing "QuickNode · Triangle · Official" links.
+      if (res.status === 429 || data.rateLimited) {
+        try { await navigator.clipboard.writeText(publicKey) } catch {}
+        window.open("https://faucet.solana.com/", "_blank", "noopener,noreferrer")
+        setAirdropMsg({
+          type: "err",
+          text: "Devnet RPC is busy. Address copied to clipboard — paste it on the faucet tab that just opened.",
+        })
+        return
+      }
+
+      throw new Error(data.error || `Airdrop failed (${res.status})`)
     } catch (e) {
-      const m = e instanceof Error ? e.message : "Airdrop failed"
-      const pretty = m.includes("429") || m.toLowerCase().includes("rate")
-        ? "RPC airdrop is rate-limited. Try one of the web faucets below, or wait a few minutes."
-        : m
-      setAirdropMsg({ type: "err", text: pretty })
+      // Last-resort fallback: try the original client-side RPC call. This is
+      // the same path the page used before; if the user has fresh quota on
+      // their home IP it can still succeed.
+      try {
+        const sig = await connection.requestAirdrop(new PublicKey(publicKey), 1_000_000_000)
+        const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash()
+        await connection.confirmTransaction({ signature: sig, blockhash, lastValidBlockHeight }, "confirmed")
+        await refreshBalance()
+        setAirdropMsg({ type: "ok", text: "1 SOL airdropped to your wallet." })
+        return
+      } catch (e2) {
+        const m = e2 instanceof Error ? e2.message : (e instanceof Error ? e.message : "Airdrop failed")
+        try { await navigator.clipboard.writeText(publicKey) } catch {}
+        const rate = /429|rate|too many/i.test(m)
+        if (rate) {
+          window.open("https://faucet.solana.com/", "_blank", "noopener,noreferrer")
+        }
+        setAirdropMsg({
+          type: "err",
+          text: rate
+            ? "Devnet RPC is busy. Address copied — paste it on the faucet tab that just opened."
+            : m,
+        })
+      }
     } finally {
       setAirdropping(false)
-      setTimeout(() => setAirdropMsg(null), 6000)
+      setTimeout(() => setAirdropMsg(null), 8000)
     }
   }
 
