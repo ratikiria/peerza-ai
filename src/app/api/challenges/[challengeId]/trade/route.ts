@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { fetchAssetPrice } from "@/lib/prices";
 
 export async function POST(
   req: NextRequest,
@@ -31,25 +32,15 @@ export async function POST(
   });
   if (!participant) return NextResponse.json({ error: "Not a participant" }, { status: 403 });
 
-  // Fetch current price
-  const baseUrl = req.nextUrl.origin;
-  let price: number;
-  try {
-    const priceParam =
-      assetType === "crypto"
-        ? `?crypto=${encodeURIComponent(priceKey)}`
-        : `?stooq=${encodeURIComponent(priceKey)}`;
-    const priceRes = await fetch(`${baseUrl}/api/market/prices${priceParam}`, {
-      headers: { cookie: req.headers.get("cookie") || "" },
-    });
-    const priceData = await priceRes.json();
-    // API returns array of { id, symbol, name, price, ... }
-    const list: { id: string; price: number }[] = Array.isArray(priceData) ? priceData : [];
-    const entry = list.find((e) => e.id === priceKey) ?? list[0];
-    if (!entry?.price) throw new Error("No price");
-    price = entry.price;
-  } catch {
-    return NextResponse.json({ error: "Could not fetch current price" }, { status: 502 });
+  // Fetch current price directly from the upstream providers — no HTTP
+  // self-loop through /api/market/prices, which adds latency and an extra
+  // failure mode (TLS / proxy / loopback) without giving us anything in return.
+  const price = await fetchAssetPrice(priceKey, assetType);
+  if (price == null) {
+    return NextResponse.json(
+      { error: "Could not fetch current price. Try again in a moment." },
+      { status: 502 },
+    );
   }
 
   const total = price * quantity;
