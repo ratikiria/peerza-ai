@@ -55,7 +55,7 @@ export default function WalletConnect() {
       // existing "QuickNode · Triangle · Official" links.
       if (res.status === 429 || data.rateLimited) {
         try { await navigator.clipboard.writeText(publicKey) } catch {}
-        window.open("https://faucet.solana.com/", "_blank", "noopener,noreferrer")
+        window.open("https://faucet.quicknode.com/solana/devnet", "_blank", "noopener,noreferrer")
         setAirdropMsg({
           type: "err",
           text: "Devnet RPC is busy. Address copied to clipboard — paste it on the faucet tab that just opened.",
@@ -80,7 +80,7 @@ export default function WalletConnect() {
         try { await navigator.clipboard.writeText(publicKey) } catch {}
         const rate = /429|rate|too many/i.test(m)
         if (rate) {
-          window.open("https://faucet.solana.com/", "_blank", "noopener,noreferrer")
+          window.open("https://faucet.quicknode.com/solana/devnet", "_blank", "noopener,noreferrer")
         }
         setAirdropMsg({
           type: "err",
