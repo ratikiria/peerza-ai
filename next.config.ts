@@ -150,6 +150,16 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  // Hidden pitch deck — clean URL /pitch-deck serves the static public file.
+  // No nav link points here; reachable by direct link only (noindex set in the file).
+  async rewrites() {
+    return [
+      {
+        source: "/pitch-deck",
+        destination: "/pitch-deck.html",
+      },
+    ]
+  },
 };
 
 export default withSentryConfig(withNextIntl(nextConfig), {

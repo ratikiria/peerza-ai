@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Peerza.ai — Solana Colosseum · All-Stars Track</title>
+<style>
+  :root {
+    --bg: #050507;
+    --bg-2: #0b0b12;
+    --card: rgba(255,255,255,0.04);
+    --card-strong: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.14);
+    --text: #ffffff;
+    --text-dim: #a1a1aa;
+    --text-soft: #d4d4d8;
+    --sol-purple: #9945FF;
+    --sol-green: #14F195;
+    --sol-blue: #19FB9B;
+    --warn: #fbbf24;
+    --rose: #f43f5e;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck { position: relative; height: 100vh; width: 100vw; }
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    padding: 5.5vh 6.5vw;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(153,69,255,0.14) 0%, transparent 45%),
+      radial-gradient(circle at 88% 92%, rgba(20,241,149,0.10) 0%, transparent 50%),
+      linear-gradient(165deg, #060611 0%, var(--bg) 50%, #08120d 100%);
+  }
+  .slide.active { display: flex; flex-direction: column; justify-content: center; }
+  .slide::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--sol-purple) 0%, var(--sol-green) 100%);
+    opacity: 0.7;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.3rem;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .eyebrow .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--sol-green);
+    box-shadow: 0 0 12px var(--sol-green);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  h1 {
+    font-size: clamp(2.6rem, 6vw, 5.6rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin: 0 0 1.3rem 0;
+  }
+  h2 {
+    font-size: clamp(1.85rem, 4.2vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    margin: 0 0 1.1rem 0;
+  }
+  h3 {
+    font-size: clamp(1.05rem, 1.9vw, 1.45rem);
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .lead {
+    font-size: clamp(1rem, 1.55vw, 1.35rem);
+    color: var(--text-soft);
+    max-width: 66ch;
+    line-height: 1.55;
+    margin: 0 0 1.3rem 0;
+  }
+  .sub {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    max-width: 65ch;
+  }
+  .gradient-text {
+    background: linear-gradient(95deg, var(--sol-purple) 0%, var(--sol-green) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .purple { color: var(--sol-purple); }
+  .green { color: var(--sol-green); }
+  .warn { color: var(--warn); }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+  }
+  .hero .brand {
+    display: flex; align-items: center; gap: 0.9rem;
+    margin-bottom: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    font-size: 1.15rem;
+  }
+  .brand-mark {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    display: grid; place-items: center;
+    color: #050507;
+    font-weight: 900;
+    font-size: 1.15rem;
+  }
+  .meta-row {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    margin-top: 1.6rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+  .meta-row .chip {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.4rem 0.85rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-soft);
+  }
+  .meta-row .chip .marker {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sol-green);
+    box-shadow: 0 0 10px var(--sol-green);
+  }
+
+  /* Grids */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 1.2rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.2rem; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 1.2rem; }
+  .grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.2rem; }
+  @media (min-width: 1400px) {
+    .grid-6 { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.3rem;
+    transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--border-strong); background: var(--card-strong); }
+  .card .num {
+    font-weight: 900;
+    font-size: 0.9rem;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+  }
+  .card p {
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .card.purple-edge { border-left: 3px solid var(--sol-purple); }
+  .card.green-edge { border-left: 3px solid var(--sol-green); }
+
+  /* Product walkthrough surface cards */
+  .surface-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .surface-card:hover { border-color: var(--border-strong); background: var(--card-strong); transform: translateY(-2px); }
+  .surface-card .tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 800;
+    color: var(--sol-green);
+    margin-bottom: 0.2rem;
+  }
+  .surface-card .title {
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+  .surface-card .features {
+    color: var(--text-dim);
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+  .surface-card .live {
+    margin-top: auto;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--sol-green);
+    font-weight: 700;
+    padding-top: 0.5rem;
+  }
+
+  /* Problem vs */
+  .vs-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.3rem;
+    margin-top: 1.1rem;
+  }
+  .vs-col {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.3rem 1.5rem;
+  }
+  .vs-col.bad { border-color: rgba(244,63,94,0.25); }
+  .vs-col.good { border-color: rgba(20,241,149,0.25); }
+  .vs-col h3 {
+    margin-bottom: 0.9rem;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+  }
+  .vs-col.bad h3 { color: var(--rose); }
+  .vs-col.good h3 { color: var(--sol-green); }
+  .vs-col ul { list-style: none; padding: 0; margin: 0; }
+  .vs-col li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.95rem;
+    color: var(--text-soft);
+    display: flex; align-items: baseline; gap: 0.7rem;
+  }
+  .vs-col li:last-child { border-bottom: none; }
+  .vs-col.bad li::before { content: "✕"; color: var(--rose); font-size: 0.85rem; }
+  .vs-col.good li::before { content: "✓"; color: var(--sol-green); font-size: 0.85rem; }
+
+  .callout {
+    margin-top: 1.2rem;
+    padding: 0.95rem 1.2rem;
+    background: linear-gradient(95deg, rgba(153,69,255,0.08), rgba(20,241,149,0.05));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--text-soft);
+  }
+  .callout strong { color: var(--text); }
+
+  /* Pillars */
+  .pillars {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.1rem;
+  }
+  .pillar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem;
+    position: relative;
+  }
+  .pillar .icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(153,69,255,0.2), rgba(20,241,149,0.2));
+    border: 1px solid var(--border);
+    display: grid; place-items: center;
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .pillar h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+  .pillar p { color: var(--text-dim); font-size: 0.84rem; line-height: 1.5; margin: 0; }
+  .pillar .role {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--sol-green);
+    margin-top: 0.7rem;
+    font-weight: 700;
+  }
+
+  /* Status / proof */
+  .status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.1rem;
+  }
+  .status-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.2rem 1.3rem;
+  }
+  .status-card .label {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 0.65rem;
+  }
+  .status-card.live .label { color: var(--sol-green); }
+  .status-card.devnet .label { color: var(--sol-purple); }
+  .status-card.honest .label { color: var(--warn); }
+  .status-card ul { list-style: none; padding: 0; margin: 0; }
+  .status-card li {
+    padding: 0.35rem 0;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .status-card li:last-child { border-bottom: none; }
+  .status-card li strong { color: var(--text); }
+
+  /* Why Solana reasons */
+  .reasons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 1.1rem;
+  }
+  .reason {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.3rem 1.4rem;
+    position: relative;
+  }
+  .reason .badge {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.4rem;
+  }
+  .reason h3 { font-size: 1.12rem; margin-bottom: 0.45rem; }
+  .reason p { font-size: 0.88rem; line-height: 1.55; color: var(--text-dim); margin: 0; }
+
+  /* Reputation primitive flow */
+  .flow-row {
+    display: grid;
+    grid-template-columns: 1fr 0.4fr 1fr 0.4fr 1fr;
+    gap: 0.8rem;
+    align-items: stretch;
+    margin-top: 1.2rem;
+  }
+  .flow-node {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .flow-node.inputs { border-color: rgba(20,241,149,0.25); }
+  .flow-node.compute { border-color: rgba(153,69,255,0.3); background: rgba(153,69,255,0.05); }
+  .flow-node.reads { border-color: rgba(20,241,149,0.25); }
+  .flow-node .stage {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .flow-node.inputs .stage { color: var(--sol-green); }
+  .flow-node.compute .stage { color: var(--sol-purple); }
+  .flow-node.reads .stage { color: var(--sol-green); }
+  .flow-node h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+  .flow-node ul { list-style: none; padding: 0; margin: 0; }
+  .flow-node li {
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    line-height: 1.45;
+    padding: 0.25rem 0;
+  }
+  .flow-node li::before { content: "·"; margin-right: 0.4rem; color: var(--text-dim); }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    background: linear-gradient(95deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 900;
+  }
+
+  /* Audience */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 1rem;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.2rem 1.3rem;
+  }
+  .stat .num {
+    font-size: clamp(1.8rem, 3.6vw, 3rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.025em;
+  }
+  .stat .lbl {
+    margin-top: 0.45rem;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+  .stat .src {
+    margin-top: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+  .geo-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+    margin-top: 1.1rem;
+  }
+  .geo {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+  }
+  .geo .flag {
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+  .geo .name {
+    font-weight: 800;
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+  .geo .lang {
+    font-size: 0.75rem;
+    color: var(--sol-green);
+    letter-spacing: 0.06em;
+    font-weight: 700;
+  }
+  .geo .note {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+    line-height: 1.4;
+  }
+
+  /* Roadmap */
+  .roadmap-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.8rem;
+  }
+  .phase {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    position: relative;
+  }
+  .phase.now { border-left: 3px solid var(--sol-green); }
+  .phase.next { border-left: 3px solid var(--sol-purple); background: rgba(153,69,255,0.04); }
+  .phase.future { border-left: 3px solid var(--warn); }
+  .phase .ph {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+  }
+  .phase.now .ph { color: var(--sol-green); }
+  .phase.next .ph { color: var(--sol-purple); }
+  .phase.future .ph { color: var(--warn); }
+  .phase .when {
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    margin-bottom: 0.55rem;
+  }
+  .phase ul { list-style: none; padding: 0; margin: 0; }
+  .phase li {
+    padding: 0.25rem 0;
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    line-height: 1.4;
+  }
+  .phase li::before { content: "→ "; color: var(--text-dim); }
+
+  /* Partnership ask card (money-free) */
+  .ask-card {
+    margin-top: 1.1rem;
+    padding: 1.2rem 1.4rem;
+    background:
+      linear-gradient(135deg, rgba(153,69,255,0.10) 0%, rgba(20,241,149,0.06) 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+  }
+  .ask-card h3 {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.8rem;
+    background: linear-gradient(95deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .ask-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 0.6rem;
+  }
+  .ask-cell {
+    border-left: 2px solid rgba(255,255,255,0.08);
+    padding-left: 0.7rem;
+  }
+  .ask-cell .lbl {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.66rem;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+  }
+  .ask-cell .val {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .ask-card .use {
+    margin-top: 0.3rem;
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+  .ask-card .use strong { color: var(--text-soft); }
+
+  /* Founder slide */
+  .founder-hero {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin-top: 0.4rem;
+  }
+  .founder-portrait {
+    width: 280px;
+    height: 340px;
+    border-radius: 20px;
+    background-image: url('founder.jpg');
+    background-size: cover;
+    background-position: center 18%;
+    border: 1px solid var(--border-strong);
+    box-shadow:
+      0 0 0 1px rgba(153,69,255,0.18),
+      0 14px 60px -8px rgba(20,241,149,0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .founder-portrait::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(5,5,7,0.65) 100%);
+    pointer-events: none;
+  }
+  .founder-portrait .ribbon {
+    position: absolute;
+    bottom: 0.8rem; left: 0.8rem; right: 0.8rem;
+    background: rgba(5,5,7,0.78);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(20,241,149,0.35);
+    border-radius: 8px;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.68rem;
+    color: var(--sol-green);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 800;
+    text-align: center;
+    z-index: 2;
+  }
+  .founder-meta { display: flex; flex-direction: column; gap: 0.5rem; }
+  .founder-meta .name {
+    font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+  }
+  .founder-meta .role {
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    line-height: 1.45;
+    margin: 0.3rem 0 0.6rem;
+    max-width: 50ch;
+  }
+  .founder-meta .chips {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 0.2rem;
+  }
+  .founder-meta .chips .chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .founder-meta .chips .chip.green { border-color: rgba(20,241,149,0.3); color: var(--sol-green); }
+  .founder-meta .chips .chip.purple { border-color: rgba(153,69,255,0.3); color: var(--sol-purple); }
+
+  .founder-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .trio-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+  }
+  .trio-card .role {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 800;
+    color: var(--sol-green);
+    margin-bottom: 0.4rem;
+  }
+  .trio-card h3 { font-size: 0.98rem; margin-bottom: 0.35rem; }
+  .trio-card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; margin: 0; }
+
+  /* Contact */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+    margin-top: 1.4rem;
+  }
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+  }
+  .contact-card .lbl {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    margin-bottom: 0.35rem;
+  }
+  .contact-card .val { font-size: 0.9rem; color: var(--text); font-weight: 600; }
+  .contact-card a { color: var(--sol-green); text-decoration: none; }
+  .contact-card a:hover { text-decoration: underline; }
+
+  .tbd-marker {
+    background: rgba(251,191,36,0.12);
+    color: var(--warn);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.85em;
+    letter-spacing: 0.02em;
+  }
+
+  /* Chrome */
+  .chrome {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 50;
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+  }
+  .arrows {
+    position: fixed; bottom: 1.5rem; right: 1.6rem;
+    z-index: 50; display: flex; gap: 0.4rem;
+  }
+  .arrows button {
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .arrows button:hover { border-color: var(--sol-green); color: var(--sol-green); }
+  .hint {
+    position: fixed; bottom: 1.5rem; left: 1.6rem;
+    z-index: 50;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+  }
+  .notes {
+    position: fixed;
+    bottom: 4.8rem; right: 1.6rem;
+    width: 380px; max-width: 92vw;
+    max-height: 60vh;
+    background: rgba(8,8,15,0.92);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    z-index: 60;
+    display: none;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--text-soft);
+  }
+  .notes.show { display: block; }
+  .notes h4 {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--sol-green);
+    margin: 0 0 0.6rem 0;
+  }
+  .notes .obj {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+  .notes .obj strong { color: var(--warn); }
+
+  @media print {
+    @page { size: 1280px 720px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: var(--bg); }
+    .deck { height: auto; }
+    .slide {
+      display: flex !important;
+      position: relative;
+      width: 1280px; height: 720px;
+      page-break-after: always;
+      break-after: page;
+    }
+    .chrome, .arrows, .hint, .notes { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- 1. TITLE -->
+  <section class="slide">
+    <div class="hero">
+      <div class="brand">
+        <div class="brand-mark">P</div>
+        <span>Peerza.ai</span>
+      </div>
+      <div class="eyebrow"><span class="dot"></span>Solana Colosseum · All-Stars Track</div>
+      <h1>On-chain reputation, <span class="gradient-text">finally.</span></h1>
+      <p class="lead">
+        Peerza is the consumer Solana app where every trade, lesson, and duel becomes a portable on-chain identity.
+        Built by an international trading champion, embedded in the community, shipped end-to-end by one founder.
+      </p>
+      <div class="meta-row">
+        <span class="chip"><span class="marker"></span>Live · peerza.ai</span>
+        <span class="chip"><span class="marker"></span>Devnet on-chain today</span>
+        <span class="chip"><span class="marker"></span>Built by 2023 UAE Trading Champion</span>
+        <span class="chip"><span class="marker"></span>4 pillars · 4 languages</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. THE SHIFT -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Shift</div>
+    <h2>Two waves are <span class="gradient-text">colliding right now.</span></h2>
+    <p class="lead">
+      The consumer Solana window opened in 2024. The retail-trading explosion never closed.
+      Nobody has built the social layer that fits both.
+    </p>
+
+    <div class="grid-3">
+      <div class="card purple-edge">
+        <div class="num">01 · Solana, for normal people</div>
+        <h3>Consumer Solana arrived.</h3>
+        <p>Phantom, Jupiter, Backpack proved retail can use Solana without knowing it's Solana. Sub-cent fees, mobile-first, real UX. The chain isn't the product anymore.</p>
+      </div>
+      <div class="card purple-edge">
+        <div class="num">02 · Self-directed traders, everywhere</div>
+        <h3>Retail trading exploded.</h3>
+        <p>Robinhood, Webull, meme coins, prop firms. A generation that grew up trading their own money — and learning how on Twitter, YouTube, and Discord.</p>
+      </div>
+      <div class="card green-edge">
+        <div class="num">03 · And the school broke</div>
+        <h3>Twitter is not a school.</h3>
+        <p>Algorithm churn. Course-sellers. No track record. No feedback loop. Every retail trader is rebuilding a learning stack from scratch, alone.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The window is now.</strong> The consumer-Solana audience is here, the trader pain is acute, and the social layer doesn't exist yet.
+      Phantom defined wallets. Jupiter defined aggregation. The social + reputation layer is the next slot — and it's still empty.
+    </div>
+  </section>
+
+  <!-- 3. THE PROBLEM -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Enemy</div>
+    <h2>Trading is taught by the <span class="warn">worst possible system.</span></h2>
+    <p class="lead">
+      Every retail trader rebuilds the same four pieces from scratch, on platforms that weren't designed for them, with no reputation that carries between any of them.
+    </p>
+
+    <div class="vs-row">
+      <div class="vs-col bad">
+        <h3>What exists today</h3>
+        <ul>
+          <li>Twitter — noise, scammers, no proof of skill</li>
+          <li>Stocktwits — abandoned, no community pulse</li>
+          <li>Discord — fragmented, ephemeral, paid-gated</li>
+          <li>YouTube — entertainment, no feedback loop</li>
+          <li>Brokerages — execution only, zero learning</li>
+        </ul>
+      </div>
+      <div class="vs-col good">
+        <h3>What traders actually need</h3>
+        <ul>
+          <li>Provable performance — who's actually right?</li>
+          <li>Real practice — without losing real money</li>
+          <li>Structured learning — not 60-min ramblings</li>
+          <li>Portable reputation — that follows you everywhere</li>
+          <li>A community that shows trades, not just opinions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>No platform integrates these.</strong> No reputation layer survives between them.
+      A trader can be a top-1% performer on a simulator and a nobody when they walk into a Discord.
+      The reputation primitive doesn't exist yet — and it has to live on-chain to be real.
+    </div>
+  </section>
+
+  <!-- 4. THE SOLUTION -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Tool</div>
+    <h2>Four pillars. <span class="gradient-text">One reputation graph.</span></h2>
+    <p class="lead">
+      Yes, four pillars. They're not features competing for attention — they're the four data streams that make on-chain trader reputation real.
+      Every action on every pillar becomes a data point. Every data point feeds the score. The score lives on Solana.
+    </p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="icon">◎</div>
+        <h3>Social</h3>
+        <p>Feed, posts, polls, stories, messenger, group chats, audio calls.</p>
+        <div class="role">→ The graph</div>
+      </div>
+      <div class="pillar">
+        <div class="icon">⌁</div>
+        <h3>Simulation</h3>
+        <p>Multi-asset trading, real prices, public + private challenges, leaderboards.</p>
+        <div class="role">→ The performance</div>
+      </div>
+      <div class="pillar">
+        <div class="icon">✦</div>
+        <h3>AI Tutor</h3>
+        <p>Q&A + structured learning paths. Free tier + Pro tier ($10/mo).</p>
+        <div class="role">→ The knowledge</div>
+      </div>
+      <div class="pillar">
+        <div class="icon">◈</div>
+        <h3>Games &amp; Duels</h3>
+        <p>Async head-to-head skill tests. Same scenario, same seed, different player.</p>
+        <div class="role">→ The proof</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>This is why &ldquo;are you doing too much?&rdquo; is the wrong question.</strong>
+      Without all four, you have noise, not a reputation primitive.
+      Twitter knows who posts. Robinhood knows who trades. Duolingo knows who learns. None of them know all three about the same person.
+      Peerza does — and writes the score to Solana so other apps can read it.
+    </div>
+  </section>
+
+  <!-- 5. PRODUCT WALKTHROUGH -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Product</div>
+    <h2>What you actually see <span class="gradient-text">when you log in.</span></h2>
+    <p class="lead">
+      Not wireframes. Not promises. Every surface below is in production at peerza.ai today — in four languages, on web and PWA, with Stripe-backed subscriptions and real on-chain transactions.
+    </p>
+
+    <div class="grid-6">
+      <div class="surface-card">
+        <div class="tag">Social</div>
+        <div class="title">Feed &amp; Profiles</div>
+        <div class="features">Posts, polls, stories, comments, edits, shares, follows · followers/following modal · cover photos · bio · privacy controls.</div>
+        <div class="live">Live</div>
+      </div>
+      <div class="surface-card">
+        <div class="tag">Messenger</div>
+        <div class="title">DMs &amp; Group Chats</div>
+        <div class="features">1:1 + group chats, voice messages, audio calls (WebRTC), notifications, edit messages, read receipts.</div>
+        <div class="live">Live</div>
+      </div>
+      <div class="surface-card">
+        <div class="tag">Workspace</div>
+        <div class="title">Charts &amp; Watchlist</div>
+        <div class="features">Embedded TradingView Advanced Charts, symbol search, watchlist, ticker-filtered community feed.</div>
+        <div class="live">Live</div>
+      </div>
+      <div class="surface-card">
+        <div class="tag">Simulation</div>
+        <div class="title">Trading Challenges</div>
+        <div class="features">Multi-asset, real prices, public/private/password challenges, live leaderboards · &ldquo;Q4 Trading Showdown&rdquo; live with 20 traders.</div>
+        <div class="live">Live</div>
+      </div>
+      <div class="surface-card">
+        <div class="tag">Portfolio</div>
+        <div class="title">Real Portfolio</div>
+        <div class="features">Holdings tile-grid, transaction timeline, 4 allocation analyses, sector + industry map, deterministic returns.</div>
+        <div class="live">Live</div>
+      </div>
+      <div class="surface-card">
+        <div class="tag">Tutor</div>
+        <div class="title">AI Financial Tutor</div>
+        <div class="features">Q&amp;A free tier · Pro tier with memory + structured paths · dictionary in 5 languages · Stripe-backed $10/mo.</div>
+        <div class="live">Live</div>
+      </div>
+      <div class="surface-card">
+        <div class="tag">Games</div>
+        <div class="title">Games &amp; Duels</div>
+        <div class="features">Guess the Direction, Build the Portfolio, Read the Tape · async multiplayer duels · seeded RNG so duelists see the same scenario.</div>
+        <div class="live">Live</div>
+      </div>
+      <div class="surface-card">
+        <div class="tag">Web3</div>
+        <div class="title">/web3 Layer</div>
+        <div class="features">Phantom connect, real memo achievement mints, real SOL micro-tipping, server-relayed devnet airdrop, prediction league UI.</div>
+        <div class="live">Live · Devnet</div>
+      </div>
+      <div class="surface-card">
+        <div class="tag">Tools</div>
+        <div class="title">Calendar · Currency · Stories</div>
+        <div class="features">Economic calendar, 165-currency widget (GEL included), 9:16 stories with reactions + replies, sponsored ads, animated logo.</div>
+        <div class="live">Live</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. PROOF OF BUILD -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Proof</div>
+    <h2>We didn't pitch this. <span class="gradient-text">We shipped it.</span></h2>
+    <p class="lead">
+      Live at peerza.ai. Four pillars in production. Real devnet transactions running today. No mock screens, no waitlist — a real product you can log into right now.
+    </p>
+
+    <div class="status-grid">
+      <div class="status-card live">
+        <div class="label">Shipped &amp; live</div>
+        <ul>
+          <li><strong>peerza.ai</strong> · Railway + Postgres 18</li>
+          <li>All 4 pillars in production</li>
+          <li>PWA · mobile + desktop</li>
+          <li>4 languages (EN · KA · ES · TR)</li>
+          <li>Stripe Pro tier · $10/mo live</li>
+          <li>Rate limit · CSRF · CSP · auth hardening shipped</li>
+          <li>Legal pages · email pipeline · animated brand</li>
+        </ul>
+      </div>
+      <div class="status-card devnet">
+        <div class="label">On-chain · devnet</div>
+        <ul>
+          <li><strong>/web3</strong> · Phantom connect, Helius RPC</li>
+          <li>Real memo achievements (Solana Explorer)</li>
+          <li>Real SOL micro-tipping</li>
+          <li>Server-relayed devnet airdrop (Railway IP fallback)</li>
+          <li>Prediction League + Games×Web3 UI prototyped</li>
+          <li><code style="font-size:0.78em;color:var(--sol-green);">@solana/web3.js</code> integrated</li>
+        </ul>
+      </div>
+      <div class="status-card honest">
+        <div class="label">Honest gaps</div>
+        <ul>
+          <li>Pre-launch — no public DAU yet</li>
+          <li>Demo seed: 10 users · 30 trade ideas · 20-trader challenge active</li>
+          <li>No mainnet on-chain yet</li>
+          <li>No Anchor program shipped (Phase 2)</li>
+          <li>Solo founder · first hire post-Phase 2</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Try it: <span class="green">human@peerza.ai · demo1234</span></strong> &nbsp;·&nbsp;
+      then click the <span class="purple">Web3</span> nav, connect Phantom on devnet, mint a memo achievement, and check Solana Explorer.
+      The whole loop works today. This isn't a deck — it's a checkpoint.
+    </div>
+  </section>
+
+  <!-- 7. WHY SOLANA -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>Why Solana, not anything else</div>
+    <h2>Trader reputation needs <span class="gradient-text">Solana economics.</span></h2>
+    <p class="lead">
+      We didn't pick Solana for the brand. We picked it because the reputation primitive only works at Solana's fee curve and composability model.
+      Remove Solana and the product becomes a walled garden. Keep it, and it becomes a Solana-native primitive other apps build on.
+    </p>
+
+    <div class="reasons">
+      <div class="reason">
+        <div class="badge">01 · Fees</div>
+        <h3>Per-action minting is viable.</h3>
+        <p>Every duel won, lesson completed, winning trade — can mint a cNFT proof. Sub-cent fees + Bubblegum make this economically real. On L2s it's $0.20–$2 per action. That kills the unit economics before launch.</p>
+      </div>
+      <div class="reason">
+        <div class="badge">02 · Composability</div>
+        <h3>Identity is portable by default.</h3>
+        <p>Trader score is a public account on Solana. Any other Solana app — DEX, lending market, DAO, prediction pool — reads it directly. No SDK to integrate, no API key to issue. Composability is what makes reputation a primitive instead of a feature.</p>
+      </div>
+      <div class="reason">
+        <div class="badge">03 · Rails</div>
+        <h3>Global creator payouts work.</h3>
+        <p>USDC tipping + Pro subscription via Solana Pay. We pay a creator in Lagos and another in Tbilisi without negotiating Stripe coverage country by country. Stablecoin rails are the only ones that scale to where Peerza's audience actually lives.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Acid test:</strong> if you removed Solana from Peerza, you'd have another walled-garden trader-Twitter. Solana is what makes the reputation portable, the economics viable, and the payouts global. The chain isn't a logo — it's load-bearing.
+    </div>
+  </section>
+
+  <!-- 8. THE REPUTATION PRIMITIVE -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Primitive</div>
+    <h2>Trader score, written to Solana. <span class="gradient-text">Read by anyone.</span></h2>
+    <p class="lead">
+      Other consumer apps stop at the walled garden. Peerza's trader score is a public Solana account — any other program reads it directly, no SDK, no API key, no gatekeeping. That's what turns a feature into a primitive.
+    </p>
+
+    <div class="flow-row">
+      <div class="flow-node inputs">
+        <div class="stage">01 · Inputs</div>
+        <h3>Every action counts.</h3>
+        <ul>
+          <li>Winning simulated trade</li>
+          <li>Completed lesson / quiz</li>
+          <li>Duel win (seeded RNG)</li>
+          <li>Accurate prediction</li>
+          <li>Community signal (likes, follows on calls)</li>
+        </ul>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node compute">
+        <div class="stage">02 · Compute</div>
+        <h3>On-chain settlement.</h3>
+        <ul>
+          <li>Anchor program holds the score account</li>
+          <li>Switchboard VRF for fair duel outcomes</li>
+          <li>Pyth oracles for trade resolution</li>
+          <li>cNFT achievements via Bubblegum</li>
+          <li>USDC settlement via Solana Pay</li>
+        </ul>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node reads">
+        <div class="stage">03 · Reads</div>
+        <h3>Anyone can read it.</h3>
+        <ul>
+          <li>DEXs gate beta / fee-tier by score</li>
+          <li>Lending markets adjust collateral</li>
+          <li>DAOs weight votes by trader rep</li>
+          <li>Prediction pools handicap by rank</li>
+          <li>Other social apps import the score</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The moat:</strong> nobody else collects this data across all four pillars. Twitter has likes. Brokerages have trades. Duolingo has lessons. None of them write to Solana. None of them tie all three to one identity. We do — and the on-chain layer is what makes the score outlast our app.
+    </div>
+  </section>
+
+  <!-- 9. AUDIENCE / MARKET -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Audience</div>
+    <h2>A generation that already trades. <span class="gradient-text">Online. Globally.</span></h2>
+    <p class="lead">
+      We're not creating a behavior — we're hosting one that already happens, badly, on five different platforms. The target user already trades, already learns online, and is already crypto-curious.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="num">~30M</div>
+        <div class="lbl">Self-directed retail traders globally (Robinhood + Webull + eToro user bases).</div>
+        <div class="src">Source: company-reported actives</div>
+      </div>
+      <div class="stat">
+        <div class="num">~15M</div>
+        <div class="lbl">Phantom wallet installs — the proxy for &ldquo;Solana-curious retail.&rdquo;</div>
+        <div class="src">Source: Phantom public stats</div>
+      </div>
+      <div class="stat">
+        <div class="num">~40%</div>
+        <div class="lbl">Retail traders who hold or have held crypto. The overlap that becomes Peerza's wedge.</div>
+        <div class="src">Source: BIS + industry surveys</div>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top:1.2rem;font-size:0.95rem;">
+      Multi-lingual from day one. Not a 2026 roadmap — already shipped.
+    </p>
+
+    <div class="geo-row">
+      <div class="geo">
+        <div class="name">United States</div>
+        <div class="lang">EN · shipped</div>
+        <div class="note">Post-HQ-relocation focus. Largest retail-trading base.</div>
+      </div>
+      <div class="geo">
+        <div class="name">LATAM / US Hispanic</div>
+        <div class="lang">ES · shipped</div>
+        <div class="note">600M Spanish speakers. Rising retail + Solana adoption.</div>
+      </div>
+      <div class="geo">
+        <div class="name">Turkey / MENA</div>
+        <div class="lang">TR · shipped</div>
+        <div class="note">#1 country by retail crypto adoption per capita.</div>
+      </div>
+      <div class="geo">
+        <div class="name">Caucasus / CIS</div>
+        <div class="lang">KA · shipped</div>
+        <div class="note">Founder home base. Tbilisi is the crypto regional hub.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. ROADMAP -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>What we ship next</div>
+    <h2>From devnet checkpoint to <span class="gradient-text">mainnet primitive.</span></h2>
+
+    <div class="roadmap-row">
+      <div class="phase now">
+        <div class="ph">Phase 1 · Done</div>
+        <div class="when">Today · devnet</div>
+        <ul>
+          <li>Phantom wallet connect</li>
+          <li>Memo achievement proofs</li>
+          <li>SOL micro-tipping</li>
+          <li>Prediction League + Games×Web3 UI</li>
+          <li>4-pillar product live at peerza.ai</li>
+        </ul>
+      </div>
+      <div class="phase next">
+        <div class="ph">Phase 2 · Mainnet beta</div>
+        <div class="when">~90 days from green light</div>
+        <ul>
+          <li>Anchor prediction-pool program (audited)</li>
+          <li>Compressed-NFT trader achievements (Bubblegum)</li>
+          <li>Switchboard VRF for duel settlement</li>
+          <li>USDC tipping + Pro subscription via Solana Pay</li>
+          <li>Trader score account · readable by any program</li>
+        </ul>
+      </div>
+      <div class="phase future">
+        <div class="ph">Phase 3 · Public</div>
+        <div class="when">~6 months · open</div>
+        <ul>
+          <li>Tokenized strategies / copy-trading</li>
+          <li>Game-duel stake escrow</li>
+          <li>Creator monetization payouts</li>
+          <li>Open-source Anchor program release</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ask-card">
+      <h3>⚡ How Solana can help</h3>
+      <div class="ask-grid">
+        <div class="ask-cell">
+          <div class="lbl">Engineering</div>
+          <div class="val">Anchor review + audit network access</div>
+        </div>
+        <div class="ask-cell">
+          <div class="lbl">Infra</div>
+          <div class="val">Mainnet RPC + indexer partners</div>
+        </div>
+        <div class="ask-cell">
+          <div class="lbl">Distribution</div>
+          <div class="val">Foundation channels + wallet partners</div>
+        </div>
+        <div class="ask-cell">
+          <div class="lbl">Milestone</div>
+          <div class="val">1K wallets · 1st on-chain market settled</div>
+        </div>
+      </div>
+      <div class="use">
+        <strong>The product is built. The ask is the on-chain layer — cleanly.</strong> Engineering review, audit access, mainnet RPC, and ecosystem distribution. We're not asking for runway. We're asking to be part of the consumer Solana cohort and to ship Phase 2 with the right reviewers behind it.
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. ABOUT ME -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Builder</div>
+
+    <div class="founder-hero">
+      <div class="founder-portrait">
+        <div class="ribbon">UAE Champion · 2023</div>
+      </div>
+      <div class="founder-meta">
+        <div class="name">Rati Kiria.</div>
+        <div class="role">Champion. Educator. Builder. Three founders' worth of credentials in one person — won the trading game, built the financial-education company, then shipped a consumer Solana product solo.</div>
+        <div class="chips">
+          <span class="chip green">2023 UAE Trading Champion · 3,000+ traders</span>
+          <span class="chip green">1st Georgian finalist · UK Global Alumni Award 2026</span>
+          <span class="chip">MSc Investment Analysis · Stirling, UK</span>
+          <span class="chip">Founder, Traders' Hub · since 2021</span>
+          <span class="chip purple">Tbilisi → San Francisco · 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="founder-trio">
+      <div class="trio-card">
+        <div class="role">01 · Champion</div>
+        <h3>Won the trading game.</h3>
+        <p>2023 UAE International Trading Championship — beat 3,000+ traders globally. First Georgian ever to win the title. 10+ years actively trading and investing across markets. The credibility a retail-trader audience can't dismiss.</p>
+      </div>
+      <div class="trio-card">
+        <div class="role">02 · Educator</div>
+        <h3>Built the school first.</h3>
+        <p>Founded Traders' Hub in 2021 — a financial-education company. Developed programs for schools and universities. Created a Student-Managed Investment Fund giving students real practical investment experience. MSc Investment Analysis, University of Stirling — and 1st Georgian finalist for the UK Global Alumni Award 2026 (Business &amp; Innovation category, winner announced in August).</p>
+      </div>
+      <div class="trio-card">
+        <div class="role">03 · Builder</div>
+        <h3>Shipped Peerza. Solo.</h3>
+        <p>One founder. Four pillars, four languages, PWA, web3 integration, Stripe-backed subscriptions, full prod hardening — built end-to-end by one person. Velocity is the proof; the product is the artifact.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:1.1rem;">
+      <strong>Peerza isn't pitched from a market memo — it's built from lived experience on every side of the problem.</strong> The founder won the championship traders dream of, built the financial-education company most pitches only promise to become, and shipped the consumer Solana product solo. Three founders' worth of evidence behind one product.
+    </div>
+  </section>
+
+  <!-- 12. INVITATION -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>Let's build</div>
+    <h2>Peerza is the engine. <span class="gradient-text">Web3 is the layer.</span></h2>
+    <p class="lead">
+      We're not pitching the future. We're showing you a product that already works — used today via demo accounts, with real Solana devnet transactions, in four languages, on web and PWA.
+      We're asking Solana to help us put the rails on it.
+    </p>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="lbl">Founder</div>
+        <div class="val">Rati Kiria · Champion · Educator · Builder</div>
+      </div>
+      <div class="contact-card">
+        <div class="lbl">Live product</div>
+        <div class="val"><a href="https://www.peerza.ai" target="_blank">www.peerza.ai</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="lbl">Demo login</div>
+        <div class="val">human@peerza.ai / demo1234</div>
+      </div>
+      <div class="contact-card">
+        <div class="lbl">Web3 demo</div>
+        <div class="val"><a href="https://www.peerza.ai/web3" target="_blank">peerza.ai/web3</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="lbl">Email</div>
+        <div class="val"><a href="mailto:rati.kiria06@gmail.com">rati.kiria06@gmail.com</a></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="hint">←/→ navigate · N notes · P print</div>
+<div class="chrome"><span id="counter">1 / 12</span></div>
+<div class="arrows">
+  <button onclick="prev()" aria-label="previous">‹</button>
+  <button onclick="next()" aria-label="next">›</button>
+</div>
+
+
+
+<script>
+  const NOTES = [];
+
+  let i = 0;
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const notes = document.getElementById('notes');
+  const notesBody = document.getElementById('notes-body');
+
+  function render() {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    counter.textContent = `${i + 1} / ${slides.length}`;
+  }
+  function next() { if (i < slides.length - 1) { i++; render(); } }
+  function prev() { if (i > 0) { i--; render(); } }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if (e.key === 'n' || e.key === 'N') { notes.classList.toggle('show'); }
+    if (e.key === 'p' || e.key === 'P') { window.print(); }
+    if (e.key === 'Home') { i = 0; render(); }
+    if (e.key === 'End') { i = slides.length - 1; render(); }
+  });
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('button, a, .notes')) return;
+    const w = window.innerWidth;
+    if (e.clientX > w / 2) next(); else prev();
+  });
+  render();
+</script>
+
+<script>
+document.addEventListener('keydown', function(e){
+  if (e.key === 'n' || e.key === 'N') { e.stopImmediatePropagation(); e.preventDefault(); }
+}, true);
+</script>
+</body>
+</html>
