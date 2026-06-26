@@ -427,6 +427,67 @@
     font-weight: 900;
   }
 
+  /* IP / defensibility badge */
+  .ip-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: -0.3rem;
+    margin-bottom: 0.2rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(95deg, rgba(153,69,255,0.12), rgba(20,241,149,0.08));
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--text-soft);
+  }
+  .ip-badge .ip-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--sol-purple);
+    box-shadow: 0 0 10px var(--sol-purple);
+  }
+
+  /* IP slide */
+  .ip-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 1.2rem;
+  }
+  .ip-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.3rem 1.4rem;
+    position: relative;
+  }
+  .ip-card.purple-edge { border-left: 3px solid var(--sol-purple); }
+  .ip-card.green-edge { border-left: 3px solid var(--sol-green); }
+  .ip-card .kicker {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .ip-card h3 { font-size: 1.08rem; margin-bottom: 0.45rem; }
+  .ip-card p { font-size: 0.88rem; line-height: 1.55; color: var(--text-dim); margin: 0; }
+  .ip-card ul { list-style: none; padding: 0; margin: 0.5rem 0 0; }
+  .ip-card li {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    line-height: 1.5;
+    padding: 0.22rem 0;
+    display: flex; align-items: baseline; gap: 0.55rem;
+  }
+  .ip-card li::before { content: "·"; color: var(--sol-green); }
+
   /* Audience */
   .stat-row {
     display: grid;
@@ -1104,6 +1165,11 @@
       Other consumer apps stop at the walled garden. Peerza's trader score is a public Solana account — any other program reads it directly, no SDK, no API key, no gatekeeping. That's what turns a feature into a primitive.
     </p>
 
+    <div class="ip-badge">
+      <span class="ip-dot"></span>
+      Proprietary reputation engine · IP protection process underway
+    </div>
+
     <div class="flow-row">
       <div class="flow-node inputs">
         <div class="stage">01 · Inputs</div>
@@ -1147,7 +1213,55 @@
     </div>
   </section>
 
-  <!-- 9. AUDIENCE / MARKET -->
+  <!-- 9. IP & DEFENSIBILITY -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>Defensibility</div>
+    <h2>IP &amp; <span class="gradient-text">defensibility.</span></h2>
+    <p class="lead">
+      Peerza is built around a proprietary reputation engine that transforms user behavior, simulated trading performance,
+      AI learning progress, and competitive duel outcomes into a portable trader identity layer.
+    </p>
+
+    <div class="ip-grid">
+      <div class="ip-card purple-edge">
+        <div class="kicker">01 · Proprietary IP</div>
+        <h3>Built around proprietary technology.</h3>
+        <p>The core scoring logic, reputation architecture, and data model are developed as proprietary IP — designed from the ground up for IP protection.</p>
+        <ul>
+          <li>Confidential technical architecture</li>
+          <li>Proprietary scoring logic</li>
+          <li>Core technology designed for IP protection</li>
+        </ul>
+      </div>
+      <div class="ip-card green-edge">
+        <div class="kicker">02 · Protection underway</div>
+        <h3>IP protection process underway.</h3>
+        <p>We are actively running an IP protection process, including a patentability assessment in progress and the protection of confidential technical components.</p>
+        <ul>
+          <li>Patentability assessment in progress</li>
+          <li>Confidential technical components protected</li>
+          <li>Formal IP strategy in motion</li>
+        </ul>
+      </div>
+      <div class="ip-card purple-edge">
+        <div class="kicker">03 · Compounding moat</div>
+        <h3>A defensible product layer.</h3>
+        <p>The more users interact, learn, trade, and compete, the stronger and harder-to-replicate the reputation graph becomes — a moat that compounds with usage, not just code.</p>
+        <ul>
+          <li>Data depth across all four pillars</li>
+          <li>Network effects on the reputation graph</li>
+          <li>Hard to copy the concept, harder to copy the data</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="ip-badge" style="margin:0 0 0.2rem;"><span class="ip-dot"></span>Proprietary reputation engine · IP protection process underway</span><br>
+      <strong>The concept is not easily copied.</strong> A competitor can clone a feed; they cannot clone the proprietary scoring architecture, the confidential reputation logic, or the multi-pillar behavioral data that compounds behind it.
+    </div>
+  </section>
+
+  <!-- 10. AUDIENCE / MARKET -->
   <section class="slide">
     <div class="eyebrow"><span class="dot"></span>The Audience</div>
     <h2>A generation that already trades. <span class="gradient-text">Online. Globally.</span></h2>
