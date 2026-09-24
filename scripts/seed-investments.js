@@ -9,16 +9,16 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
 const db = new PrismaClient({ adapter })
 
 const EXTRA_USERS = [
-  { name: "Mike Reynolds",  username: "mike_swing",   email: "mike@finsocial.dev",   bio: "Swing trader, 5-day holds. Tech and energy plays.",                interests: ["Stocks"] },
-  { name: "Lisa Park",      username: "lisa_options", email: "lisa@finsocial.dev",   bio: "Options strategist | iron condors and credit spreads only.",       interests: ["Options"] },
-  { name: "James Wu",       username: "james_crypto", email: "jameswu@finsocial.dev",  bio: "Crypto maxi since 2017. BTC + select alts only.",                interests: ["Crypto"] },
-  { name: "Anna Kowalski",  username: "anna_value",   email: "anna@finsocial.dev",   bio: "Value investor. Cheap stocks with strong balance sheets.",         interests: ["Stocks"] },
-  { name: "Raj Patel",      username: "raj_gold",     email: "raj@finsocial.dev",    bio: "Gold bug + commodity rotation. Hedging the dollar.",               interests: ["Commodities"] },
-  { name: "Taylor Brooks",  username: "taylor_etf",   email: "taylor@finsocial.dev", bio: "Boring ETF investor — 3-fund portfolio, dollar-cost averaging.",   interests: ["ETFs"] },
-  { name: "Chris Walker",   username: "chris_macro2", email: "chris@finsocial.dev",  bio: "Global macro trades. Watching central banks and yield curves.",    interests: ["Forex", "Stocks"] },
-  { name: "Nina Santos",    username: "nina_smallcap",email: "nina@finsocial.dev",   bio: "Small-cap explorer. Looking for the next 10-bagger.",              interests: ["Stocks"] },
-  { name: "Leo Costa",      username: "leo_index",    email: "leo@finsocial.dev",    bio: "Just buy the index. SPX + QQQ until I retire.",                    interests: ["ETFs"] },
-  { name: "Maya Tan",       username: "maya_short",   email: "maya@finsocial.dev",   bio: "Short-side specialist. Spotting overvaluation + fraud.",           interests: ["Stocks"] },
+  { name: "Mike Reynolds",  username: "mike_swing",   email: "mike@peerza.ai",   bio: "Swing trader, 5-day holds. Tech and energy plays.",                interests: ["Stocks"] },
+  { name: "Lisa Park",      username: "lisa_options", email: "lisa@peerza.ai",   bio: "Options strategist | iron condors and credit spreads only.",       interests: ["Options"] },
+  { name: "James Wu",       username: "james_crypto", email: "jameswu@peerza.ai",  bio: "Crypto maxi since 2017. BTC + select alts only.",                interests: ["Crypto"] },
+  { name: "Anna Kowalski",  username: "anna_value",   email: "anna@peerza.ai",   bio: "Value investor. Cheap stocks with strong balance sheets.",         interests: ["Stocks"] },
+  { name: "Raj Patel",      username: "raj_gold",     email: "raj@peerza.ai",    bio: "Gold bug + commodity rotation. Hedging the dollar.",               interests: ["Commodities"] },
+  { name: "Taylor Brooks",  username: "taylor_etf",   email: "taylor@peerza.ai", bio: "Boring ETF investor — 3-fund portfolio, dollar-cost averaging.",   interests: ["ETFs"] },
+  { name: "Chris Walker",   username: "chris_macro2", email: "chris@peerza.ai",  bio: "Global macro trades. Watching central banks and yield curves.",    interests: ["Forex", "Stocks"] },
+  { name: "Nina Santos",    username: "nina_smallcap",email: "nina@peerza.ai",   bio: "Small-cap explorer. Looking for the next 10-bagger.",              interests: ["Stocks"] },
+  { name: "Leo Costa",      username: "leo_index",    email: "leo@peerza.ai",    bio: "Just buy the index. SPX + QQQ until I retire.",                    interests: ["ETFs"] },
+  { name: "Maya Tan",       username: "maya_short",   email: "maya@peerza.ai",   bio: "Short-side specialist. Spotting overvaluation + fraud.",           interests: ["Stocks"] },
 ]
 
 // Asset universe — symbol, display name, type, and the priceKey our API uses
@@ -50,7 +50,8 @@ function pick(arr) { return arr[Math.floor(Math.random() * arr.length)] }
 function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5) }
 
 async function ensureUser(u) {
-  const existing = await db.user.findUnique({ where: { email: u.email } })
+  // Match on username too, so DBs seeded before the @peerza.ai switch don't collide.
+  const existing = await db.user.findFirst({ where: { OR: [{ email: u.email }, { username: u.username }] } })
   if (existing) return existing
   const passwordHash = await bcrypt.hash("demo1234", 10)
   return db.user.create({
@@ -62,6 +63,7 @@ async function ensureUser(u) {
       bio: u.bio,
       interests: u.interests,
       isVerified: true,
+      emailVerifiedAt: new Date(),
     },
   })
 }
@@ -77,7 +79,7 @@ async function main() {
 
   // Step 2: pick exactly the 20 demo users by username — the 10 from
   // seed-demo.js plus the 10 EXTRA_USERS above. Email-suffix matching used to
-  // miss Alex Chen (`human@peerza.ai`) because his email isn't on @finsocial.dev.
+  // miss Alex Chen (`human@peerza.ai`) because his email isn't on @peerza.ai.
   const DEMO_USERNAMES = [
     "human", "sarah_stocks", "marcus_trades", "emma_defi", "dparkfinance",
     "olivia_quant", "jrodriguez_fx", "sofia_macro", "ryan_theta", "priya_invest",

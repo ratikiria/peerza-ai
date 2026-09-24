@@ -12,15 +12,15 @@ const db = new PrismaClient({ adapter })
 ;(async () => {
   try {
     // Owner is the first-created user (per scripts/seed-demo.js convention) —
-    // works whether you're rati@finsocial.dev locally or your real email in prod.
+    // works whether you're rati@peerza.ai locally or your real email in prod.
     const main = await db.user.findFirst({
       orderBy: { createdAt: "asc" },
       select: { id: true, username: true, email: true },
     })
     if (!main) throw new Error("No users in DB. Sign up first.")
 
-    const alex = await db.user.findUnique({ where: { email: "alex@finsocial.dev" }, select: { id: true, username: true } })
-    const sarah = await db.user.findUnique({ where: { email: "sarah@finsocial.dev" }, select: { id: true, username: true } })
+    const alex = await db.user.findUnique({ where: { email: "human@peerza.ai" }, select: { id: true, username: true } })
+    const sarah = await db.user.findUnique({ where: { email: "sarah@peerza.ai" }, select: { id: true, username: true } })
     if (!alex || !sarah) throw new Error("Demo users missing — run scripts/seed-demo.js first")
 
     console.log(`Main user: @${main.username} (${main.email})`)

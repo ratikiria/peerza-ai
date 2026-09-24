@@ -27,7 +27,7 @@ const USERS = [
   {
     name: "Sarah Mitchell",
     username: "sarah_stocks",
-    email: "sarah@finsocial.dev",
+    email: "sarah@peerza.ai",
     bio: "Equity analyst by day, swing trader by night. CFA Level 2 candidate. Focused on tech and healthcare sectors 📊",
     interests: ["Stocks", "ETFs"],
     posts: [
@@ -41,7 +41,7 @@ const USERS = [
   {
     name: "Marcus Johnson",
     username: "marcus_trades",
-    email: "marcus@finsocial.dev",
+    email: "marcus@peerza.ai",
     bio: "Day trader | ES & NQ futures | 12 years experience | Teaching what actually works, not what sounds good on YouTube",
     interests: ["Stocks", "Options"],
     posts: [
@@ -55,7 +55,7 @@ const USERS = [
   {
     name: "Emma Williams",
     username: "emma_defi",
-    email: "emma@finsocial.dev",
+    email: "emma@peerza.ai",
     bio: "DeFi researcher & yield farmer 🌾 Covering protocols, tokenomics and on-chain analytics. Building on Ethereum since 2019.",
     interests: ["Crypto"],
     posts: [
@@ -69,7 +69,7 @@ const USERS = [
   {
     name: "David Park",
     username: "dparkfinance",
-    email: "david@finsocial.dev",
+    email: "david@peerza.ai",
     bio: "Macro investor | Gold bugs unite 🥇 | Commodities & hard assets | Inflation hedge specialist | 20yr market veteran",
     interests: ["Commodities", "ETFs"],
     posts: [
@@ -83,7 +83,7 @@ const USERS = [
   {
     name: "Olivia Brown",
     username: "olivia_quant",
-    email: "olivia@finsocial.dev",
+    email: "olivia@peerza.ai",
     bio: "Quant trader @ fintech startup | Python & R | Backtesting systematic strategies | Data-driven, no guesswork 🐍",
     interests: ["Stocks", "Options"],
     posts: [
@@ -97,7 +97,7 @@ const USERS = [
   {
     name: "James Rodriguez",
     username: "jrodriguez_fx",
-    email: "james@finsocial.dev",
+    email: "james@peerza.ai",
     bio: "Swing trader from Miami 🌴 | Crypto & stocks | Building generational wealth one trade at a time | No calls, just setups",
     interests: ["Crypto", "Stocks"],
     posts: [
@@ -111,7 +111,7 @@ const USERS = [
   {
     name: "Sofia Laurent",
     username: "sofia_macro",
-    email: "sofia@finsocial.dev",
+    email: "sofia@peerza.ai",
     bio: "Paris-based macro strategist | Geopolitics × markets | Covering EUR, emerging markets & global capital flows 🇫🇷",
     interests: ["Forex", "Commodities"],
     posts: [
@@ -125,7 +125,7 @@ const USERS = [
   {
     name: "Ryan Thompson",
     username: "ryan_theta",
-    email: "ryan@finsocial.dev",
+    email: "ryan@peerza.ai",
     bio: "Options premium seller | Theta gang OG 🎰 | Selling volatility since 2017 | Consistent income from the market every week",
     interests: ["Options", "Stocks"],
     posts: [
@@ -139,7 +139,7 @@ const USERS = [
   {
     name: "Priya Sharma",
     username: "priya_invest",
-    email: "priya@finsocial.dev",
+    email: "priya@peerza.ai",
     bio: "Financial educator 📚 | Making investing accessible for everyone | Long-term wealth building | Index funds > stock picking",
     interests: ["ETFs", "Stocks"],
     posts: [
@@ -181,6 +181,8 @@ async function main() {
         bio: u.bio,
         interests: u.interests,
         isPremium: Math.random() > 0.6,
+        // Demo inboxes don't exist — skip the verify-email banner.
+        emailVerifiedAt: new Date(),
       },
     })
     createdUsers.push(user)
