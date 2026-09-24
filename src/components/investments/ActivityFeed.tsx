@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -84,7 +85,7 @@ export default function ActivityFeed({ challengeId, refreshTrigger }: Props) {
       ) : items.length === 0 ? (
         <div className="px-5 py-8 text-center text-sm text-white/30">No trades yet — be first.</div>
       ) : (
-        <div className="divide-y max-h-[440px] overflow-y-auto" style={{ borderColor: "var(--border)" }}>
+        <div className="divide-y divide-[var(--border)] max-h-[440px] overflow-y-auto">
           {items.map((t) => {
             const isBuy = t.side === "BUY";
             return (
@@ -109,7 +110,7 @@ export default function ActivityFeed({ challengeId, refreshTrigger }: Props) {
                       className="ml-1.5 inline-flex items-center gap-0.5 px-1 py-0.5 rounded text-[9px] font-bold"
                       style={{
                         background: isBuy ? "#16a34a22" : "#dc262622",
-                        color: isBuy ? "#4ade80" : "#f87171",
+                        color: isBuy ? ink("#4ade80") : ink("#f87171"),
                       }}
                     >
                       {isBuy ? <ArrowUpRight size={9} /> : <ArrowDownRight size={9} />}
@@ -122,7 +123,7 @@ export default function ActivityFeed({ challengeId, refreshTrigger }: Props) {
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-xs font-semibold" style={{ color: isBuy ? "#f87171" : "#4ade80" }}>
+                  <div className="text-xs font-semibold" style={{ color: isBuy ? ink("#f87171") : ink("#4ade80") }}>
                     {isBuy ? "−" : "+"}${t.total.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                   </div>
                 </div>

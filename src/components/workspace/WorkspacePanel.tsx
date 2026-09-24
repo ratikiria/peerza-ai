@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import { Users, Newspaper } from "lucide-react"
 import WorkspaceCommunity from "./WorkspaceCommunity"
@@ -74,7 +75,7 @@ function TabButton({
       className="flex-1 flex items-center justify-center gap-1.5 py-2.5 transition-colors relative"
       style={{
         background: active ? "rgba(16,185,129,0.10)" : "transparent",
-        color: active ? "#10b981" : "var(--text-secondary)",
+        color: active ? ink("#10b981") : "var(--text-secondary)",
       }}
     >
       {icon}

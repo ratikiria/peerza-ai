@@ -378,7 +378,7 @@ export default function ActiveCallView({ callId, isInitiator, partner, kind = "A
   const showRemoteVideo = videoOn && remoteHasVideo
 
   return (
-    <div className="fixed inset-0 z-50 bg-gray-950">
+    <div className="pz-dark fixed inset-0 z-50 bg-gray-950">
       <audio ref={remoteAudioRef} autoPlay />
 
       {/* Remote video — always mounted; visible only when there's an actual remote video track */}

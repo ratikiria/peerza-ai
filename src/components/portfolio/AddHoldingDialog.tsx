@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import { useTranslations } from "next-intl"
 import { Search, X, Loader2, ShieldAlert } from "lucide-react"
@@ -166,7 +167,7 @@ export default function AddHoldingDialog({ open, onClose, onAdded }: Props) {
                     >
                       <div
                         className="w-8 h-8 rounded-md flex items-center justify-center text-[10px] font-bold flex-shrink-0"
-                        style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}
+                        style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}
                       >
                         {r.symbol.slice(0, 4)}
                       </div>
@@ -194,7 +195,7 @@ export default function AddHoldingDialog({ open, onClose, onAdded }: Props) {
                 style={{ background: "var(--bg-base)", border: "1px solid var(--border)" }}>
                 <div
                   className="w-10 h-10 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
-                  style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}
+                  style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}
                 >
                   {picked.symbol.slice(0, 4)}
                 </div>
@@ -224,7 +225,7 @@ export default function AddHoldingDialog({ open, onClose, onAdded }: Props) {
                       onClick={() => setAssetType(tp)}
                       className="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors capitalize"
                       style={assetType === tp
-                        ? { background: "rgba(16,185,129,0.2)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)" }
+                        ? { background: "rgba(16,185,129,0.2)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.4)" }
                         : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
                     >
                       {t(`type_${tp}`)}
@@ -267,7 +268,7 @@ export default function AddHoldingDialog({ open, onClose, onAdded }: Props) {
 
               {err && (
                 <div className="flex items-start gap-2 px-3 py-2 rounded-lg text-xs"
-                  style={{ background: "rgba(239,68,68,0.1)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.3)" }}>
+                  style={{ background: "rgba(239,68,68,0.1)", color: ink("#fca5a5"), border: "1px solid rgba(239,68,68,0.3)" }}>
                   <ShieldAlert size={13} className="flex-shrink-0 mt-0.5" />
                   <span>{err}</span>
                 </div>

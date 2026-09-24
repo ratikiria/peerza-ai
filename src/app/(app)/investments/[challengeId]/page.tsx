@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useState, useEffect, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Users, Calendar, Trophy, Lock, Globe, Briefcase, Zap, Shuffle, Share2 } from "lucide-react";
@@ -120,7 +121,7 @@ export default function ChallengePage({ params }: { params: Promise<{ challengeI
               <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <span
                   className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                  style={{ background: statusColor[challenge.status] + "22", color: statusColor[challenge.status] }}
+                  style={{ background: statusColor[challenge.status] + "22", color: ink(statusColor[challenge.status]) }}
                 >
                   {statusLabel[challenge.status]}
                 </span>
@@ -130,7 +131,7 @@ export default function ChallengePage({ params }: { params: Promise<{ challengeI
                   return (
                     <span
                       className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full"
-                      style={{ background: meta.color + "22", color: meta.color }}
+                      style={{ background: meta.color + "22", color: ink(meta.color) }}
                     >
                       <Icon size={11} />
                       {meta.label}
@@ -185,7 +186,7 @@ export default function ChallengePage({ params }: { params: Promise<{ challengeI
         {/* Not joined warning */}
         {!isParticipant && (
           <div className="rounded-xl p-4 mb-6 flex items-center gap-3" style={{ background: "#f59e0b11", border: "1px solid #f59e0b33" }}>
-            <Trophy size={16} style={{ color: "#f59e0b" }} />
+            <Trophy size={16} style={{ color: ink("#f59e0b") }} />
             <p className="text-sm text-white/70">You are not a participant in this challenge. Join from the lobby to trade.</p>
           </div>
         )}

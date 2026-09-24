@@ -1,11 +1,12 @@
+import { ink } from "@/lib/ink"
 import Link from "next/link"
 import { Trophy, Briefcase, Zap, Shuffle } from "lucide-react"
 import type { ActiveChallengePerf } from "@/lib/profile-data"
 
 const STYLE_META = {
-  INVESTMENT: { icon: Briefcase, color: "#60a5fa" },
-  TRADING:    { icon: Zap,       color: "#fb923c" },
-  MIXED:      { icon: Shuffle,   color: "#10b981" },
+  INVESTMENT: { icon: Briefcase, color: ink("#60a5fa") },
+  TRADING:    { icon: Zap,       color: ink("#fb923c") },
+  MIXED:      { icon: Shuffle,   color: ink("#10b981") },
 } as const
 
 export default function ActiveChallengesCard({ challenges }: { challenges: ActiveChallengePerf[] }) {
@@ -30,7 +31,7 @@ export default function ActiveChallengesCard({ challenges }: { challenges: Activ
               style={{ border: "1px solid var(--border)" }}>
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
-                  style={{ background: tint + "22", color: tint }}>
+                  style={{ background: tint + "22", color: ink(tint) }}>
                   <Icon size={12} />
                 </div>
                 <p className="text-xs font-semibold truncate flex-1" style={{ color: "var(--text-primary)" }}>
@@ -47,7 +48,7 @@ export default function ActiveChallengesCard({ challenges }: { challenges: Activ
                   </p>
                 </div>
                 <p className="text-base font-bold tabular-nums"
-                  style={{ color: positive ? "#10b981" : "#ef4444" }}>
+                  style={{ color: positive ? ink("#10b981") : ink("#ef4444") }}>
                   {positive ? "+" : ""}{c.returnPct}%
                 </p>
               </div>

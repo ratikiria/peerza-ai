@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import * as Sentry from "@sentry/nextjs"
 import { useEffect } from "react"
 
@@ -30,7 +31,7 @@ export default function GlobalError({
       >
         <div style={{ maxWidth: 480, textAlign: "center" }}>
           <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Something broke.</h2>
-          <p style={{ fontSize: 14, color: "#8a8d9a", marginBottom: 20 }}>
+          <p style={{ fontSize: 14, color: ink("#8a8d9a"), marginBottom: 20 }}>
             We logged the error and we&rsquo;ll look into it. Try reloading.
           </p>
           <button

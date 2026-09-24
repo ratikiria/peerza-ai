@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useLayoutEffect, useRef, useState, useTransition } from "react"
 import { createPortal } from "react-dom"
 import { Globe, Check, ChevronDown } from "lucide-react"
@@ -185,7 +186,7 @@ function PortalMenu({
             type="button"
             onClick={() => onPick(lang.code)}
             className="w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-[var(--bg-base)]"
-            style={{ color: isActive ? "#10b981" : "var(--text-primary)" }}
+            style={{ color: isActive ? ink("#10b981") : "var(--text-primary)" }}
           >
             <FlagImage code={lang.flag} size={13} />
             <span className="flex-1 text-left">{lang.native}</span>

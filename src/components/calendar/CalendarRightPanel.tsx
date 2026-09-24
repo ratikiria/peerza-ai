@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { TrendingUp, TrendingDown, Sparkles, Zap, Calendar as CalendarIcon } from "lucide-react"
@@ -83,7 +84,7 @@ export default function CalendarRightPanel() {
           <Link
             href="/ai-tutor?q=What%20are%20the%20most%20important%20economic%20events%20to%20watch%20this%20week%20and%20why%3F"
             className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-lg transition-opacity hover:opacity-90"
-            style={{ background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)", color: "#a5b4fc" }}
+            style={{ background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)", color: ink("#a5b4fc") }}
           >
             What should I watch this week? →
           </Link>
@@ -102,7 +103,7 @@ export default function CalendarRightPanel() {
               Quiet week — no high-impact events.
             </p>
           ) : (
-            <ul className="divide-y" style={{ borderColor: "var(--border)" }}>
+            <ul className="divide-y divide-[var(--border)]">
               {topEvents.map((evt) => {
                 const t = new Date(evt.time)
                 const isToday = new Date().toDateString() === t.toDateString()
@@ -113,7 +114,7 @@ export default function CalendarRightPanel() {
                       <p className="text-[11px] font-semibold truncate" style={{ color: "var(--text-primary)" }} title={evt.event}>
                         {evt.event}
                       </p>
-                      <p className="text-[9px]" style={{ color: isToday ? "#10b981" : "var(--text-secondary)" }}>
+                      <p className="text-[9px]" style={{ color: isToday ? ink("#10b981") : "var(--text-secondary)" }}>
                         {isToday ? "Today" : t.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}
                         {" · "}
                         {t.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
@@ -141,7 +142,7 @@ export default function CalendarRightPanel() {
               Major FX pairs
             </span>
           </header>
-          <ul className="divide-y" style={{ borderColor: "var(--border)" }}>
+          <ul className="divide-y divide-[var(--border)]">
             {FX_PAIRS.map((pair) => {
               const live = fx.find((f) => f.id?.toLowerCase() === pair.id)
               return (
@@ -159,7 +160,7 @@ export default function CalendarRightPanel() {
                         {fmtFx(live.price, pair.id)}
                       </span>
                       <span className="text-[10px] font-mono inline-flex items-center gap-0.5"
-                        style={{ color: live.up ? "#10b981" : "#fb7185" }}>
+                        style={{ color: live.up ? ink("#10b981") : ink("#fb7185") }}>
                         {live.up ? <TrendingUp size={9} /> : <TrendingDown size={9} />}
                         {live.change > 0 ? "+" : ""}{live.change.toFixed(2)}%
                       </span>

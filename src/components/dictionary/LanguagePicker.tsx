@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { Globe, ChevronDown, Check } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import FlagImage from "@/components/calendar/FlagImage"
@@ -66,7 +67,7 @@ export default function LanguagePicker({ value, onChange, size = "md" }: Props) 
                 type="button"
                 onClick={() => { onChange(lang.code); setOpen(false) }}
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-[var(--bg-base)]"
-                style={{ color: active ? "#10b981" : "var(--text-primary)" }}
+                style={{ color: active ? ink("#10b981") : "var(--text-primary)" }}
               >
                 <FlagImage code={lang.flag} size={13} />
                 <span className="flex-1 text-left">{lang.native}</span>

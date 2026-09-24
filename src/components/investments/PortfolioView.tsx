@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useCallback } from "react";
 import { TrendingUp, TrendingDown, DollarSign, RefreshCw, ArrowUpRight, ArrowDownRight, History, Briefcase } from "lucide-react";
 import AnimatedNumber, { FlashCell } from "./AnimatedNumber";
@@ -273,7 +274,7 @@ export default function PortfolioView({ challengeId, virtualCapital, refreshTrig
                       className="flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded-lg tabular-nums flex-shrink-0"
                       style={{
                         background: positive ? "rgba(16,185,129,0.12)" : "rgba(244,63,94,0.12)",
-                        color: positive ? "#10b981" : "#f43f5e",
+                        color: positive ? ink("#10b981") : ink("#f43f5e"),
                       }}
                     >
                       {positive ? <TrendingUp size={11} /> : <TrendingDown size={11} />}

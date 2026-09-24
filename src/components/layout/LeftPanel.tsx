@@ -1,3 +1,4 @@
+import { ink } from "@/lib/ink"
 import Link from "next/link"
 import { getTranslations } from "next-intl/server"
 import { Home, Bell, MessageCircle, TrendingUp, Brain, Gamepad2, Settings, Building2, CalendarDays, BookOpen, Briefcase, Sparkles, Smartphone } from "lucide-react"
@@ -77,7 +78,7 @@ export default async function LeftPanel({ user }: LeftPanelProps) {
               <Link
                 href="/pro"
                 className="mt-1.5 inline-block text-[10px] hover:bg-emerald-500/15 px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide transition-colors"
-                style={{ background: "rgba(16,185,129,0.08)", color: "#10b981", border: "1px dashed rgba(16,185,129,0.4)" }}
+                style={{ background: "rgba(16,185,129,0.08)", color: ink("#10b981"), border: "1px dashed rgba(16,185,129,0.4)" }}
               >
                 {t("get_pro_cta")}
               </Link>
@@ -120,12 +121,12 @@ export default async function LeftPanel({ user }: LeftPanelProps) {
             border: "1px dashed rgba(16,185,129,0.35)",
           }}
         >
-          <Smartphone size={18} className="flex-shrink-0" style={{ color: "#10b981" }} />
+          <Smartphone size={18} className="flex-shrink-0" style={{ color: ink("#10b981") }} />
           <div className="min-w-0">
             <p className="text-xs font-semibold leading-tight" style={{ color: "var(--text-primary)" }}>
               {t("mobile_apps_title")}
             </p>
-            <p className="text-[10px] tracking-wide mt-0.5" style={{ color: "#10b981" }}>
+            <p className="text-[10px] tracking-wide mt-0.5" style={{ color: ink("#10b981") }}>
               {t("mobile_apps_subtitle")}
             </p>
           </div>

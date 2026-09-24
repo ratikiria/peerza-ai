@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
 import { Send, Plus, Trash2, Loader2, Sparkles, Volume2, VolumeX, Play } from "lucide-react"
@@ -374,7 +375,7 @@ export default function AriaChat() {
               <div className="flex-1 min-w-0">
                 <p
                   className="text-xs font-semibold truncate"
-                  style={{ color: activeId === s.id ? "#10b981" : "var(--text-primary)" }}
+                  style={{ color: activeId === s.id ? ink("#10b981") : "var(--text-primary)" }}
                 >
                   {s.title || "New conversation"}
                 </p>
@@ -461,7 +462,7 @@ export default function AriaChat() {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors"
             style={
               voiceEnabled
-                ? { background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.4)", color: "#10b981" }
+                ? { background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.4)", color: ink("#10b981") }
                 : { background: "var(--bg-base)", border: "1px solid var(--border)", color: "var(--text-secondary)" }
             }
           >
@@ -486,7 +487,7 @@ export default function AriaChat() {
 
           {error && (
             <div className="rounded-xl px-3 py-2 text-xs"
-              style={{ background: "rgba(244,63,94,0.10)", border: "1px solid rgba(244,63,94,0.35)", color: "#fb7185" }}>
+              style={{ background: "rgba(244,63,94,0.10)", border: "1px solid rgba(244,63,94,0.35)", color: ink("#fb7185") }}>
               {error}
             </div>
           )}

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import {
@@ -227,7 +228,7 @@ export default function FinanceComposer({ conversationId, isGroup = false, onSen
         className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px]"
         style={{ background: tint + "1a", border: `1px solid ${tint}40`, color: "var(--text-primary)" }}
       >
-        <Icon size={12} style={{ color: tint }} />
+        <Icon size={12} style={{ color: ink(tint) }} />
         <span className="truncate flex-1 min-w-0">{label}</span>
         <button onClick={() => setAttached(null)} className="opacity-60 hover:opacity-100 flex-shrink-0">
           <X size={11} />
@@ -314,7 +315,7 @@ export default function FinanceComposer({ conversationId, isGroup = false, onSen
                 className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 transition-all"
                 style={{
                   background: showAttach ? "rgba(16,185,129,0.15)" : "transparent",
-                  color: showAttach ? "#10b981" : "var(--text-secondary)",
+                  color: showAttach ? ink("#10b981") : "var(--text-secondary)",
                   border: showAttach ? "1px solid rgba(16,185,129,0.4)" : "1px solid transparent",
                   transform: showAttach ? "rotate(45deg)" : "none",
                 }}
@@ -387,7 +388,7 @@ function ComposerIconButton({
       className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 transition-colors"
       style={{
         background: active ? "rgba(16,185,129,0.15)" : "transparent",
-        color: active ? "#10b981" : "var(--text-secondary)",
+        color: active ? ink("#10b981") : "var(--text-secondary)",
         border: active ? "1px solid rgba(16,185,129,0.4)" : "1px solid transparent",
       }}
     >
@@ -469,7 +470,7 @@ function PostPicker({ onPick, onClose }: { onPick: (id: string, label: string) =
                     {p.author.name}
                   </span>
                   {p.analysis?.ticker && (
-                    <span className="text-[9px] font-bold px-1 rounded" style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
+                    <span className="text-[9px] font-bold px-1 rounded" style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}>
                       ${p.analysis.ticker}
                     </span>
                   )}
@@ -547,7 +548,7 @@ function ChallengePicker({ onPick, onClose }: { onPick: (id: string, label: stri
             <button key={c.id} onClick={() => onPick(c.id, c.name)}
               className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg hover:bg-[var(--bg-elevated)] text-left">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: tint + "22", color: tint }}>
+                style={{ background: tint + "22", color: ink(tint) }}>
                 <Icon size={13} />
               </div>
               <div className="min-w-0 flex-1">
@@ -570,7 +571,7 @@ function PickerTab({ active, onClick, label }: { active: boolean; onClick: () =>
     <button onClick={onClick}
       className="text-[10px] font-semibold px-2 py-1 rounded-md"
       style={active
-        ? { background: "rgba(16,185,129,0.15)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)" }
+        ? { background: "rgba(16,185,129,0.15)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.4)" }
         : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
       {label}
     </button>
@@ -628,13 +629,13 @@ function CallForm({
           <div className="flex items-center justify-between rounded-xl px-2.5 py-1.5"
             style={{ background: "rgba(245,158,11,0.12)", border: "1px solid rgba(245,158,11,0.4)" }}>
             <div className="flex items-center gap-2 min-w-0">
-              <DollarSign size={12} style={{ color: "#f59e0b" }} />
+              <DollarSign size={12} style={{ color: ink("#f59e0b") }} />
               <span className="text-xs font-bold" style={{ color: "var(--text-primary)" }}>{selected.symbol}</span>
               <span className="text-[10px] truncate" style={{ color: "var(--text-secondary)" }}>{selected.name}</span>
             </div>
             <button onClick={() => { setSelected(null); setQuery("") }}
               className="text-[10px] font-semibold px-1.5 py-0.5 rounded hover:bg-[var(--bg-elevated)]"
-              style={{ color: "#f59e0b" }}>
+              style={{ color: ink("#f59e0b") }}>
               Change
             </button>
           </div>
@@ -669,7 +670,7 @@ function CallForm({
                       <span className="text-[9px] px-1.5 py-0.5 rounded flex-shrink-0 font-medium"
                         style={{
                           background: r.source === "crypto" ? "rgba(16,185,129,0.15)" : "rgba(59,130,246,0.15)",
-                          color: r.source === "crypto" ? "#10b981" : "#60a5fa",
+                          color: r.source === "crypto" ? ink("#10b981") : ink("#60a5fa"),
                         }}>
                         {r.type ?? r.source}
                       </span>
@@ -710,7 +711,7 @@ function DirectionButton({
     <button onClick={onClick}
       className="flex items-center justify-center gap-1 text-[10px] font-semibold py-1.5 rounded-md"
       style={active
-        ? { background: tint + "22", color: tint, border: `1px solid ${tint}66` }
+        ? { background: tint + "22", color: ink(tint), border: `1px solid ${tint}66` }
         : { background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
       {icon} {label}
     </button>

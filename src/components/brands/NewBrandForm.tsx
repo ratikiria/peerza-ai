@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Building2, Loader2, ImageIcon, X } from "lucide-react"
@@ -138,7 +139,7 @@ export default function NewBrandForm() {
               {logoUrl && (
                 <button type="button" onClick={() => setLogoUrl(null)}
                   className="text-[11px] font-semibold flex items-center gap-1"
-                  style={{ color: "#ef4444" }}>
+                  style={{ color: ink("#ef4444") }}>
                   <X size={10} /> Remove
                 </button>
               )}

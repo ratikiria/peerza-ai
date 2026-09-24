@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import { Volume2, VolumeX } from "lucide-react"
 
@@ -54,7 +55,7 @@ export default function ChatSoundToggle() {
     <div className="flex items-center justify-between px-4 py-3">
       <div className="flex items-center gap-3 min-w-0">
         {enabled ? (
-          <Volume2 size={16} style={{ color: "#10b981" }} />
+          <Volume2 size={16} style={{ color: ink("#10b981") }} />
         ) : (
           <VolumeX size={16} style={{ color: "var(--text-secondary)" }} />
         )}

@@ -1,7 +1,9 @@
+import { ink } from "@/lib/ink"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import LogoAnimated from "@/components/brand/LogoAnimated"
+import ForceDarkTheme from "@/components/layout/ForceDarkTheme"
 import {
   ArrowRight,
   BrainCircuit,
@@ -30,6 +32,7 @@ export default async function Home() {
           "radial-gradient(ellipse at 20% 10%, rgba(16,185,129,0.18) 0%, transparent 55%), radial-gradient(ellipse at 80% 70%, rgba(99,102,241,0.14) 0%, transparent 55%), radial-gradient(ellipse at 50% 100%, rgba(251,191,36,0.08) 0%, transparent 50%), linear-gradient(160deg, #0f2d1f 0%, #0f1117 45%, #0d1a2e 100%)",
       }}
     >
+      <ForceDarkTheme />
       {/* Floating ambient orbs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -left-24 w-[36rem] h-[36rem] rounded-full bg-emerald-500/15 blur-3xl animate-[pz-blob_14s_ease-in-out_infinite]" />
@@ -112,7 +115,7 @@ function Hero() {
         <LogoAnimated size={120} />
       </div>
 
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider mb-7 border" style={{ background: "rgba(16,185,129,0.1)", borderColor: "rgba(16,185,129,0.25)", color: "#34d399" }}>
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider mb-7 border" style={{ background: "rgba(16,185,129,0.1)", borderColor: "rgba(16,185,129,0.25)", color: ink("#34d399") }}>
         <Sparkles size={12} />
         <span>Open beta · Free to join</span>
       </div>
@@ -205,7 +208,7 @@ function Pillars() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
       <div className="text-center mb-14">
-        <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: "#34d399" }}>
+        <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: ink("#34d399") }}>
           Four pillars, one place
         </p>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>
@@ -269,7 +272,7 @@ function Features() {
                   className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
                   style={{ background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.25)" }}
                 >
-                  <Icon size={16} style={{ color: "#34d399" }} />
+                  <Icon size={16} style={{ color: ink("#34d399") }} />
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-semibold mb-0.5" style={{ color: "var(--text-primary)" }}>
@@ -312,7 +315,7 @@ function ForEveryone() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
       <div className="text-center mb-14">
-        <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: "#fbbf24" }}>
+        <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: ink("#fbbf24") }}>
           Whoever you are
         </p>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight max-w-3xl mx-auto" style={{ color: "var(--text-primary)" }}>
@@ -374,7 +377,7 @@ function FinalCTA() {
         Join free <ArrowRight size={16} />
       </Link>
       <p className="text-xs mt-5" style={{ color: "var(--text-secondary)" }}>
-        Already have an account? <Link href="/login" className="font-semibold underline-offset-2 hover:underline" style={{ color: "#34d399" }}>Sign in</Link>
+        Already have an account? <Link href="/login" className="font-semibold underline-offset-2 hover:underline" style={{ color: ink("#34d399") }}>Sign in</Link>
       </p>
     </section>
   )

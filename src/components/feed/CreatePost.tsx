@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState, useRef, useEffect, useCallback } from "react"
 import dynamic from "next/dynamic"
 import { ImageIcon, Film, Smile, BarChart2, BarChart3, Send, User, X, TrendingUp, TrendingDown, Minus, Loader2, Star } from "lucide-react"
@@ -483,7 +484,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                             </div>
                             <span className="text-[9px] px-1.5 py-0.5 rounded flex-shrink-0 font-medium"
                               style={{ background: r.source === "crypto" ? "rgba(16,185,129,0.15)" : "rgba(59,130,246,0.15)",
-                                       color: r.source === "crypto" ? "#10b981" : "#60a5fa" }}>
+                                       color: r.source === "crypto" ? ink("#10b981") : ink("#60a5fa") }}>
                               {r.type ?? r.source}
                             </span>
                           </button>
@@ -497,21 +498,21 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   <button type="button" onClick={() => setAnalysis((a) => ({ ...a, direction: "bullish" }))}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
                     style={analysis.direction === "bullish"
-                      ? { background: "#10b98122", color: "#10b981", border: "1px solid #10b98155" }
+                      ? { background: "#10b98122", color: ink("#10b981"), border: "1px solid #10b98155" }
                       : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                     <TrendingUp size={12} /> Bullish
                   </button>
                   <button type="button" onClick={() => setAnalysis((a) => ({ ...a, direction: "bearish" }))}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
                     style={analysis.direction === "bearish"
-                      ? { background: "#ef444422", color: "#ef4444", border: "1px solid #ef444455" }
+                      ? { background: "#ef444422", color: ink("#ef4444"), border: "1px solid #ef444455" }
                       : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                     <TrendingDown size={12} /> Bearish
                   </button>
                   <button type="button" onClick={() => setAnalysis((a) => ({ ...a, direction: "neutral" }))}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
                     style={analysis.direction === "neutral"
-                      ? { background: "#eab30822", color: "#eab308", border: "1px solid #eab30855" }
+                      ? { background: "#eab30822", color: ink("#eab308"), border: "1px solid #eab30855" }
                       : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                     <Minus size={12} /> Neutral
                   </button>
@@ -566,7 +567,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                             )}
                           </div>
                           <span className="text-xs font-semibold tabular-nums"
-                            style={{ color: livePrice.up ? "#10b981" : "#ef4444" }}>
+                            style={{ color: livePrice.up ? ink("#10b981") : ink("#ef4444") }}>
                             {livePrice.up ? "▲" : "▼"} {Math.abs(livePrice.change).toFixed(2)}%
                           </span>
                         </>
@@ -585,7 +586,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                     onClick={() => setAnalysis((a) => ({ ...a, timeframe: tf }))}
                     className="px-2.5 py-1 rounded-lg text-xs font-semibold transition-all"
                     style={analysis.timeframe === tf
-                      ? { background: "rgba(16,185,129,0.2)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)" }
+                      ? { background: "rgba(16,185,129,0.2)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.4)" }
                       : { background: "var(--bg-card)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                     {tf}
                   </button>
@@ -605,7 +606,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                     { key: "target", label: "Target 🎯", color: "#10b981",               placeholder: targetPh },
                   ].map(({ key, label, color, placeholder }) => (
                     <div key={key}>
-                      <p className="text-[10px] mb-1 font-medium" style={{ color }}>{label}</p>
+                      <p className="text-[10px] mb-1 font-medium" style={{ color: ink(color) }}>{label}</p>
                       <input
                         value={(analysis as any)[key]}
                         onChange={(e) => setAnalysis((a) => ({ ...a, [key]: e.target.value }))}
@@ -662,7 +663,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                         onClick={() => setAnalysis((a) => ({ ...a, catalyst: active ? "" : c.key }))}
                         className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all"
                         style={active
-                          ? { background: "rgba(16,185,129,0.2)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)" }
+                          ? { background: "rgba(16,185,129,0.2)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.4)" }
                           : { background: "var(--bg-card)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                         <span>{c.emoji}</span> {c.label}
                       </button>
@@ -684,7 +685,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                         onClick={() => setAnalysis((a) => ({ ...a, position: active ? "" : p.key }))}
                         className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all"
                         style={active
-                          ? { background: p.color + "22", color: p.color, border: `1px solid ${p.color}55` }
+                          ? { background: p.color + "22", color: ink(p.color), border: `1px solid ${p.color}55` }
                           : { background: "var(--bg-card)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                         <span>{p.emoji}</span> {p.label}
                       </button>
@@ -730,7 +731,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                           isBlocked
                             ? { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)", opacity: 0.35, cursor: "not-allowed" }
                           : active
-                            ? { background: tint + "22", color: tint, border: `1px solid ${tint}66`, cursor: isLocked ? "default" : "pointer" }
+                            ? { background: tint + "22", color: ink(tint), border: `1px solid ${tint}66`, cursor: isLocked ? "default" : "pointer" }
                             : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }
                         }>
                         {isLocked && <span aria-hidden="true">🔒</span>}
@@ -772,7 +773,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 {/* Photo */}
                 <button type="button" onClick={() => fileRef.current?.click()}
                   className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                  style={{ color: imageData ? "#10b981" : "var(--text-secondary)" }}
+                  style={{ color: imageData ? ink("#10b981") : "var(--text-secondary)" }}
                   title="Upload photo">
                   <ImageIcon size={15} /> <span className="hidden sm:inline">Photo</span>
                 </button>
@@ -780,7 +781,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 {/* Video */}
                 <button type="button" onClick={() => videoRef.current?.click()}
                   className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                  style={{ color: videoData ? "#10b981" : "var(--text-secondary)" }}
+                  style={{ color: videoData ? ink("#10b981") : "var(--text-secondary)" }}
                   title="Upload video (≤20 MB, ~30 sec)">
                   <Film size={15} /> <span className="hidden sm:inline">Video</span>
                 </button>
@@ -790,7 +791,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   <button ref={gifBtnRef} type="button"
                     onClick={() => { const next = !showGif; if (next) setPickerPos(calcPos(gifBtnRef)); setShowGif(next); setShowEmoji(false) }}
                     className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                    style={{ color: showGif ? "#10b981" : "var(--text-secondary)" }}
+                    style={{ color: showGif ? ink("#10b981") : "var(--text-secondary)" }}
                     title="Add GIF">
                     <Film size={15} /> <span className="hidden sm:inline">GIF</span>
                   </button>
@@ -801,7 +802,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                   <button ref={emojiBtnRef} type="button"
                     onClick={() => { const next = !showEmoji; if (next) setPickerPos(calcPos(emojiBtnRef)); setShowEmoji(next); setShowGif(false) }}
                     className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                    style={{ color: showEmoji ? "#10b981" : "var(--text-secondary)" }}
+                    style={{ color: showEmoji ? ink("#10b981") : "var(--text-secondary)" }}
                     title="Emoji">
                     <Smile size={15} /> <span className="hidden sm:inline">Emoji</span>
                   </button>
@@ -811,7 +812,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 <button type="button"
                   onClick={() => setShowAnalysis((v) => !v)}
                   className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                  style={{ color: showAnalysis ? "#10b981" : "var(--text-secondary)" }}
+                  style={{ color: showAnalysis ? ink("#10b981") : "var(--text-secondary)" }}
                   title="Share a trade idea">
                   <BarChart2 size={15} /> <span className="hidden sm:inline">Trade idea</span>
                 </button>
@@ -820,7 +821,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 <button type="button"
                   onClick={() => setShowPollDialog(true)}
                   className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                  style={{ color: poll ? "#10b981" : "var(--text-secondary)" }}
+                  style={{ color: poll ? ink("#10b981") : "var(--text-secondary)" }}
                   title="Add a poll">
                   <BarChart3 size={15} /> <span className="hidden sm:inline">Poll</span>
                 </button>
@@ -828,7 +829,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 {/* Remaining-character countdown */}
                 <span
                   className="text-xs font-medium tabular-nums px-2"
-                  style={{ color: 1000 - content.length < 100 ? "#f59e0b" : "var(--text-secondary)" }}
+                  style={{ color: 1000 - content.length < 100 ? ink("#f59e0b") : "var(--text-secondary)" }}
                   title={`${1000 - content.length} characters remaining`}
                 >
                   {1000 - content.length}

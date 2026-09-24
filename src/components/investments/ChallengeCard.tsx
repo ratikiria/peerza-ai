@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Users, Lock, Globe, Calendar, TrendingUp, Briefcase, Zap, Shuffle, Share2 } from "lucide-react";
@@ -65,7 +66,7 @@ export default function ChallengeCard({ challenge, onJoin }: Props) {
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span
               className="text-xs font-semibold px-2 py-0.5 rounded-full"
-              style={{ background: statusColor[challenge.status] + "22", color: statusColor[challenge.status] }}
+              style={{ background: statusColor[challenge.status] + "22", color: ink(statusColor[challenge.status]) }}
             >
               {statusLabel[challenge.status]}
             </span>
@@ -75,7 +76,7 @@ export default function ChallengeCard({ challenge, onJoin }: Props) {
               return (
                 <span
                   className="inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
-                  style={{ background: meta.color + "22", color: meta.color }}
+                  style={{ background: meta.color + "22", color: ink(meta.color) }}
                 >
                   <Icon size={9} />
                   {meta.label}

@@ -127,6 +127,122 @@ body {
 [data-theme="light"] .to-gray-900   { --tw-gradient-to:   #ffffff !important; }
 [data-theme="light"] .via-gray-900  { --tw-gradient-via:  #ffffff !important; }
 
+[data-theme="light"] .text-gray-50 { color: #15171c !important; }
+[data-theme="light"] .bg-gray-950\/20 { background-color: rgba(247,248,251,0.4) !important; }
+[data-theme="light"] .bg-gray-950\/30 { background-color: rgba(247,248,251,0.5) !important; }
+[data-theme="light"] .bg-gray-950\/40 { background-color: rgba(247,248,251,0.6) !important; }
+[data-theme="light"] .bg-gray-950\/50 { background-color: rgba(247,248,251,0.7) !important; }
+[data-theme="light"] .bg-gray-950\/60 { background-color: rgba(247,248,251,0.8) !important; }
+[data-theme="light"] .bg-gray-900\/80 { background-color: rgba(255,255,255,0.9) !important; }
+[data-theme="light"] .bg-gray-800\/30 { background-color: rgba(238,240,245,0.45) !important; }
+[data-theme="light"] .bg-gray-800\/40 { background-color: rgba(238,240,245,0.55) !important; }
+[data-theme="light"] .bg-gray-800\/60 { background-color: rgba(238,240,245,0.75) !important; }
+[data-theme="light"] .bg-gray-800\/80 { background-color: rgba(238,240,245,0.9) !important; }
+[data-theme="light"] .bg-gray-700 { background-color: #e2e5ec !important; }
+[data-theme="light"] .bg-gray-700\/50 { background-color: rgba(226,229,236,0.7) !important; }
+[data-theme="light"] .hover\:bg-gray-700:hover { background-color: #e2e5ec !important; }
+[data-theme="light"] .hover\:bg-gray-800\/50:hover { background-color: rgba(238,240,245,0.7) !important; }
+[data-theme="light"] .hover\:bg-gray-800\/60:hover { background-color: rgba(238,240,245,0.8) !important; }
+[data-theme="light"] .from-gray-900\/80 { --tw-gradient-from: rgba(255,255,255,0.9) !important; }
+/* Dark hero gradients (games, investments, web3) → soft tints of the same hue. */
+[data-theme="light"] .via-gray-950 { --tw-gradient-via: #f7f8fb !important; }
+[data-theme="light"] .from-emerald-950\/60 { --tw-gradient-from: rgba(16,185,129,0.12) !important; }
+[data-theme="light"] .from-emerald-950\/20 { --tw-gradient-from: rgba(16,185,129,0.06) !important; }
+[data-theme="light"] .to-emerald-950\/30   { --tw-gradient-to:   rgba(16,185,129,0.06) !important; }
+[data-theme="light"] .from-indigo-950\/60  { --tw-gradient-from: rgba(99,102,241,0.12) !important; }
+[data-theme="light"] .from-indigo-950\/30  { --tw-gradient-from: rgba(99,102,241,0.06) !important; }
+[data-theme="light"] .to-indigo-950\/40    { --tw-gradient-to:   rgba(99,102,241,0.08) !important; }
+[data-theme="light"] .to-indigo-950\/30    { --tw-gradient-to:   rgba(99,102,241,0.06) !important; }
+[data-theme="light"] .from-purple-950\/60  { --tw-gradient-from: rgba(168,85,247,0.12) !important; }
+[data-theme="light"] .from-purple-950\/40  { --tw-gradient-from: rgba(168,85,247,0.08) !important; }
+[data-theme="light"] .to-violet-950\/20    { --tw-gradient-to:   rgba(139,92,246,0.06) !important; }
+[data-theme="light"] .to-rose-950\/20      { --tw-gradient-to:   rgba(244,63,94,0.06) !important; }
+[data-theme="light"] .to-rose-950\/10      { --tw-gradient-to:   rgba(244,63,94,0.06) !important; }
+[data-theme="light"] .to-orange-950\/10    { --tw-gradient-to:   rgba(249,115,22,0.06) !important; }
+[data-theme="light"] .from-pink-950\/20    { --tw-gradient-from: rgba(236,72,153,0.06) !important; }
+[data-theme="light"] .from-cyan-950\/30    { --tw-gradient-from: rgba(6,182,212,0.06) !important; }
+[data-theme="light"] .from-amber-950\/30   { --tw-gradient-from: rgba(245,158,11,0.06) !important; }
+[data-theme="light"] .from-amber-950\/20   { --tw-gradient-from: rgba(245,158,11,0.06) !important; }
+[data-theme="light"] .border-gray-700\/50 { border-color: rgba(212,216,224,0.7) !important; }
+[data-theme="light"] .border-gray-700\/60 { border-color: rgba(212,216,224,0.8) !important; }
+[data-theme="light"] .border-white\/5 { border-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] .border-white\/20 { border-color: rgba(0,0,0,0.12) !important; }
+[data-theme="light"] .bg-white\/5 { background-color: rgba(0,0,0,0.03) !important; }
+[data-theme="light"] .bg-white\/10 { background-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] .hover\:bg-white\/5:hover { background-color: rgba(0,0,0,0.04) !important; }
+[data-theme="light"] .hover\:bg-white\/10:hover { background-color: rgba(0,0,0,0.06) !important; }
+[data-theme="light"] .disabled\:bg-gray-800:disabled { background-color: #eef0f5 !important; }
+[data-theme="light"] .disabled\:text-gray-600:disabled { color: #8a90a0 !important; }
+[data-theme="light"] .disabled\:text-gray-500:disabled { color: #8a90a0 !important; }
+
+/* Surfaces that stay dark in both themes (full-screen call over video).
+   Undo the light remaps above for the classes those surfaces use. */
+[data-theme="light"] .pz-dark { color-scheme: dark; }
+[data-theme="light"] .pz-dark.bg-gray-950 { background-color: #030712 !important; }
+[data-theme="light"] .pz-dark .text-white { color: #ffffff !important; }
+[data-theme="light"] .pz-dark .text-gray-100 { color: #f3f4f6 !important; }
+[data-theme="light"] .pz-dark .text-gray-400 { color: #9ca3af !important; }
+[data-theme="light"] .pz-dark .text-rose-300 { color: #fda4af !important; }
+[data-theme="light"] .pz-dark .bg-white\/10 { background-color: rgba(255,255,255,0.1) !important; }
+[data-theme="light"] .pz-dark .hover\:bg-white\/20:hover { background-color: rgba(255,255,255,0.2) !important; }
+
+/* ─── Light-mode accent text ─────────────────────────────────────────────────
+   Accent shades 50–400 (text-emerald-400, text-amber-300…) are dark-mode ink:
+   on white they fall to ~1.5–2.5:1 contrast. Point the palette variables at
+   the 700/800 shades instead so every utility built on them (text, opacity
+   variants, hover:, icons via currentColor) stays readable. 500+ is untouched
+   so the solid brand buttons (bg-emerald-500 etc.) keep their color. */
+[data-theme="light"] {
+  --color-red-50: #991b1b;     --color-red-100: #991b1b;     --color-red-200: #991b1b;     --color-red-300: #b91c1c;     --color-red-400: #b91c1c;
+  --color-orange-50: #9a3412;  --color-orange-100: #9a3412;  --color-orange-200: #9a3412;  --color-orange-300: #c2410c;  --color-orange-400: #c2410c;
+  --color-amber-50: #92400e;   --color-amber-100: #92400e;   --color-amber-200: #92400e;   --color-amber-300: #b45309;   --color-amber-400: #b45309;
+  --color-yellow-50: #854d0e;  --color-yellow-100: #854d0e;  --color-yellow-200: #854d0e;  --color-yellow-300: #a16207;  --color-yellow-400: #a16207;
+  --color-lime-50: #3f6212;    --color-lime-100: #3f6212;    --color-lime-200: #3f6212;    --color-lime-300: #4d7c0f;    --color-lime-400: #4d7c0f;
+  --color-green-50: #166534;   --color-green-100: #166534;   --color-green-200: #166534;   --color-green-300: #15803d;   --color-green-400: #15803d;
+  --color-emerald-50: #065f46; --color-emerald-100: #065f46; --color-emerald-200: #065f46; --color-emerald-300: #047857; --color-emerald-400: #047857;
+  --color-teal-50: #115e59;    --color-teal-100: #115e59;    --color-teal-200: #115e59;    --color-teal-300: #0f766e;    --color-teal-400: #0f766e;
+  --color-cyan-50: #155e75;    --color-cyan-100: #155e75;    --color-cyan-200: #155e75;    --color-cyan-300: #0e7490;    --color-cyan-400: #0e7490;
+  --color-sky-50: #075985;     --color-sky-100: #075985;     --color-sky-200: #075985;     --color-sky-300: #0369a1;     --color-sky-400: #0369a1;
+  --color-blue-50: #1e40af;    --color-blue-100: #1e40af;    --color-blue-200: #1e40af;    --color-blue-300: #1d4ed8;    --color-blue-400: #1d4ed8;
+  --color-indigo-50: #3730a3;  --color-indigo-100: #3730a3;  --color-indigo-200: #3730a3;  --color-indigo-300: #4338ca;  --color-indigo-400: #4338ca;
+  --color-violet-50: #5b21b6;  --color-violet-100: #5b21b6;  --color-violet-200: #5b21b6;  --color-violet-300: #6d28d9;  --color-violet-400: #6d28d9;
+  --color-purple-50: #6b21a8;  --color-purple-100: #6b21a8;  --color-purple-200: #6b21a8;  --color-purple-300: #7e22ce;  --color-purple-400: #7e22ce;
+  --color-fuchsia-50: #86198f; --color-fuchsia-100: #86198f; --color-fuchsia-200: #86198f; --color-fuchsia-300: #a21caf; --color-fuchsia-400: #a21caf;
+  --color-pink-50: #9d174d;    --color-pink-100: #9d174d;    --color-pink-200: #9d174d;    --color-pink-300: #be185d;    --color-pink-400: #be185d;
+  --color-rose-50: #9f1239;    --color-rose-100: #9f1239;    --color-rose-200: #9f1239;    --color-rose-300: #be123c;    --color-rose-400: #be123c;
+}
+/* Solid 400 fills are buttons with dark text on a bright fill — keep them bright. */
+[data-theme="light"] .bg-emerald-400, [data-theme="light"] .hover\:bg-emerald-400:hover { background-color: oklch(76.5% 0.177 163.223) !important; }
+[data-theme="light"] .bg-indigo-400,  [data-theme="light"] .hover\:bg-indigo-400:hover  { background-color: oklch(67.3% 0.182 276.935) !important; }
+[data-theme="light"] .bg-rose-400,    [data-theme="light"] .hover\:bg-rose-400:hover    { background-color: oklch(71.2% 0.194 13.428) !important; }
+[data-theme="light"] .bg-amber-400,   [data-theme="light"] .hover\:bg-amber-400:hover   { background-color: oklch(82.8% 0.189 84.429) !important; }
+[data-theme="light"] .bg-purple-400,  [data-theme="light"] .hover\:bg-purple-400:hover  { background-color: oklch(71.4% 0.203 305.504) !important; }
+
+/* ─── ink(): inline accent hexes → readable shade in light mode ────────────
+   Consumed via ink() in src/lib/ink.ts as var(--ink-<hex>, <hex>). Only
+   defined here, so dark mode always falls through to the original hex. */
+[data-theme="light"] {
+  --ink-fecaca: #991b1b; --ink-fca5a5: #991b1b; --ink-f87171: #b91c1c; --ink-ef4444: #b91c1c;
+  --ink-fed7aa: #9a3412; --ink-fdba74: #9a3412; --ink-fb923c: #c2410c; --ink-f97316: #c2410c;
+  --ink-fde68a: #92400e; --ink-fcd34d: #92400e; --ink-fbbf24: #b45309; --ink-f59e0b: #b45309;
+  --ink-fef08a: #854d0e; --ink-fde047: #854d0e; --ink-facc15: #a16207; --ink-eab308: #a16207;
+  --ink-d9f99d: #3f6212; --ink-bef264: #3f6212; --ink-a3e635: #4d7c0f; --ink-84cc16: #4d7c0f;
+  --ink-bbf7d0: #166534; --ink-86efac: #166534; --ink-4ade80: #15803d; --ink-22c55e: #15803d;
+  --ink-a7f3d0: #065f46; --ink-6ee7b7: #065f46; --ink-34d399: #047857; --ink-10b981: #047857;
+  --ink-99f6e4: #115e59; --ink-5eead4: #115e59; --ink-2dd4bf: #0f766e; --ink-14b8a6: #0f766e;
+  --ink-a5f3fc: #155e75; --ink-67e8f9: #155e75; --ink-22d3ee: #0e7490; --ink-06b6d4: #0e7490;
+  --ink-bae6fd: #075985; --ink-7dd3fc: #075985; --ink-38bdf8: #0369a1; --ink-0ea5e9: #0369a1;
+  --ink-bfdbfe: #1e40af; --ink-93c5fd: #1e40af; --ink-60a5fa: #1d4ed8; --ink-3b82f6: #1d4ed8;
+  --ink-c7d2fe: #3730a3; --ink-a5b4fc: #4338ca; --ink-818cf8: #4338ca; --ink-6366f1: #4338ca;
+  --ink-ddd6fe: #5b21b6; --ink-c4b5fd: #5b21b6; --ink-a78bfa: #6d28d9; --ink-8b5cf6: #6d28d9;
+  --ink-e9d5ff: #6b21a8; --ink-d8b4fe: #6b21a8; --ink-c084fc: #7e22ce; --ink-a855f7: #7e22ce;
+  --ink-f5d0fe: #86198f; --ink-f0abfc: #86198f; --ink-e879f9: #a21caf; --ink-d946ef: #a21caf;
+  --ink-fbcfe8: #9d174d; --ink-f9a8d4: #9d174d; --ink-f472b6: #be185d; --ink-ec4899: #be185d;
+  --ink-fecdd3: #9f1239; --ink-fda4af: #9f1239; --ink-fb7185: #be123c; --ink-f43f5e: #be123c;
+  --ink-9ca3af: #4b5563; --ink-6b7280: #4b5563; --ink-94a3b8: #475569; --ink-64748b: #475569;
+  --ink-8a8d9a: #5b6171;
+}
+
 /* ── LogoAnimated (rocket landing → moon rising → "P") ──────────────── */
 @keyframes pza-rocket-land {
   0%   { transform: translateY(calc(-1 * var(--pza-drop, 58px))); }

@@ -1,3 +1,4 @@
+import { ink } from "@/lib/ink"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import Logo, { LogoMark } from "@/components/brand/Logo"
@@ -44,7 +45,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
             color: "var(--text-primary)",
           }}
         >
-          <strong style={{ color: "#10b981" }}>Plain-language summary, subject to ongoing legal review.</strong>{" "}
+          <strong style={{ color: ink("#10b981") }}>Plain-language summary, subject to ongoing legal review.</strong>{" "}
           We have written these documents in clear language to describe how Peerza.ai actually works.
           They are subject to attorney review and may be updated; the version on this page is the one
           that applies to your use of the service. Email{" "}
@@ -75,7 +76,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
         .legal-prose p { margin-bottom: 12px; color: var(--text-primary); opacity: 0.92; }
         .legal-prose ul { margin: 8px 0 16px 0; padding-left: 22px; list-style: disc; }
         .legal-prose li { margin-bottom: 6px; color: var(--text-primary); opacity: 0.92; }
-        .legal-prose a { color: #10b981; text-decoration: underline; text-decoration-color: rgba(16,185,129,0.4); text-underline-offset: 2px; }
+        .legal-prose a { color: var(--ink-10b981, #10b981); text-decoration: underline; text-decoration-color: rgba(16,185,129,0.4); text-underline-offset: 2px; }
         .legal-prose a:hover { text-decoration-color: #10b981; }
         .legal-prose strong { color: var(--text-primary); font-weight: 700; }
         .legal-prose code { background: var(--bg-card); padding: 1px 6px; border-radius: 4px; font-size: 12px; }

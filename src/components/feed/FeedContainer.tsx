@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useRef, useCallback, Suspense } from "react"
 import Link from "next/link"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
@@ -260,7 +261,7 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
           </div>
           <button onClick={clearTickerFilter}
             className="flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg transition-colors hover:bg-orange-500/10"
-            style={{ color: "#fb923c" }}>
+            style={{ color: ink("#fb923c") }}>
             <X size={11} /> Clear
           </button>
         </div>
@@ -285,7 +286,7 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
                 )}
                 className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl transition-all"
                 style={active
-                  ? { background: tint + "22", color: tint, border: `1px solid ${tint}66` }
+                  ? { background: tint + "22", color: ink(tint), border: `1px solid ${tint}66` }
                   : { background: "var(--bg-card)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
               >
                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: active ? tint : "var(--text-secondary)" }} />
@@ -482,7 +483,7 @@ function EmptyFeedState({ variant, tickerFilter, selectedCount, userName, onClea
           <Link
             href="/ai-tutor"
             className="inline-flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2.5 rounded-xl border transition-all hover:bg-white/5 w-full sm:w-auto"
-            style={{ borderColor: "rgba(99,102,241,0.4)", color: "#a5b4fc", background: "rgba(99,102,241,0.08)" }}
+            style={{ borderColor: "rgba(99,102,241,0.4)", color: ink("#a5b4fc"), background: "rgba(99,102,241,0.08)" }}
           >
             <BrainCircuit size={13} /> Ask AI tutor
           </Link>

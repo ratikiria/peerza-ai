@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react";
 import { X, ExternalLink } from "lucide-react";
 import TradingViewChart from "@/components/workspace/TradingViewChart";
@@ -74,7 +75,7 @@ export default function ChartModal({ source, id, symbol, name, onClose }: Props)
             </div>
             <span
               className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded flex-shrink-0"
-              style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}
+              style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}
             >
               TradingView
             </span>

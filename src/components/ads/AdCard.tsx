@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Building2, ExternalLink, X, Info, ShieldCheck } from "lucide-react"
@@ -100,7 +101,7 @@ export default function AdCard({ ad }: { ad: AdCardData }) {
               <ShieldCheck size={12} className="text-emerald-400" />
             )}
             <span className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
-              style={{ background: "rgba(245,158,11,0.2)", color: "#f59e0b" }}>
+              style={{ background: "rgba(245,158,11,0.2)", color: ink("#f59e0b") }}>
               Sponsored
             </span>
           </div>

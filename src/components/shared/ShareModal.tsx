@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import {
   X, Repeat2, Send, Copy, Search, User, Check, Loader2,
@@ -314,7 +315,7 @@ export default function ShareModal({ open, onClose, payload, onShared }: ShareMo
                     </div>
                     <button onClick={() => setRecipient(null)}
                       className="text-[11px] font-semibold px-2 py-1 rounded-md hover:bg-emerald-500/10"
-                      style={{ color: "#10b981" }}>
+                      style={{ color: ink("#10b981") }}>
                       Change
                     </button>
                   </div>
@@ -347,7 +348,7 @@ export default function ShareModal({ open, onClose, payload, onShared }: ShareMo
               <button
                 onClick={copyLink}
                 className="w-full flex items-center justify-center gap-2 text-sm font-semibold py-2.5 rounded-xl transition-all"
-                style={{ background: copied ? "rgba(16,185,129,0.15)" : "#10b981", color: copied ? "#10b981" : "#0f1117" }}>
+                style={{ background: copied ? "rgba(16,185,129,0.15)" : "#10b981", color: copied ? ink("#10b981") : "#0f1117" }}>
                 {copied ? <><Check size={14} /> Copied!</> : <><Copy size={14} /> Copy link</>}
               </button>
             </>
@@ -367,7 +368,7 @@ function TabButton({ active, onClick, icon, label }: { active: boolean; onClick:
     <button onClick={onClick}
       className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-lg transition-all"
       style={active
-        ? { background: "rgba(16,185,129,0.15)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)" }
+        ? { background: "rgba(16,185,129,0.15)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.4)" }
         : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
       {icon} {label}
     </button>
@@ -431,7 +432,7 @@ function ChallengePreviewCard({ challenge }: { challenge: ChallengePreview }) {
           )}
           <span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>
             Return <span className="font-semibold tabular-nums"
-              style={{ color: challenge.returnPct >= 0 ? "#10b981" : "#ef4444" }}>
+              style={{ color: challenge.returnPct >= 0 ? ink("#10b981") : ink("#ef4444") }}>
               {challenge.returnPct >= 0 ? "+" : ""}{challenge.returnPct.toFixed(2)}%
             </span>
           </span>

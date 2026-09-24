@@ -60,7 +60,7 @@ export default function AssetNews({ q, limit = 5 }: Props) {
       ) : news.length === 0 ? (
         <div className="px-3 py-6 text-center text-xs text-white/30">No recent news</div>
       ) : (
-        <div className="divide-y" style={{ borderColor: "var(--border)" }}>
+        <div className="divide-y divide-[var(--border)]">
           {news.slice(0, limit).map((item) => (
             <a
               key={item.uuid}

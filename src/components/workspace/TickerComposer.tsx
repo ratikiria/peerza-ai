@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState } from "react"
 import { TrendingUp, TrendingDown, Minus, Send, Image as ImageIcon, X, Loader2 } from "lucide-react"
 
@@ -119,7 +120,7 @@ export default function TickerComposer({ ticker, onPosted, onClose }: Props) {
             >
               <span style={{
                 fontSize: 12,
-                color: v <= conviction ? "#eab308" : "var(--text-secondary)",
+                color: v <= conviction ? ink("#eab308") : "var(--text-secondary)",
                 opacity: v <= conviction ? 1 : 0.4,
               }}>★</span>
             </button>
@@ -224,7 +225,7 @@ function DirChip({
       className="flex-1 flex items-center justify-center gap-1 text-[10px] font-bold uppercase tracking-wider py-1.5 rounded-md transition-all"
       style={{
         background: active ? `${color}22` : "var(--bg-base)",
-        color: active ? color : "var(--text-secondary)",
+        color: active ? ink(color) : "var(--text-secondary)",
         border: `1px solid ${active ? color : "var(--border)"}`,
       }}
     >

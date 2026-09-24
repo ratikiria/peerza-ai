@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import { Search, Star, X, Users, PanelRightClose, PanelRightOpen } from "lucide-react"
 import TradingViewChart from "./TradingViewChart"
@@ -155,7 +156,7 @@ export default function Workspace() {
       >
         <div className="flex items-center gap-2 min-w-0">
           <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md"
-            style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
+            style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}>
             Workspace
           </span>
           <span className="text-sm font-bold tabular-nums truncate" style={{ color: "var(--text-primary)" }}>
@@ -164,7 +165,7 @@ export default function Workspace() {
           <button
             onClick={() => isPinned ? unpin(symbol) : pinCurrent(symbol.split(":").pop() ?? symbol)}
             className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--bg-base)]"
-            style={{ color: isPinned ? "#eab308" : "var(--text-secondary)" }}
+            style={{ color: isPinned ? ink("#eab308") : "var(--text-secondary)" }}
             title={isPinned ? "Unpin" : "Pin to workspace"}
             aria-label={isPinned ? "Unpin symbol" : "Pin symbol"}
           >
@@ -200,7 +201,7 @@ export default function Workspace() {
           style={{
             background: showCommunity ? "rgba(16,185,129,0.15)" : "var(--bg-base)",
             border: "1px solid var(--border)",
-            color: showCommunity ? "#10b981" : "var(--text-secondary)",
+            color: showCommunity ? ink("#10b981") : "var(--text-secondary)",
           }}
           title={showCommunity ? "Hide side panel" : "Show side panel"}
           aria-label={showCommunity ? "Hide side panel" : "Show side panel"}
@@ -329,7 +330,7 @@ function Row({
     >
       <div className="min-w-0 flex-1">
         <p className="text-xs font-semibold truncate"
-          style={{ color: active ? "#10b981" : "var(--text-primary)" }}>
+          style={{ color: active ? ink("#10b981") : "var(--text-primary)" }}>
           {label}
         </p>
         <p className="text-[10px] truncate" style={{ color: "var(--text-secondary)" }}>

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { TrendingUp, TrendingDown, Minus, User, Briefcase, Zap, Shuffle } from "lucide-react"
@@ -162,7 +163,7 @@ function SharedCallPreview({
     <div className={cls}>
       <div className="flex items-center gap-2">
         <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
-          style={{ background: dirColor + "33", color: dirColor }}>
+          style={{ background: dirColor + "33", color: ink(dirColor) }}>
           <DirIcon size={13} />
         </div>
         <div className="min-w-0 flex-1">

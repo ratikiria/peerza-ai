@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState } from "react"
 import { X, Plus, Loader2, BarChart3 } from "lucide-react"
 
@@ -132,7 +133,7 @@ export default function PollComposerDialog({ onCreate, onClose }: PollComposerDi
                 type="button"
                 onClick={addOption}
                 className="mt-2 text-[11px] font-semibold flex items-center gap-1 px-2 py-1 rounded-md hover:bg-[var(--bg-base)]"
-                style={{ color: "#10b981" }}
+                style={{ color: ink("#10b981") }}
               >
                 <Plus size={11} /> Add option
               </button>

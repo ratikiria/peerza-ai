@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useCallback, useEffect, useState } from "react"
 import { ArrowLeft, ArrowRight, X } from "lucide-react"
 
@@ -270,7 +271,7 @@ export default function GuidedTour() {
 
         <div
           className="text-[10px] font-semibold uppercase tracking-wider mb-1.5"
-          style={{ color: "#10b981" }}
+          style={{ color: ink("#10b981") }}
         >
           Step {step + 1} of {total}
         </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { ASSETS, type AssetClass, type Returns, PRESETS } from "./scenarios"
 
 interface Props {
@@ -68,7 +69,7 @@ export default function AllocationPanel({ allocation, onChange, onLockIn, disabl
                   <span className="text-xs font-medium text-gray-300 truncate">{a.label}</span>
                   <span
                     className="text-xs font-mono font-bold tabular-nums"
-                    style={{ color: a.color }}
+                    style={{ color: ink(a.color) }}
                   >
                     {value}%
                   </span>

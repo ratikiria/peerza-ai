@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState } from "react"
 import { CreditCard, Bitcoin, Loader2 } from "lucide-react"
 import { PRO_PLANS, type ProPlanId } from "@/lib/pro"
@@ -71,7 +72,7 @@ export default function ProPricingClient({ isPro }: Props) {
               style={{
                 background: active ? "rgba(16,185,129,0.18)" : "var(--bg-card)",
                 border: active ? "1px solid rgba(16,185,129,0.6)" : "1px solid var(--border)",
-                color: active ? "#10b981" : "var(--text-secondary)",
+                color: active ? ink("#10b981") : "var(--text-secondary)",
               }}
             >
               {p.label}
@@ -110,7 +111,7 @@ export default function ProPricingClient({ isPro }: Props) {
             style={{
               background: method === "card" ? "rgba(16,185,129,0.18)" : "var(--bg-card)",
               border: method === "card" ? "1px solid rgba(16,185,129,0.6)" : "1px solid var(--border)",
-              color: method === "card" ? "#10b981" : "var(--text-secondary)",
+              color: method === "card" ? ink("#10b981") : "var(--text-secondary)",
             }}
           >
             <CreditCard size={14} /> Card (international)

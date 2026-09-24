@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState } from "react"
 import Link from "next/link"
 import { TrendingUp, TrendingDown, Volume2, Sparkles, Loader2, Calendar } from "lucide-react"
@@ -95,7 +96,7 @@ export default function DictionaryEntryCard({ entry, expanded = false, onToggle,
             </p>
             <div className="flex items-center gap-2 mt-2">
               <span className="text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded"
-                style={{ background: `${cat.color}22`, color: cat.color, border: `1px solid ${cat.color}55` }}>
+                style={{ background: `${cat.color}22`, color: ink(cat.color), border: `1px solid ${cat.color}55` }}>
                 {cat.emoji} {cat.label}
               </span>
               <span className="text-[10px] inline-flex items-center gap-1" style={{ color: "var(--text-secondary)" }}>
@@ -130,7 +131,7 @@ export default function DictionaryEntryCard({ entry, expanded = false, onToggle,
           </div>
           <div className="flex items-center gap-2 mt-1.5">
             <span className="text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded"
-              style={{ background: `${cat.color}22`, color: cat.color, border: `1px solid ${cat.color}55` }}>
+              style={{ background: `${cat.color}22`, color: ink(cat.color), border: `1px solid ${cat.color}55` }}>
               {cat.emoji} {cat.label}
             </span>
             <span className="text-[11px] inline-flex items-center gap-1" style={{ color: "var(--text-secondary)" }}>
@@ -218,7 +219,7 @@ export default function DictionaryEntryCard({ entry, expanded = false, onToggle,
             onClick={readAloud}
             disabled={speaking}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
-            style={{ background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.4)", color: "#10b981" }}
+            style={{ background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.4)", color: ink("#10b981") }}
           >
             {speaking ? <Loader2 size={11} className="animate-spin" /> : <Volume2 size={11} />}
             Read aloud
@@ -226,7 +227,7 @@ export default function DictionaryEntryCard({ entry, expanded = false, onToggle,
           <Link
             href={`/ai-tutor?q=${ariaQuestion}`}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-opacity hover:opacity-90"
-            style={{ background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)", color: "#a5b4fc" }}
+            style={{ background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)", color: ink("#a5b4fc") }}
           >
             <Sparkles size={11} />
             Ask Aria for more
@@ -234,7 +235,7 @@ export default function DictionaryEntryCard({ entry, expanded = false, onToggle,
         </div>
         {voiceError && (
           <p className="text-[11px] px-2 py-1.5 rounded-lg"
-            style={{ background: "rgba(244,63,94,0.10)", border: "1px solid rgba(244,63,94,0.35)", color: "#fb7185" }}>
+            style={{ background: "rgba(244,63,94,0.10)", border: "1px solid rgba(244,63,94,0.35)", color: ink("#fb7185") }}>
             🔇 {voiceError}
           </p>
         )}

@@ -1,3 +1,4 @@
+import { ink } from "@/lib/ink"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
@@ -40,13 +41,13 @@ export default async function ProPage() {
         {/* Hero */}
         <section className="text-center space-y-4 pt-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide"
-            style={{ background: "rgba(16,185,129,0.12)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)" }}>
+            style={{ background: "rgba(16,185,129,0.12)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.4)" }}>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             PEERZA.AI PRO
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tight" style={{ color: "var(--text-primary)" }}>
             Support the platform. <br />
-            <span style={{ color: "#10b981" }}>Wear the badge.</span>
+            <span style={{ color: ink("#10b981") }}>Wear the badge.</span>
           </h1>
           <p className="text-base md:text-lg max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
             Pro is a $10/month supporter membership. You get a visible Pro badge on your profile and posts, plus useful perks. It&apos;s not identity-verification — that&apos;s coming separately as a free KYC flow.

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import {
   UserPlus, UserCheck, Heart, MessageSquare, Repeat, Mail, Phone, Users,
@@ -80,7 +81,7 @@ export default function NotificationPreferences() {
   }
 
   return (
-    <div className="divide-y" style={{ borderColor: "var(--border)" }}>
+    <div className="divide-y divide-[var(--border)]">
       {ITEMS.map((item) => {
         const on = prefs[item.key]
         return (
@@ -94,7 +95,7 @@ export default function NotificationPreferences() {
                 className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
                 style={{
                   background: on ? "rgba(16,185,129,0.15)" : "var(--bg-base)",
-                  color: on ? "#10b981" : "var(--text-secondary)",
+                  color: on ? ink("#10b981") : "var(--text-secondary)",
                 }}
               >
                 {item.icon}

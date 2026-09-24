@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState, useTransition } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -97,7 +98,7 @@ export default function ProMembershipCard({ isPro, membership }: Props) {
               onClick={handleDevGrant}
               disabled={busy}
               className="px-3 py-2 rounded-xl text-[11px] font-semibold disabled:opacity-50"
-              style={{ background: "rgba(251,191,36,0.12)", border: "1px dashed rgba(251,191,36,0.5)", color: "#fbbf24" }}
+              style={{ background: "rgba(251,191,36,0.12)", border: "1px dashed rgba(251,191,36,0.5)", color: ink("#fbbf24") }}
               title="Dev only — instantly grant 30 days of Pro for testing"
             >
               {busy ? <Loader2 size={11} className="animate-spin inline" /> : "DEV: Grant 30 days"}

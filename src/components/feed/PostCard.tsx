@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 import { MessageCircle, Share2, Trash2, User, TrendingUp, TrendingDown, Minus, Star, Repeat2, Briefcase, Zap, Shuffle, Send, Pin, PinOff, Pencil, X, Check } from "lucide-react"
@@ -303,14 +304,14 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
         <div className="flex items-center gap-1 flex-shrink-0">
           {pinned && (
             <span className="flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-md"
-              style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
+              style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}>
               <Pin size={10} /> Pinned
             </span>
           )}
           {isOwn && showPinControl && (
             <button onClick={togglePin} disabled={pinning}
               className="transition-colors p-1 rounded-lg hover:bg-emerald-400/10 disabled:opacity-50"
-              style={{ color: pinned ? "#10b981" : "var(--text-secondary)" }}
+              style={{ color: pinned ? ink("#10b981") : "var(--text-secondary)" }}
               title={pinned ? "Unpin" : "Pin to profile"}>
               {pinned ? <PinOff size={14} /> : <Pin size={14} />}
             </button>
@@ -364,12 +365,12 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
             }}
           />
           {editError && (
-            <p className="text-[11px] font-medium px-1" style={{ color: "#ef4444" }}>
+            <p className="text-[11px] font-medium px-1" style={{ color: ink("#ef4444") }}>
               {editError}
             </p>
           )}
           <div className="flex items-center justify-end gap-2">
-            <span className="text-[10px] mr-auto" style={{ color: editText.length > 900 ? "#f59e0b" : "var(--text-secondary)" }}>
+            <span className="text-[10px] mr-auto" style={{ color: editText.length > 900 ? ink("#f59e0b") : "var(--text-secondary)" }}>
               {editText.length}/1000
             </span>
             <button onClick={() => { setEditing(false); setEditText(liveContent); setEditError(null) }}
@@ -475,7 +476,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
               <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
                 style={(() => {
                   const c = challengeMeta.style === "TRADING" ? "#fb923c" : challengeMeta.style === "INVESTMENT" ? "#60a5fa" : "#10b981"
-                  return { background: c + "22", color: c }
+                  return { background: c + "22", color: ink(c) }
                 })()}>
                 {challengeMeta.style === "TRADING" ? <Zap size={15} /> : challengeMeta.style === "INVESTMENT" ? <Briefcase size={15} /> : <Shuffle size={15} />}
               </div>
@@ -529,7 +530,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
                   {targetHit && outcomePct != null && (
                     <span
                       className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg"
-                      style={{ background: "rgba(16,185,129,0.18)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)" }}
+                      style={{ background: "rgba(16,185,129,0.18)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.4)" }}
                       title={post.outcomeAt ? `Hit on ${new Date(post.outcomeAt).toLocaleString()}` : "Target reached"}
                     >
                       <span aria-hidden="true">✓</span>
@@ -537,7 +538,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
                     </span>
                   )}
                   <span className="flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg"
-                    style={{ background: accentColor + "22", color: accentColor }}>
+                    style={{ background: accentColor + "22", color: ink(accentColor) }}>
                     <DirIcon size={11} />
                     {isBull ? "Bullish" : isBear ? "Bearish" : "Neutral"}
                   </span>
@@ -589,7 +590,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
                     <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md"
                       style={{
                         background: POSITION_META[a.position].color + "22",
-                        color: POSITION_META[a.position].color,
+                        color: ink(POSITION_META[a.position].color),
                         border: `1px solid ${POSITION_META[a.position].color}44`,
                       }}>
                       <span>{POSITION_META[a.position].emoji}</span>
@@ -654,7 +655,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
           <button
             onClick={() => doReaction(reaction ?? "👍")}
             className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl transition-all hover:bg-rose-500/10 select-none"
-            style={{ color: liked ? "#f43f5e" : "var(--text-secondary)" }}
+            style={{ color: liked ? ink("#f43f5e") : "var(--text-secondary)" }}
           >
             <span className="text-base leading-none">{liked && reaction ? reaction : "👍"}</span>
             {likeCount > 0 && <span>{likeCount}</span>}
@@ -666,7 +667,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
         <button
           onClick={() => setShowComments((v) => !v)}
           className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl transition-all hover:bg-[var(--bg-base)]"
-          style={{ color: showComments ? "#10b981" : "var(--text-secondary)" }}
+          style={{ color: showComments ? ink("#10b981") : "var(--text-secondary)" }}
         >
           <MessageCircle size={15} fill={showComments ? "currentColor" : "none"} />
           {commentCount > 0 && <span>{commentCount}</span>}

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 import { AtSign, Check, Loader2, Save, X } from "lucide-react"
@@ -173,7 +174,7 @@ export default function UsernameEditor({ initialUsername }: Props) {
                 style={{
                   background: "rgba(16,185,129,0.12)",
                   border: "1px solid rgba(16,185,129,0.35)",
-                  color: "#10b981",
+                  color: ink("#10b981"),
                 }}
               >
                 @{s}

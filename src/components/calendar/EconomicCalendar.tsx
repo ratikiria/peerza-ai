@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { CalendarDays, Filter, MessageCircle, Loader2 } from "lucide-react"
@@ -109,7 +110,7 @@ export default function EconomicCalendar() {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide mb-2"
-              style={{ background: "rgba(99,102,241,0.12)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.4)" }}>
+              style={{ background: "rgba(99,102,241,0.12)", color: ink("#818cf8"), border: "1px solid rgba(99,102,241,0.4)" }}>
               <CalendarDays size={11} />
               Economic Calendar
             </div>
@@ -159,7 +160,7 @@ export default function EconomicCalendar() {
                 className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5"
                 style={
                   active
-                    ? { background: meta.bg, border: `1px solid ${meta.border}`, color: meta.color }
+                    ? { background: meta.bg, border: `1px solid ${meta.border}`, color: ink(meta.color) }
                     : { background: "var(--bg-base)", border: "1px solid var(--border)", color: "var(--text-secondary)" }
                 }
               >
@@ -182,7 +183,7 @@ export default function EconomicCalendar() {
                 className="pl-1.5 pr-2.5 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5"
                 style={
                   active
-                    ? { background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.4)", color: "#10b981" }
+                    ? { background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.4)", color: ink("#10b981") }
                     : { background: "var(--bg-base)", border: "1px solid var(--border)", color: "var(--text-secondary)" }
                 }
               >
@@ -252,7 +253,7 @@ function FilterChip({ active, onClick, label }: { active: boolean; onClick: () =
       className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
       style={
         active
-          ? { background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)", color: "#a5b4fc" }
+          ? { background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)", color: ink("#a5b4fc") }
           : { background: "var(--bg-base)", border: "1px solid var(--border)", color: "var(--text-secondary)" }
       }
     >
@@ -324,7 +325,7 @@ function EventRow({ event }: { event: EconomicEvent }) {
       {/* Impact */}
       <div className="col-span-2 sm:col-span-1 flex items-center justify-center">
         <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wide flex items-center gap-1"
-          style={{ background: meta.bg, color: meta.color, border: `1px solid ${meta.border}` }}
+          style={{ background: meta.bg, color: ink(meta.color), border: `1px solid ${meta.border}` }}
           title={`${meta.label} impact`}>
           <ImpactDots level={event.impact} active />
         </span>
@@ -343,7 +344,7 @@ function EventRow({ event }: { event: EconomicEvent }) {
           href={`/ai-tutor?q=${ariaQuestion}`}
           title="Ask Aria about this event"
           className="opacity-0 group-hover:opacity-100 transition-opacity inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold"
-          style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.4)", color: "#a5b4fc" }}
+          style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.4)", color: ink("#a5b4fc") }}
         >
           <MessageCircle size={10} /> Ask Aria
         </Link>
@@ -388,7 +389,7 @@ function DataPill({ label, value, variant }: { label: string; value: string | nu
         </span>
       ) : (
         <span className="font-mono text-[11px] font-bold leading-none inline-flex items-center gap-0.5"
-          style={{ color: s.color }}>
+          style={{ color: ink(s.color) }}>
           {s.arrow === "up"   && <span aria-hidden>▲</span>}
           {s.arrow === "down" && <span aria-hidden>▼</span>}
           {value ?? "—"}

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useMemo, useState } from "react"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
@@ -294,7 +295,7 @@ export default function RegisterPage() {
                 style={{
                   background: gender === opt.value ? "rgba(16,185,129,0.2)" : "var(--bg-base)",
                   border: `1px solid ${gender === opt.value ? "#10b981" : "var(--border)"}`,
-                  color: gender === opt.value ? "#10b981" : "var(--text-secondary)",
+                  color: gender === opt.value ? ink("#10b981") : "var(--text-secondary)",
                 }}
               >
                 {opt.label}
@@ -361,7 +362,7 @@ export default function RegisterPage() {
                 style={{
                   background: interests.includes(interest) ? "rgba(16,185,129,0.2)" : "var(--bg-base)",
                   border: `1px solid ${interests.includes(interest) ? "#10b981" : "var(--border)"}`,
-                  color: interests.includes(interest) ? "#10b981" : "var(--text-secondary)",
+                  color: interests.includes(interest) ? ink("#10b981") : "var(--text-secondary)",
                 }}
               >
                 {interest}

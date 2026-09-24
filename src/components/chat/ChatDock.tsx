@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
@@ -586,7 +587,7 @@ function NewChatPicker({ onCreated }: { onCreated: (conversationId: string) => v
           {selected.map((u) => (
             <span key={u.id}
               className="inline-flex items-center gap-1.5 text-[11px] font-semibold pl-1 pr-1.5 py-0.5 rounded-full"
-              style={{ background: "rgba(16,185,129,0.15)", color: "#10b981", border: "1px solid rgba(16,185,129,0.3)" }}
+              style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.3)" }}
             >
               <span className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center"
                 style={{ background: "rgba(16,185,129,0.25)" }}>
@@ -752,11 +753,11 @@ function ContextRibbon({ partnerId }: { partnerId: string }) {
           className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-[var(--bg-elevated)] truncate"
           title={`Last call: ${ctx.lastCall.ticker} ${ctx.lastCall.direction}`}
         >
-          <DirIcon size={10} style={{ color: dirColor }} />
+          <DirIcon size={10} style={{ color: ink(dirColor) }} />
           <span className="font-semibold" style={{ color: "var(--text-primary)" }}>
             {ctx.lastCall.ticker}
           </span>
-          <span style={{ color: dirColor }}>{ctx.lastCall.direction}</span>
+          <span style={{ color: ink(dirColor) }}>{ctx.lastCall.direction}</span>
         </Link>
       )}
       {ctx.lastCall && ctx.activeChallenge && (
@@ -768,7 +769,7 @@ function ContextRibbon({ partnerId }: { partnerId: string }) {
           className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-[var(--bg-elevated)] truncate min-w-0"
           title={`${ctx.activeChallenge.name} · #${ctx.activeChallenge.rank} of ${ctx.activeChallenge.totalParticipants}`}
         >
-          <Trophy size={10} style={{ color: "#f59e0b" }} />
+          <Trophy size={10} style={{ color: ink("#f59e0b") }} />
           <span style={{ color: "var(--text-primary)" }}>
             #{ctx.activeChallenge.rank}
           </span>
@@ -1060,7 +1061,7 @@ function PoppedChatWindow({
                     style={{ color: "var(--text-secondary)" }}>
                     <span>{formatRelativeTime(m.createdAt)}</span>
                     {!isGroup && showSeen && (
-                      <span style={{ color: seen ? "#10b981" : "var(--text-secondary)" }}>
+                      <span style={{ color: seen ? ink("#10b981") : "var(--text-secondary)" }}>
                         · {seen ? "Seen" : "Sent"}
                       </span>
                     )}

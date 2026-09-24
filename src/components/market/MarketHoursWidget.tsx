@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import { useTranslations } from "next-intl"
 import { Globe, Activity } from "lucide-react"
@@ -157,11 +158,11 @@ export default function MarketHoursWidget() {
           <div className="flex items-center justify-between rounded-xl px-3 py-2 mb-2"
             style={{ background: volumeColor + "1a", border: `1px solid ${volumeColor}40` }}>
             <div className="flex items-center gap-1.5">
-              <Activity size={12} style={{ color: volumeColor }} />
+              <Activity size={12} style={{ color: ink(volumeColor) }} />
               <span className="text-[11px] font-semibold" style={{ color: "var(--text-primary)" }}>Volume</span>
             </div>
             <div className="text-right">
-              <p className="text-[11px] font-bold" style={{ color: volumeColor }}>{volumeLabel}</p>
+              <p className="text-[11px] font-bold" style={{ color: ink(volumeColor) }}>{volumeLabel}</p>
               <p className="text-[9px]" style={{ color: "var(--text-secondary)" }}>
                 {openCount === 0 ? "All sessions closed" : `${openCount} session${openCount !== 1 ? "s" : ""} open`}
               </p>
@@ -239,7 +240,7 @@ function ModeButton({ active, onClick, label }: { active: boolean; onClick: () =
     <button onClick={onClick}
       className="flex-1 text-[11px] font-semibold py-1.5 rounded-md transition-all"
       style={active
-        ? { background: "rgba(16,185,129,0.2)", color: "#10b981" }
+        ? { background: "rgba(16,185,129,0.2)", color: ink("#10b981") }
         : { background: "transparent", color: "var(--text-secondary)" }}>
       {label}
     </button>

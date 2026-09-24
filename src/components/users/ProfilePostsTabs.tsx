@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState } from "react"
 import PostCard from "@/components/feed/PostCard"
 
@@ -85,7 +86,7 @@ function TabButton({ label, count, active, onClick }: { label: string; count: nu
     <button onClick={onClick}
       className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-lg transition-all"
       style={active
-        ? { background: "rgba(16,185,129,0.18)", color: "#10b981" }
+        ? { background: "rgba(16,185,129,0.18)", color: ink("#10b981") }
         : { color: "var(--text-secondary)" }}>
       {label}
       <span className="text-[10px] tabular-nums opacity-60">{count}</span>

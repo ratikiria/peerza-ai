@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useState, useMemo } from "react";
 import { lookupKnownSector } from "@/lib/sectors";
 
@@ -90,7 +91,7 @@ export default function AllocationChart({ holdings, prices, cashBalance }: Props
         result.push({
           label: "Cash",
           value: cashBalance,
-          color: CLASS_COLORS.cash,
+          color: ink(CLASS_COLORS.cash),
           pct: totalValue > 0 ? (cashBalance / totalValue) * 100 : 0,
         });
       }
@@ -103,14 +104,14 @@ export default function AllocationChart({ holdings, prices, cashBalance }: Props
       result = [...groups.entries()].map(([cls, value]) => ({
         label: CLASS_LABELS[cls] ?? cls,
         value,
-        color: CLASS_COLORS[cls] ?? "#6b7280",
+        color: CLASS_COLORS[cls] ?? ink("#6b7280"),
         pct: totalValue > 0 ? (value / totalValue) * 100 : 0,
       })).sort((a, b) => b.value - a.value);
       if (cashBalance > 0) {
         result.push({
           label: "Cash",
           value: cashBalance,
-          color: CLASS_COLORS.cash,
+          color: ink(CLASS_COLORS.cash),
           pct: totalValue > 0 ? (cashBalance / totalValue) * 100 : 0,
         });
       }
@@ -155,7 +156,7 @@ export default function AllocationChart({ holdings, prices, cashBalance }: Props
           result.push({
             label: "Cash",
             value: cashBalance,
-            color: CLASS_COLORS.cash,
+            color: ink(CLASS_COLORS.cash),
             pct: totalValue > 0 ? (cashBalance / totalValue) * 100 : 0,
           });
         }
@@ -230,7 +231,7 @@ export default function AllocationChart({ holdings, prices, cashBalance }: Props
               className="px-3 py-1.5 text-[11px] font-semibold rounded-md transition-colors"
               style={{
                 background: mode === m.key ? "rgba(16,185,129,0.18)" : "transparent",
-                color: mode === m.key ? "#10b981" : "var(--text-secondary)",
+                color: mode === m.key ? ink("#10b981") : "var(--text-secondary)",
               }}
             >
               {m.label}

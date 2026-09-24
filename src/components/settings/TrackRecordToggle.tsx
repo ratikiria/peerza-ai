@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import { Award, EyeOff } from "lucide-react"
 
@@ -40,7 +41,7 @@ export default function TrackRecordToggle() {
     <div className="flex items-center justify-between px-4 py-3">
       <div className="flex items-center gap-3 min-w-0">
         {enabled ? (
-          <Award size={16} style={{ color: "#10b981" }} />
+          <Award size={16} style={{ color: ink("#10b981") }} />
         ) : (
           <EyeOff size={16} style={{ color: "var(--text-secondary)" }} />
         )}

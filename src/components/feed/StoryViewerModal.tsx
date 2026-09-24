@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { X, Eye, User, Heart, ChevronLeft, ChevronRight, Send, Smile } from "lucide-react"
@@ -299,7 +300,7 @@ export default function StoryViewerModal({ mode, stories, startIndex = 0, author
               <p
                 key={reactionSentTick}
                 className="text-[11px] text-center font-medium"
-                style={{ color: "#10b981", animation: "story-react-confirm 1800ms ease-out forwards" }}
+                style={{ color: ink("#10b981"), animation: "story-react-confirm 1800ms ease-out forwards" }}
               >
                 ✓ Reaction sent to {author?.name?.split(" ")[0] ?? "them"}
               </p>
@@ -422,7 +423,7 @@ function TabButton({ active, icon, label, onClick }: {
       onClick={onClick}
       className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium transition-colors"
       style={{
-        color: active ? "#10b981" : "var(--text-secondary)",
+        color: active ? ink("#10b981") : "var(--text-secondary)",
         background: active ? "rgba(16,185,129,0.08)" : "transparent",
       }}
     >

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState, useRef } from "react"
@@ -16,6 +17,7 @@ import MessagesFlyout from "@/components/layout/MessagesFlyout"
 import NotificationsFlyout from "@/components/layout/NotificationsFlyout"
 import ProBadge from "@/components/shared/ProBadge"
 import LocaleSwitcher from "@/components/settings/LocaleSwitcher"
+import ThemeQuickToggle from "@/components/layout/ThemeQuickToggle"
 
 // `mobile: true` keeps the icon visible on phones; secondary destinations are
 // hidden on small screens and reachable via the cmd-K search palette.
@@ -117,6 +119,7 @@ export default function Navbar({ user }: NavbarProps) {
         </Link>
         <span className="hidden sm:inline-flex"><CountryFlag /></span>
         <div className="hidden sm:flex"><LocaleSwitcher variant="compact" /></div>
+        <div className="hidden sm:flex"><ThemeQuickToggle /></div>
       </div>
 
       {/* Search — opens cmd-K palette */}
@@ -291,7 +294,7 @@ export default function Navbar({ user }: NavbarProps) {
                   href="/pro"
                   onClick={() => setShowDropdown(false)}
                   className="mt-1.5 inline-block text-[10px] hover:opacity-80 px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide transition-opacity"
-                  style={{ background: "rgba(16,185,129,0.08)", color: "#10b981", border: "1px dashed rgba(16,185,129,0.4)" }}
+                  style={{ background: "rgba(16,185,129,0.08)", color: ink("#10b981"), border: "1px dashed rgba(16,185,129,0.4)" }}
                 >
                   {t("upgrade_cta")}
                 </Link>
@@ -313,6 +316,7 @@ export default function Navbar({ user }: NavbarProps) {
             >
               <Settings size={15} /> {t("settings")}
             </Link>
+            <ThemeQuickToggle variant="menu" onToggled={() => setShowDropdown(false)} />
             <div className="my-1" style={{ borderTop: "1px solid var(--border)" }} />
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}

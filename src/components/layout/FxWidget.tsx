@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useCallback, useRef } from "react"
 import { useTranslations } from "next-intl"
 import { Coins, Pencil, Check, X, Plus, GripVertical, Search } from "lucide-react"
@@ -153,7 +154,7 @@ export default function FxWidget() {
         <button
           onClick={() => setEditing((v) => !v)}
           className="w-6 h-6 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-          style={{ color: editing ? "#10b981" : "var(--text-secondary)" }}
+          style={{ color: editing ? ink("#10b981") : "var(--text-secondary)" }}
           title={editing ? "Done" : "Customize currencies"}
         >
           {editing ? <Check size={13} /> : <Pencil size={13} />}
@@ -167,7 +168,7 @@ export default function FxWidget() {
           style={{ background: "rgba(16,185,129,0.10)", border: "1px solid rgba(16,185,129,0.25)" }}>
           <span className="text-lg" aria-hidden>{flagEmoji(baseMeta.country)}</span>
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: "#10b981" }}>Base</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: ink("#10b981") }}>Base</p>
             <p className="text-xs font-bold truncate" style={{ color: "var(--text-primary)" }}>
               {baseMeta.code} · {baseMeta.name}
             </p>
@@ -289,7 +290,7 @@ export default function FxWidget() {
                     </p>
                   </div>
                   <span className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
+                    style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}>
                     <Plus size={11} />
                   </span>
                 </button>

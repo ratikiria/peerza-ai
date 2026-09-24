@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useCallback, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -161,7 +162,7 @@ function WatchlistEditor({
           className="text-[10px] font-bold tabular-nums px-2 py-0.5 rounded-full"
           style={
             watchlist.length >= MAX_ASSETS
-              ? { background: "rgba(245,158,11,0.15)", color: "#f59e0b" }
+              ? { background: "rgba(245,158,11,0.15)", color: ink("#f59e0b") }
               : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }
           }
         >
@@ -194,7 +195,7 @@ function WatchlistEditor({
                 <GripVertical size={12} style={{ color: "var(--text-secondary)", flexShrink: 0, opacity: 0.5 }} />
                 <div
                   className="w-6 h-6 rounded-md flex items-center justify-center text-[9px] font-bold"
-                  style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}
+                  style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}
                 >
                   {asset.symbol.slice(0, 4)}
                 </div>
@@ -263,7 +264,7 @@ function WatchlistEditor({
                     className="w-6 h-6 rounded-md flex items-center justify-center text-[9px] font-bold flex-shrink-0"
                     style={{
                       background: already ? "rgba(16,185,129,0.25)" : "rgba(16,185,129,0.12)",
-                      color: already ? "#10b981" : typeColor(r.type ?? r.source),
+                      color: already ? ink("#10b981") : typeColor(r.type ?? r.source),
                     }}
                   >
                     {r.symbol.slice(0, 3)}
@@ -272,14 +273,14 @@ function WatchlistEditor({
                     <div className="flex items-center gap-1">
                       <p
                         className="text-xs font-semibold leading-none"
-                        style={{ color: already ? "#10b981" : "var(--text-primary)" }}
+                        style={{ color: already ? ink("#10b981") : "var(--text-primary)" }}
                       >
                         {r.symbol}
                       </p>
                       {r.type && (
                         <span
                           className="text-[8px] px-1 rounded"
-                          style={{ background: "var(--bg-elevated)", color: typeColor(r.type) }}
+                          style={{ background: "var(--bg-elevated)", color: ink(typeColor(r.type)) }}
                         >
                           {r.type}
                         </span>
@@ -294,7 +295,7 @@ function WatchlistEditor({
                   className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-40"
                   style={{
                     background: already ? "rgba(16,185,129,0.3)" : "rgba(16,185,129,0.15)",
-                    color: "#10b981",
+                    color: ink("#10b981"),
                   }}
                   title={already ? "Remove" : "Add"}
                 >
@@ -392,14 +393,14 @@ function FgTypeToggle({ value, onChange }: { value: FgType; onChange: (t: FgType
       <button
         onClick={() => onChange("crypto")}
         className="relative z-10 flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all duration-200"
-        style={{ color: value === "crypto" ? "#10b981" : "var(--text-secondary)" }}
+        style={{ color: value === "crypto" ? ink("#10b981") : "var(--text-secondary)" }}
       >
         <span className="text-sm">₿</span> Crypto
       </button>
       <button
         onClick={() => onChange("stocks")}
         className="relative z-10 flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all duration-200"
-        style={{ color: value === "stocks" ? "#3b82f6" : "var(--text-secondary)" }}
+        style={{ color: value === "stocks" ? ink("#3b82f6") : "var(--text-secondary)" }}
       >
         <span className="text-sm">📊</span> Stocks
       </button>
@@ -746,10 +747,10 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
               <FearGreedGauge value={fg.value} />
               {/* Value + label — outside SVG, no overlap */}
               <div className="text-center mt-1 mb-2">
-                <p className="text-3xl font-black tabular-nums" style={{ color: fgColor(fg.value) }}>
+                <p className="text-3xl font-black tabular-nums" style={{ color: ink(fgColor(fg.value)) }}>
                   {fg.value}
                 </p>
-                <p className="text-sm font-bold mt-0.5" style={{ color: fgColor(fg.value) }}>
+                <p className="text-sm font-bold mt-0.5" style={{ color: ink(fgColor(fg.value)) }}>
                   {fg.label}
                 </p>
                 <p className="text-[10px] mt-1" style={{ color: "var(--text-secondary)" }}>
@@ -792,7 +793,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
               <button
                 onClick={() => setEditingWatchlist((v) => !v)}
                 className="w-6 h-6 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                style={{ color: editingWatchlist ? "#10b981" : "var(--text-secondary)" }}
+                style={{ color: editingWatchlist ? ink("#10b981") : "var(--text-secondary)" }}
                 title={`Customize watchlist (${watchlist.length}/${MAX_ASSETS})`}
               >
                 {editingWatchlist ? <Check size={13} /> : <Pencil size={13} />}
@@ -837,7 +838,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
                       className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-bold"
                       style={{
                         background: item.up ? "rgba(16,185,129,0.15)" : "rgba(244,63,94,0.15)",
-                        color: item.up ? "#10b981" : "#f43f5e",
+                        color: item.up ? ink("#10b981") : ink("#f43f5e"),
                       }}
                     >
                       {item.symbol.slice(0, 4)}
@@ -853,7 +854,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
                     </p>
                     <p
                       className="text-[10px] font-medium flex items-center justify-end gap-0.5 tabular-nums"
-                      style={{ color: item.up ? "#10b981" : "#f43f5e" }}
+                      style={{ color: item.up ? ink("#10b981") : ink("#f43f5e") }}
                     >
                       {item.up ? <TrendingUp size={9} /> : <TrendingDown size={9} />}
                       {item.change > 0 ? "+" : ""}{item.change}%
@@ -895,7 +896,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
               <button key={kind} onClick={() => setMoversType(kind)}
                 className="flex-1 text-[10px] font-semibold py-1.5 rounded-md transition-all"
                 style={moversType === kind
-                  ? { background: "rgba(16,185,129,0.2)", color: "#10b981" }
+                  ? { background: "rgba(16,185,129,0.2)", color: ink("#10b981") }
                   : { background: "transparent", color: "var(--text-secondary)" }}>
                 {kind === "crypto" ? "Crypto" : kind === "stocks" ? "Stocks" : "Forex"}
               </button>
@@ -973,7 +974,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
               <button key={w.key} onClick={() => setTrendingWindow(w.key)}
                 className="flex-1 text-[10px] font-semibold py-1.5 rounded-md transition-all"
                 style={trendingWindow === w.key
-                  ? { background: "rgba(16,185,129,0.2)", color: "#10b981" }
+                  ? { background: "rgba(16,185,129,0.2)", color: ink("#10b981") }
                   : { background: "transparent", color: "var(--text-secondary)" }}>
                 {w.label}
               </button>
@@ -1107,7 +1108,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
             onClick={() => setEditingLayout((v) => !v)}
             className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md transition-colors hover:bg-[var(--bg-base)]"
             style={{
-              color: editingLayout ? "#10b981" : "var(--text-secondary)",
+              color: editingLayout ? ink("#10b981") : "var(--text-secondary)",
               background: editingLayout ? "rgba(16,185,129,0.12)" : "transparent",
               border: editingLayout ? "1px solid rgba(16,185,129,0.4)" : "1px solid transparent",
             }}
@@ -1169,7 +1170,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
                 <>
                   <div
                     className="absolute top-2 left-2 z-10 w-6 h-6 rounded-md flex items-center justify-center pointer-events-none"
-                    style={{ background: "rgba(16,185,129,0.18)", color: "#10b981" }}
+                    style={{ background: "rgba(16,185,129,0.18)", color: ink("#10b981") }}
                     title="Drag to reorder"
                   >
                     <GripVertical size={12} />
@@ -1177,7 +1178,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
                   <button
                     onClick={() => hideWidget(id)}
                     className="absolute top-2 right-2 z-10 w-6 h-6 rounded-md flex items-center justify-center transition-colors"
-                    style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444" }}
+                    style={{ background: "rgba(239,68,68,0.15)", color: ink("#ef4444") }}
                     title={`Hide ${WIDGET_LABELS[id]}`}
                     aria-label={`Hide ${WIDGET_LABELS[id]}`}
                   >

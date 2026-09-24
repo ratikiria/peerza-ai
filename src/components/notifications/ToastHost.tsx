@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import {
@@ -333,7 +334,7 @@ export default function ToastHost() {
           >
             <span
               className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}
+              style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}
             >
               <Bell size={16} />
             </span>
@@ -396,7 +397,7 @@ export default function ToastHost() {
               ) : (
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold"
-                  style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}
+                  style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}
                 >
                   {t.triggerer.name.slice(0, 1).toUpperCase()}
                 </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import { Users, Lock } from "lucide-react"
 
@@ -40,7 +41,7 @@ export default function FollowListToggle() {
       style={{ borderTop: "1px solid var(--border)" }}>
       <div className="flex items-center gap-3 min-w-0">
         {hidden ? (
-          <Lock size={16} style={{ color: "#10b981" }} />
+          <Lock size={16} style={{ color: ink("#10b981") }} />
         ) : (
           <Users size={16} style={{ color: "var(--text-secondary)" }} />
         )}

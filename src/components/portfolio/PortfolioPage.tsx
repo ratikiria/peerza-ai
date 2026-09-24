@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslations } from "next-intl"
 import { Plus, Trash2, TrendingUp, TrendingDown, Briefcase, ShieldAlert, Sparkles, Info, RotateCcw, X, BarChart3, PieChart, ShieldCheck, RefreshCw } from "lucide-react"
@@ -301,7 +302,7 @@ export default function PortfolioPage() {
               {dayChangePct != null && (
                 <span
                   className="text-sm font-bold flex items-center gap-1 tabular-nums"
-                  style={{ color: dayChangePct >= 0 ? "#10b981" : "#f43f5e" }}
+                  style={{ color: dayChangePct >= 0 ? ink("#10b981") : ink("#f43f5e") }}
                 >
                   {dayChangePct >= 0 ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
                   {dayChangePct >= 0 ? "+" : ""}{dayChangePct.toFixed(2)}% {t("today")}
@@ -312,7 +313,7 @@ export default function PortfolioPage() {
               <p className="text-xs mt-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("unrealized_pnl")}:{" "}
                 <span className="font-semibold tabular-nums"
-                  style={{ color: totalPnl >= 0 ? "#10b981" : "#f43f5e" }}>
+                  style={{ color: totalPnl >= 0 ? ink("#10b981") : ink("#f43f5e") }}>
                   {totalPnl >= 0 ? "+" : ""}{fmtMoney(totalPnl)} ({totalPnlPct >= 0 ? "+" : ""}{totalPnlPct.toFixed(2)}%)
                 </span>
               </p>
@@ -335,7 +336,7 @@ export default function PortfolioPage() {
                   onClick={resetPortfolio}
                   disabled={resetting}
                   className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-2 rounded-xl transition-colors disabled:opacity-50"
-                  style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5" }}
+                  style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)", color: ink("#fca5a5") }}
                   title={t("reset")}
                 >
                   <RotateCcw size={11} />
@@ -429,7 +430,7 @@ export default function PortfolioPage() {
                       </td>
                       <td className="text-right tabular-nums px-3 py-3">
                         {h.pnl != null && h.pnlPct != null ? (
-                          <span style={{ color: h.pnl >= 0 ? "#10b981" : "#f43f5e" }}>
+                          <span style={{ color: h.pnl >= 0 ? ink("#10b981") : ink("#f43f5e") }}>
                             {h.pnl >= 0 ? "+" : ""}{h.pnlPct.toFixed(1)}%
                           </span>
                         ) : (
@@ -483,7 +484,7 @@ export default function PortfolioPage() {
               </ul>
               {concentrationFlag && (
                 <div className="mt-3 flex items-start gap-2 px-3 py-2 rounded-lg text-[11px]"
-                  style={{ background: "rgba(239,68,68,0.08)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.25)" }}>
+                  style={{ background: "rgba(239,68,68,0.08)", color: ink("#fca5a5"), border: "1px solid rgba(239,68,68,0.25)" }}>
                   <ShieldAlert size={12} className="flex-shrink-0 mt-0.5" />
                   <span>{t("concentration_flag", { symbol: concentrated[0].symbol, pct: (topWeight * 100).toFixed(0) })}</span>
                 </div>
@@ -680,7 +681,7 @@ function Bullet({ icon, title, text }: { icon: React.ReactNode; title: string; t
     <div className="flex items-start gap-2 text-[11px] leading-snug px-2.5 py-2 rounded-lg"
       style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
       <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
-        style={{ background: "rgba(16,185,129,0.12)", color: "#10b981" }}>
+        style={{ background: "rgba(16,185,129,0.12)", color: ink("#10b981") }}>
         {icon}
       </div>
       <div>

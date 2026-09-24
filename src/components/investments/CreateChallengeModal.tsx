@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useState } from "react";
 import { X, Briefcase, Zap, Shuffle } from "lucide-react";
 
@@ -122,8 +123,8 @@ export default function CreateChallengeModal({ onClose, onCreated }: Props) {
                     }}
                   >
                     <div className="flex items-center gap-1.5 mb-1">
-                      <Icon size={13} style={{ color: active ? color : "var(--text-secondary)" }} />
-                      <span className="text-xs font-semibold" style={{ color: active ? color : "var(--text-primary)" }}>
+                      <Icon size={13} style={{ color: active ? ink(color) : "var(--text-secondary)" }} />
+                      <span className="text-xs font-semibold" style={{ color: active ? ink(color) : "var(--text-primary)" }}>
                         {label}
                       </span>
                     </div>

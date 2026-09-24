@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 
 interface Stats {
@@ -106,7 +107,7 @@ export default function SymbolStats({ tv }: { tv: string }) {
         <span className="text-sm font-bold tabular-nums" style={{ color: "var(--text-primary)" }}>
           {formatPrice(stats.price, stats.currency)}
         </span>
-        <span className="font-bold tabular-nums" style={{ color }}>
+        <span className="font-bold tabular-nums" style={{ color: ink(color) }}>
           {up ? "▲" : "▼"} {Math.abs(stats.changePct).toFixed(2)}%
         </span>
       </div>

@@ -1,53 +1,30 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useSyncExternalStore } from "react"
 import { Sun, Moon, Monitor } from "lucide-react"
+import { applyTheme, readThemeMode, setThemeMode, subscribeTheme, type ThemeMode } from "@/lib/theme"
 
-const STORAGE_KEY = "peerza-theme-v1"
-type Mode = "system" | "dark" | "light"
-
-function applyResolved(mode: Mode) {
-  const resolved =
-    mode === "system"
-      ? window.matchMedia("(prefers-color-scheme: light)").matches
-        ? "light"
-        : "dark"
-      : mode
-  document.documentElement.setAttribute("data-theme", resolved)
-}
+const noopSubscribe = () => () => {}
 
 export default function ThemeToggle() {
-  const [mode, setMode] = useState<Mode>("dark")
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    try {
-      const v = localStorage.getItem(STORAGE_KEY)
-      if (v === "light" || v === "dark" || v === "system") setMode(v)
-      else setMode("dark")
-    } catch {}
-    setMounted(true)
-  }, [])
+  // Stays in sync with the navbar quick toggle via the shared theme event.
+  const mode = useSyncExternalStore<ThemeMode>(subscribeTheme, readThemeMode, () => "dark")
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false)
 
   // Re-apply when system pref changes if user is on "system"
   useEffect(() => {
-    if (!mounted) return
     if (mode !== "system") return
     const mq = window.matchMedia("(prefers-color-scheme: light)")
-    function onChange() { applyResolved("system") }
+    function onChange() { applyTheme("system") }
     mq.addEventListener("change", onChange)
     return () => mq.removeEventListener("change", onChange)
-  }, [mode, mounted])
+  }, [mode])
 
-  function pick(next: Mode) {
-    setMode(next)
-    // Persist "system" explicitly — absence of a key means "never set", which
-    // now resolves to dark (the brand default), not to OS preference.
-    try { localStorage.setItem(STORAGE_KEY, next) } catch {}
-    applyResolved(next)
+  function pick(next: ThemeMode) {
+    setThemeMode(next)
   }
 
-  const options: { key: Mode; icon: React.ReactNode; label: string }[] = [
+  const options: { key: ThemeMode; icon: React.ReactNode; label: string }[] = [
     { key: "system", icon: <Monitor size={14} />, label: "System" },
     { key: "light",  icon: <Sun size={14} />,     label: "Light" },
     { key: "dark",   icon: <Moon size={14} />,    label: "Dark" },

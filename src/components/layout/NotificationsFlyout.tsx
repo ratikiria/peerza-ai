@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -299,7 +300,7 @@ export default function NotificationsFlyout({ active }: { active: boolean }) {
               href="/notifications"
               onClick={() => setOpen(false)}
               className="block text-center text-xs font-semibold py-2 mx-2 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-              style={{ color: "#10b981" }}
+              style={{ color: ink("#10b981") }}
             >
               See all notifications →
             </Link>

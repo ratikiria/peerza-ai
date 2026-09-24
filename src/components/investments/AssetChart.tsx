@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { Loader2, Maximize2, CandlestickChart, LineChart as LineIcon, AreaChart, RotateCcw } from "lucide-react";
 
@@ -330,7 +331,7 @@ export default function AssetChart({ source, id, symbol, height = 200, onExpand 
               <span className="text-base font-semibold">
                 ${fmtPrice(hoveredPt?.c ?? last)}
               </span>
-              <span className="text-xs font-medium" style={{ color: isUp ? "#4ade80" : "#f87171" }}>
+              <span className="text-xs font-medium" style={{ color: isUp ? ink("#4ade80") : ink("#f87171") }}>
                 {isUp ? "+" : ""}{changePct.toFixed(2)}%
               </span>
             </div>
@@ -342,7 +343,7 @@ export default function AssetChart({ source, id, symbol, height = 200, onExpand 
               type="button"
               onClick={resetView}
               className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold transition-colors hover:bg-white/10"
-              style={{ color: "#10b981", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.35)" }}
+              style={{ color: ink("#10b981"), background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.35)" }}
               title="Reset pan/zoom"
             >
               <RotateCcw size={10} /> Reset
@@ -414,7 +415,7 @@ export default function AssetChart({ source, id, symbol, height = 200, onExpand 
                 className="px-1.5 py-0.5 rounded text-[10px] font-semibold transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                 style={{
                   background: active ? `${meta.color}25` : "var(--bg-card)",
-                  color: active ? meta.color : "var(--text-secondary)",
+                  color: active ? ink(meta.color) : "var(--text-secondary)",
                   border: `1px solid ${active ? meta.color : "var(--border)"}`,
                 }}
                 title={disabled ? "Volume not available" : meta.label}
@@ -564,7 +565,7 @@ export default function AssetChart({ source, id, symbol, height = 200, onExpand 
               <span className="text-white/40">O</span><span className="text-right">${fmtPrice(hoveredPt.o)}</span>
               <span className="text-white/40">H</span><span className="text-right">${fmtPrice(hoveredPt.h)}</span>
               <span className="text-white/40">L</span><span className="text-right">${fmtPrice(hoveredPt.l)}</span>
-              <span className="text-white/40">C</span><span className="text-right" style={{ color: hoveredPt.c >= hoveredPt.o ? "#4ade80" : "#f87171" }}>${fmtPrice(hoveredPt.c)}</span>
+              <span className="text-white/40">C</span><span className="text-right" style={{ color: hoveredPt.c >= hoveredPt.o ? ink("#4ade80") : ink("#f87171") }}>${fmtPrice(hoveredPt.c)}</span>
               {hoveredPt.v != null && (<>
                 <span className="text-white/40">Vol</span><span className="text-right">{fmtVol(hoveredPt.v)}</span>
               </>)}

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Megaphone, Loader2, ImageIcon, X, Building2, ExternalLink, Info } from "lucide-react"
@@ -163,7 +164,7 @@ export default function NewAdForm({ brand }: { brand: BrandLite }) {
               </button>
               {imageUrl && (
                 <button type="button" onClick={() => setImageUrl(null)}
-                  className="text-[11px] font-semibold flex items-center gap-1" style={{ color: "#ef4444" }}>
+                  className="text-[11px] font-semibold flex items-center gap-1" style={{ color: ink("#ef4444") }}>
                   <X size={10} /> Remove
                 </button>
               )}
@@ -202,7 +203,7 @@ export default function NewAdForm({ brand }: { brand: BrandLite }) {
                   onClick={() => setTopics((p) => p.includes(key) ? p.filter((x) => x !== key) : [...p, key])}
                   className="text-xs font-semibold px-3 py-1.5 rounded-full transition-all"
                   style={active
-                    ? { background: tint + "22", color: tint, border: `1px solid ${tint}66` }
+                    ? { background: tint + "22", color: ink(tint), border: `1px solid ${tint}66` }
                     : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                   {label}
                 </button>
@@ -219,7 +220,7 @@ export default function NewAdForm({ brand }: { brand: BrandLite }) {
                   onClick={() => setRestricted((p) => p.includes(c.code) ? p.filter((x) => x !== c.code) : [...p, c.code])}
                   className="text-xs font-semibold px-3 py-1.5 rounded-full transition-all"
                   style={blocked
-                    ? { background: "rgba(239,68,68,0.15)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.4)" }
+                    ? { background: "rgba(239,68,68,0.15)", color: ink("#ef4444"), border: "1px solid rgba(239,68,68,0.4)" }
                     : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                   {blocked ? "🚫 " : ""}{c.label}
                 </button>
@@ -317,7 +318,7 @@ function Preview({
             <div className="flex items-center gap-1.5 flex-wrap">
               <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{brand.name}</p>
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
-                style={{ background: "rgba(245,158,11,0.2)", color: "#f59e0b" }}>
+                style={{ background: "rgba(245,158,11,0.2)", color: ink("#f59e0b") }}>
                 Sponsored
               </span>
             </div>

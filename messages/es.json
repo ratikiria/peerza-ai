@@ -19,6 +19,8 @@
     "no_pending_requests": "No hay solicitudes pendientes",
     "view_profile": "Ver perfil",
     "sign_out": "Cerrar sesión",
+    "theme_light": "Modo claro",
+    "theme_dark": "Modo oscuro",
     "upgrade_cta": "Actualizar · $10/mes",
     "pro_badge": "PRO",
     "pro_member": "Miembro PRO",

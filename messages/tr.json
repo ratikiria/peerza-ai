@@ -19,6 +19,8 @@
     "no_pending_requests": "Bekleyen istek yok",
     "view_profile": "Profili görüntüle",
     "sign_out": "Çıkış yap",
+    "theme_light": "Açık mod",
+    "theme_dark": "Koyu mod",
     "upgrade_cta": "Yükselt · $10/ay",
     "pro_badge": "PRO",
     "pro_member": "PRO üye",

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { Send, Mic, User, Smile, Plus, Image as ImageIcon, Film, X } from "lucide-react"
@@ -315,7 +316,7 @@ export default function ChatWindow({ currentUserId, partnerId }: ChatWindowProps
                 <p className={cn("text-[10px] text-gray-600 px-1 inline-flex items-center gap-1.5", isMe ? "justify-end ml-auto" : "justify-start")}>
                   <span>{formatRelativeTime(msg.createdAt)}</span>
                   {showSeen && (
-                    <span style={{ color: seen ? "#10b981" : undefined }}>
+                    <span style={{ color: seen ? ink("#10b981") : undefined }}>
                       · {seen ? "Seen" : "Sent"}
                     </span>
                   )}

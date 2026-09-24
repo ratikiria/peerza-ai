@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import Link from "next/link"
 import { Trophy, TrendingUp, TrendingDown, Minus } from "lucide-react"
 import { formatRelativeTime } from "@/lib/utils"
@@ -29,7 +30,7 @@ export default function RecentOutcomesCard({ outcomes, username }: { outcomes: R
                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }} />
               ) : (
                 <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
-                  style={{ background: tint + "22", color: tint }}>
+                  style={{ background: tint + "22", color: ink(tint) }}>
                   <Icon size={12} />
                 </div>
               )}

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useMemo, useState } from "react"
 import { Search, BookOpen, Loader2 } from "lucide-react"
 import LanguagePicker, { getStoredLang, setStoredLang } from "./LanguagePicker"
@@ -67,7 +68,7 @@ export default function DictionaryClient() {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide mb-2"
-              style={{ background: "rgba(99,102,241,0.12)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.4)" }}>
+              style={{ background: "rgba(99,102,241,0.12)", color: ink("#818cf8"), border: "1px solid rgba(99,102,241,0.4)" }}>
               <BookOpen size={11} />
               Dictionary
             </div>
@@ -169,7 +170,7 @@ function CategoryPill({
       className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5"
       style={
         active
-          ? { background: `${color}22`, border: `1px solid ${color}66`, color }
+          ? { background: `${color}22`, border: `1px solid ${color}66`, color: ink(color) }
           : { background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-secondary)" }
       }
     >

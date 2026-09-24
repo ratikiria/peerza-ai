@@ -1,3 +1,4 @@
+import { ink } from "@/lib/ink"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { auth } from "@/lib/auth"
@@ -71,11 +72,11 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
             <h1 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>{brand.name}</h1>
             {brand.verifiedAt
               ? <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                  style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
+                  style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}>
                   <ShieldCheck size={11} /> Verified
                 </span>
               : <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                  style={{ background: "rgba(245,158,11,0.15)", color: "#f59e0b" }}>
+                  style={{ background: "rgba(245,158,11,0.15)", color: ink("#f59e0b") }}>
                   <ShieldAlert size={11} /> Unverified — pending review
                 </span>
             }
@@ -140,7 +141,7 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
                   </div>
                   {ad.reviewNotes && ad.status === "REJECTED" && (
                     <p className="mt-2 text-[11px] p-2 rounded-md"
-                      style={{ background: "rgba(239,68,68,0.1)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.3)" }}>
+                      style={{ background: "rgba(239,68,68,0.1)", color: ink("#fca5a5"), border: "1px solid rgba(239,68,68,0.3)" }}>
                       Review note: {ad.reviewNotes}
                     </p>
                   )}

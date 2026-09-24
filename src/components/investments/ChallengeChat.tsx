@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -189,7 +190,7 @@ export default function ChallengeChat({ challengeId, isParticipant }: Props) {
           Challenge Chat
         </h3>
         <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full"
-          style={{ background: "rgba(16,185,129,0.12)", color: "#10b981" }}>
+          style={{ background: "rgba(16,185,129,0.12)", color: ink("#10b981") }}>
           Participants only
         </span>
       </div>
@@ -264,7 +265,7 @@ export default function ChallengeChat({ challengeId, isParticipant }: Props) {
           type="button"
           onClick={() => setShowEmoji((v) => !v)}
           className="absolute right-[58px] w-7 h-7 rounded-md flex items-center justify-center transition-colors hover:bg-[var(--bg-card)]"
-          style={{ color: showEmoji ? "#10b981" : "var(--text-secondary)" }}
+          style={{ color: showEmoji ? ink("#10b981") : "var(--text-secondary)" }}
           aria-label="Add emoji"
           tabIndex={-1}
         >
@@ -300,7 +301,7 @@ export default function ChallengeChat({ challengeId, isParticipant }: Props) {
       </form>
 
       {err && err !== "load_error" && (
-        <div className="px-3 pb-2 text-[10px]" style={{ color: "#fca5a5" }}>
+        <div className="px-3 pb-2 text-[10px]" style={{ color: ink("#fca5a5") }}>
           {err === "send_failed" ? "Couldn't send — try again." :
            err === "network_error" ? "Network error." :
            err === "message_too_long" ? "Message too long." :

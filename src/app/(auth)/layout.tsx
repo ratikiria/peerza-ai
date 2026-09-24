@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import LogoAnimated from "@/components/brand/LogoAnimated"
+import ForceDarkTheme from "@/components/layout/ForceDarkTheme"
 import AuthShowcase from "@/components/auth/AuthShowcase"
 import LiveTicker from "@/components/auth/LiveTicker"
 import LocaleSwitcher from "@/components/settings/LocaleSwitcher"
@@ -14,6 +15,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
           "radial-gradient(ellipse at 25% 20%, rgba(16,185,129,0.15) 0%, transparent 50%), radial-gradient(ellipse at 75% 80%, rgba(99,102,241,0.12) 0%, transparent 55%), linear-gradient(160deg, #0f2d1f 0%, #0f1117 50%, #0d1a2e 100%)",
       }}
     >
+      <ForceDarkTheme />
       {/* Floating blob lights — span the WHOLE viewport so the seam disappears */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-32 -left-20 w-[28rem] h-[28rem] rounded-full bg-emerald-500/15 blur-3xl animate-[pz-blob_12s_ease-in-out_infinite]" />

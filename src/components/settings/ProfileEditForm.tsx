@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
@@ -222,7 +223,7 @@ export default function ProfileEditForm({ initial }: ProfileEditFormProps) {
           {coverImage && (
             <button type="button" onClick={() => setCoverImage("")}
               className="text-[11px] font-semibold flex items-center gap-1"
-              style={{ color: "#ef4444" }}>
+              style={{ color: ink("#ef4444") }}>
               <X size={11} /> Remove
             </button>
           )}
@@ -290,7 +291,7 @@ export default function ProfileEditForm({ initial }: ProfileEditFormProps) {
               type="button"
               onClick={() => fileRef.current?.click()}
               className="text-sm font-semibold px-4 py-2 rounded-xl transition-all hover:opacity-90"
-              style={{ background: "rgba(16,185,129,0.15)", color: "#10b981", border: "1px solid rgba(16,185,129,0.3)" }}
+              style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.3)" }}
             >
               Choose from computer
             </button>
@@ -342,7 +343,7 @@ export default function ProfileEditForm({ initial }: ProfileEditFormProps) {
       <div className="rounded-2xl p-5 space-y-3" style={cardStyle}>
         <div className="flex items-center justify-between">
           <label className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Bio</label>
-          <span className="text-xs" style={{ color: bio.length > 180 ? "#f59e0b" : "var(--text-secondary)" }}>
+          <span className="text-xs" style={{ color: bio.length > 180 ? ink("#f59e0b") : "var(--text-secondary)" }}>
             {bio.length}/200
           </span>
         </div>
@@ -375,7 +376,7 @@ export default function ProfileEditForm({ initial }: ProfileEditFormProps) {
               style={{
                 background: interests.includes(s) ? "rgba(16,185,129,0.2)" : "var(--bg-base)",
                 border: `1px solid ${interests.includes(s) ? "rgba(16,185,129,0.4)" : "var(--border)"}`,
-                color: interests.includes(s) ? "#10b981" : "var(--text-secondary)",
+                color: interests.includes(s) ? ink("#10b981") : "var(--text-secondary)",
               }}>
               {s}
             </button>
@@ -385,7 +386,7 @@ export default function ProfileEditForm({ initial }: ProfileEditFormProps) {
         {interests.filter((i) => !INTEREST_SUGGESTIONS.includes(i)).map((i) => (
           <span key={i}
             className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full mr-2"
-            style={{ background: "rgba(16,185,129,0.2)", border: "1px solid rgba(16,185,129,0.4)", color: "#10b981" }}>
+            style={{ background: "rgba(16,185,129,0.2)", border: "1px solid rgba(16,185,129,0.4)", color: ink("#10b981") }}>
             {i}
             <button type="button" onClick={() => toggleInterest(i)}><X size={10} /></button>
           </span>

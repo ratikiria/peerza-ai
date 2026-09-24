@@ -1,5 +1,6 @@
 "use client";
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useCallback } from "react";
 import { Trophy, RefreshCw } from "lucide-react";
 import Image from "next/image";
@@ -70,7 +71,7 @@ export default function Leaderboard({ challengeId, refreshTrigger }: Props) {
     <div className="rounded-xl" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
       <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
         <div className="flex items-center gap-2">
-          <Trophy size={14} style={{ color: "#f59e0b" }} />
+          <Trophy size={14} style={{ color: ink("#f59e0b") }} />
           <h3 className="font-semibold text-sm">Leaderboard</h3>
         </div>
         <button
@@ -85,7 +86,7 @@ export default function Leaderboard({ challengeId, refreshTrigger }: Props) {
         <div className="px-5 py-8 text-center text-sm text-white/30">No participants yet</div>
       ) : (
         <>
-          <div className="divide-y" style={{ borderColor: "var(--border)" }}>
+          <div className="divide-y divide-[var(--border)]">
             {leaderboard.map((entry) => (
               <Row key={entry.userId} entry={entry} highlight={false} />
             ))}
@@ -147,7 +148,7 @@ function Row({ entry, highlight }: { entry: LeaderboardEntry; highlight: boolean
       </div>
       <div className="text-right shrink-0">
         <FlashCell value={entry.returnPct} className="text-sm font-bold">
-          <span style={{ color: isPositive ? "#4ade80" : "#f87171" }}>
+          <span style={{ color: isPositive ? ink("#4ade80") : ink("#f87171") }}>
             <AnimatedNumber
               value={entry.returnPct}
               format={(v) => `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`}

@@ -45,11 +45,14 @@ export const viewport = {
 // Pre-paint script: reads the theme from localStorage and sets `data-theme` on
 // <html> before React hydrates. Dark is the brand default — light is opt-in via
 // settings, and "system" means follow OS pref (only when explicitly chosen).
+// Landing + auth pages are dark-only (see ForceDarkTheme).
 // Wrapped in a try so a corrupt value never crashes paint.
 const THEME_INIT = `
 try {
   var t = localStorage.getItem("peerza-theme-v1");
-  if (t === "system") {
+  if (/^\\/(login|register|forgot-password)?(\\/|$)/.test(location.pathname)) {
+    t = "dark";
+  } else if (t === "system") {
     t = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
   } else if (t !== "light" && t !== "dark") {
     t = "dark";

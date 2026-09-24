@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState, useCallback } from "react"
 import { Plus, User } from "lucide-react"
 import AvatarUploadModal from "@/components/shared/AvatarUploadModal"
@@ -209,7 +210,7 @@ export default function StoriesBar({ currentUser }: StoriesBarProps) {
                 <span className="text-[10px] font-medium truncate w-14 text-center" style={{ color: "var(--text-secondary)" }}>
                   {group.author.name.split(" ")[0]}
                   {group.stories.length > 1 && (
-                    <span style={{ color: "#10b981" }}> · {group.stories.length}</span>
+                    <span style={{ color: ink("#10b981") }}> · {group.stories.length}</span>
                   )}
                 </span>
               </div>

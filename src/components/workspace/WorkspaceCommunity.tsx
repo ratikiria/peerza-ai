@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { TrendingUp, TrendingDown, Minus, MessageCircle, Heart, ExternalLink, RefreshCw, ArrowRight } from "lucide-react"
@@ -132,9 +133,9 @@ export default function WorkspaceCommunity({ ticker }: Props) {
           </div>
           <div className="flex justify-between text-[9px] mt-1 tabular-nums"
             style={{ color: "var(--text-secondary)" }}>
-            <span style={{ color: "#10b981" }}>{bull} bull</span>
-            <span style={{ color: "#eab308" }}>{neu} neut</span>
-            <span style={{ color: "#ef4444" }}>{bear} bear</span>
+            <span style={{ color: ink("#10b981") }}>{bull} bull</span>
+            <span style={{ color: ink("#eab308") }}>{neu} neut</span>
+            <span style={{ color: ink("#ef4444") }}>{bear} bear</span>
           </div>
         </div>
       )}
@@ -147,7 +148,7 @@ export default function WorkspaceCommunity({ ticker }: Props) {
             onClick={() => setFilter(f)}
             className="text-[10px] font-semibold px-2 py-1 rounded-md transition-all capitalize"
             style={filter === f
-              ? { background: "rgba(16,185,129,0.18)", color: "#10b981" }
+              ? { background: "rgba(16,185,129,0.18)", color: ink("#10b981") }
               : { background: "transparent", color: "var(--text-secondary)" }}
           >
             {f}
@@ -180,7 +181,7 @@ export default function WorkspaceCommunity({ ticker }: Props) {
             <Link
               href={`/feed?ticker=${encodeURIComponent(ticker)}`}
               className="inline-flex items-center gap-1 text-[11px] font-semibold mt-3 px-3 py-1.5 rounded-lg transition-colors"
-              style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}
+              style={{ background: "rgba(16,185,129,0.15)", color: ink("#10b981") }}
             >
               Open in feed <ArrowRight size={11} />
             </Link>
@@ -280,7 +281,7 @@ function PostRow({ post }: { post: Post }) {
       {a?.direction && (
         <div className="flex items-center gap-1.5 mb-1.5">
           <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded"
-            style={{ background: `${dirCol}22`, color: dirCol }}>
+            style={{ background: `${dirCol}22`, color: ink(dirCol) }}>
             {dirIcon(a.direction)} {a.direction}
           </span>
           {a.timeframe && (

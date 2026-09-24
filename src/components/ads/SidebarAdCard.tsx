@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Building2, ExternalLink, X, ShieldCheck } from "lucide-react"
@@ -98,7 +99,7 @@ export default function SidebarAdCard({ ad, variant = "sidebar" }: Props) {
             </div>
             <span
               className="text-[8px] font-bold uppercase tracking-wider"
-              style={{ color: "#f59e0b" }}
+              style={{ color: ink("#f59e0b") }}
             >
               Sponsored
             </span>

@@ -1,5 +1,6 @@
 "use client"
 
+import { ink } from "@/lib/ink"
 import { useState, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
@@ -218,7 +219,7 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
             <div className="flex items-center justify-between px-3 py-1.5 text-[11px]"
               style={{ background: "rgba(16,185,129,0.08)", borderBottom: "1px solid var(--border)" }}>
               <span style={{ color: "var(--text-secondary)" }}>
-                Replying to <span className="font-semibold" style={{ color: "#10b981" }}>@{replyingTo.username}</span>
+                Replying to <span className="font-semibold" style={{ color: ink("#10b981") }}>@{replyingTo.username}</span>
               </span>
               <button onClick={() => setReplyingTo(null)}
                 className="w-4 h-4 flex items-center justify-center rounded hover:bg-[var(--bg-elevated)]"
@@ -267,7 +268,7 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
                 type="button"
                 onClick={openEmoji}
                 className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--bg-elevated)]"
-                style={{ color: showEmoji ? "#10b981" : "var(--text-secondary)" }}
+                style={{ color: showEmoji ? ink("#10b981") : "var(--text-secondary)" }}
                 title="Emoji"
               >
                 <Smile size={16} />
@@ -279,7 +280,7 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
               type="button"
               onClick={() => fileRef.current?.click()}
               className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--bg-elevated)]"
-              style={{ color: imageUrl ? "#10b981" : "var(--text-secondary)" }}
+              style={{ color: imageUrl ? ink("#10b981") : "var(--text-secondary)" }}
               title="Attach photo"
             >
               <ImageIcon size={15} />
@@ -293,7 +294,7 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
                 type="button"
                 onClick={openGif}
                 className="h-7 px-2 flex items-center justify-center rounded-lg text-[10px] font-bold transition-colors hover:bg-[var(--bg-elevated)]"
-                style={{ color: showGif ? "#10b981" : "var(--text-secondary)" }}
+                style={{ color: showGif ? ink("#10b981") : "var(--text-secondary)" }}
                 title="GIF"
               >
                 GIF
@@ -306,7 +307,7 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
               onClick={() => handleSubmit()}
               disabled={!canSubmit}
               className="ml-auto w-7 h-7 flex items-center justify-center rounded-lg transition-all disabled:opacity-30"
-              style={{ color: canSubmit ? "#10b981" : "var(--text-secondary)" }}
+              style={{ color: canSubmit ? ink("#10b981") : "var(--text-secondary)" }}
             >
               <Send size={14} />
             </button>
@@ -582,7 +583,7 @@ function CommentRow({
               onMouseEnter={showPopup}
               onClick={() => onReact(myReaction ?? "👍")}
               className="flex items-center gap-1 text-[11px] font-semibold transition-colors"
-              style={{ color: myReaction ? "#10b981" : "var(--text-secondary)" }}
+              style={{ color: myReaction ? ink("#10b981") : "var(--text-secondary)" }}
             >
               <Heart size={11} fill={myReaction ? "currentColor" : "none"} />
               <span>{myReaction ? "Liked" : "Like"}</span>
