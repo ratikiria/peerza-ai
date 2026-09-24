@@ -252,6 +252,18 @@ export function formatCountdown(ms: number): string {
   return `${mm}m`
 }
 
+/**
+ * Price with enough precision to see a ranked call move: forex (1.3213)
+ * needs 4 decimals and sub-dollar coins (0.09636) need significant digits,
+ * where the usual 2 decimals would show entry and target as the same number.
+ */
+export function formatPrice(p: number): string {
+  if (p >= 1000) return p.toLocaleString("en-US", { maximumFractionDigits: 2 })
+  if (p >= 10) return p.toFixed(2)
+  if (p >= 1) return p.toFixed(4)
+  return String(Number(p.toPrecision(4)))
+}
+
 /** One-unit countdown for tight spaces (rings): "4d", "23h", "12m". */
 export function formatCountdownShort(ms: number): string {
   if (ms <= 0) return "0m"

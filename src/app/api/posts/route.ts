@@ -3,7 +3,7 @@ import { z } from "zod"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { checkOutcomesForPosts } from "@/lib/outcomes"
-import { RANKED_TFS, isIntraday, rankedWindow, difficultyRatio, MIN_RANKED_RATIO, type RankedTf } from "@/lib/ranked"
+import { RANKED_TFS, formatPrice, isIntraday, rankedWindow, difficultyRatio, MIN_RANKED_RATIO, type RankedTf } from "@/lib/ranked"
 import { assetKindFor, getRankQuote, yahooSymbolFor } from "@/lib/ranked-market"
 
 const analysisSchema = z.object({
@@ -197,12 +197,6 @@ function parsePrice(s?: string): number | null {
   return Number.isFinite(n) && n > 0 ? n : null
 }
 
-function fmtEntry(p: number): string {
-  if (p >= 1000) return p.toLocaleString("en-US", { maximumFractionDigits: 2 })
-  if (p >= 1) return p.toFixed(2)
-  return p.toFixed(6)
-}
-
 type Analysis = z.infer<typeof analysisSchema>
 
 async function prepareRankedCall(analysis: Analysis, tf: RankedTf):
@@ -234,7 +228,7 @@ async function prepareRankedCall(analysis: Analysis, tf: RankedTf):
   if (ratio < MIN_RANKED_RATIO) return { error: "Target is too close for this deadline. Move it further out to rank the call." }
 
   return {
-    analysis: { ...analysis, timeframe: tf, entry: fmtEntry(reference) },
+    analysis: { ...analysis, timeframe: tf, entry: formatPrice(reference) },
     data: {
       rankedTf: tf,
       rankedSymbol: symbol,

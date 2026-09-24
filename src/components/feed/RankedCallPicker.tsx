@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { Trophy, Lock, Loader2 } from "lucide-react"
 import { ink } from "@/lib/ink"
 import {
-  RANKED_TFS, TF_DEFS, STYLE_META, DIFFICULTY_META, rankedWindow, difficultyRatio, difficultyLevel,
+  RANKED_TFS, TF_DEFS, STYLE_META, DIFFICULTY_META, formatPrice, rankedWindow, difficultyRatio, difficultyLevel,
   pointsIfHit, pointsIfMissed, type RankedTf, type AssetKind, type SessionHint, type TraderStyle,
 } from "@/lib/ranked"
 
@@ -239,7 +239,7 @@ export default function RankedCallPicker({ enabled, onEnabledChange, tf, onTfCha
                     {STYLE_META[style].name}
                   </p>
                   <p className="text-[11px] flex items-center gap-1" style={{ color: "var(--text-secondary)" }}>
-                    <Lock size={10} /> Entry locks at ${quote!.price.toLocaleString("en-US", { maximumFractionDigits: quote!.price >= 1 ? 2 : 6 })}
+                    <Lock size={10} /> Entry locks at ${formatPrice(quote!.price)}
                   </p>
                 </div>
               </div>

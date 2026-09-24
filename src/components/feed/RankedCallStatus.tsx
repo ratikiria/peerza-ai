@@ -3,7 +3,7 @@
 import { Check, Hourglass, Timer, Ban } from "lucide-react"
 import { ink } from "@/lib/ink"
 import { useNow } from "@/hooks/useNow"
-import { formatCountdown, formatCountdownShort, pointsIfHit, STYLE_META, TF_DEFS, isRankedTf } from "@/lib/ranked"
+import { formatCountdown, formatCountdownShort, formatPrice, pointsIfHit, STYLE_META, TF_DEFS, isRankedTf } from "@/lib/ranked"
 
 export interface RankedFields {
   outcomeStatus?: "OPEN" | "TARGET_HIT" | "EXPIRED" | "VOID"
@@ -29,10 +29,7 @@ function ms(v: string | Date | null | undefined): number | null {
 }
 
 function fmt(p: number | null | undefined): string {
-  if (p == null) return "—"
-  if (p >= 1000) return p.toLocaleString("en-US", { maximumFractionDigits: 2 })
-  if (p >= 1) return p.toFixed(2)
-  return p.toFixed(6)
+  return p == null ? "—" : formatPrice(p)
 }
 
 export default function RankedCallStatus({ call }: { call: RankedFields }) {
