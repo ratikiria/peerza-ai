@@ -11,7 +11,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ postId:
   const post = await db.post.findUnique({
     where: { id: postId },
     include: {
-      author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true } },
+      author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, repTier: true, repStyle: true } },
       likes:  { select: { userId: true, reaction: true } },
       _count: { select: { comments: true, likes: true } },
       originalPost: {
@@ -69,12 +69,16 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ post
 
   const post = await db.post.findUnique({
     where: { id: postId },
-    select: { authorId: true },
+    select: { authorId: true, rankedDeadline: true },
   })
 
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 })
   if (post.authorId !== session.user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+  }
+  // Ranked calls are part of the public track record — deleting one would hide a miss.
+  if (post.rankedDeadline) {
+    return NextResponse.json({ error: "Ranked calls are permanent and can't be deleted" }, { status: 403 })
   }
 
   await db.post.delete({ where: { id: postId } })

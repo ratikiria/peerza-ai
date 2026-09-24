@@ -3,11 +3,13 @@ import { z } from "zod"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { checkOutcomesForPosts } from "@/lib/outcomes"
+import { RANKED_TFS, isIntraday, rankedWindow, difficultyRatio, MIN_RANKED_RATIO, type RankedTf } from "@/lib/ranked"
+import { assetKindFor, getRankQuote, yahooSymbolFor } from "@/lib/ranked-market"
 
 const analysisSchema = z.object({
   ticker:      z.string().min(1).max(20),
   direction:   z.enum(["bullish", "bearish", "neutral"]),
-  timeframe:   z.enum(["1H", "4H", "1D", "1W", "1M"]),
+  timeframe:   z.enum(RANKED_TFS),
   entry:       z.string().optional(),
   target:      z.string().optional(),
   conviction:  z.number().int().min(1).max(5).optional(),
@@ -30,6 +32,8 @@ const createPostSchema = z.object({
   topics:         z.array(z.enum(TOPIC_VALUES)).max(4).optional(),
   originalPostId: z.string().optional(),
   tickerOnly:     z.boolean().optional(),
+  // Present only for Ranked Calls — the deadline the author commits to.
+  ranked:         z.object({ tf: z.enum(RANKED_TFS) }).optional(),
 }).refine((d) => d.content.trim().length > 0 || !!d.originalPostId || !!d.pollId, {
   message: "Content required",
   path: ["content"],
@@ -80,7 +84,7 @@ export async function GET(req: Request) {
     orderBy: { createdAt: "desc" },
     include: {
       author: {
-        select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true },
+        select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, repTier: true, repStyle: true },
       },
       likes: { select: { userId: true, reaction: true } },
       _count: { select: { comments: true, likes: true } },
@@ -140,14 +144,26 @@ export async function POST(req: Request) {
     originalPostId = original.originalPostId ?? original.id
   }
 
+  // Ranked Call: lock entry, deadline and difficulty server-side so the
+  // client can't backdate a better entry or pick a trivially close target.
+  let analysis = parsed.data.analysis
+  let rankedData: Record<string, unknown> = {}
+  if (parsed.data.ranked) {
+    const r = await prepareRankedCall(analysis, parsed.data.ranked.tf)
+    if ("error" in r) return NextResponse.json({ error: r.error }, { status: 400 })
+    analysis = r.analysis
+    rankedData = r.data
+  }
+
   const post = await db.post.create({
     data: {
+      ...rankedData,
       content:        parsed.data.content,
       imageUrl:       parsed.data.imageUrl,
       videoUrl:       parsed.data.videoUrl ?? null,
       videoMime:      parsed.data.videoMime ?? null,
       pollId:         parsed.data.pollId ?? null,
-      analysis:       parsed.data.analysis ?? undefined,
+      analysis:       analysis ?? undefined,
       topics:         parsed.data.topics ?? [],
       tickerOnly:     parsed.data.tickerOnly ?? false,
       authorId:       session.user.id,
@@ -155,7 +171,7 @@ export async function POST(req: Request) {
     },
     include: {
       author: {
-        select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true },
+        select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, repTier: true, repStyle: true },
       },
       _count: { select: { comments: true, likes: true } },
       originalPost: {
@@ -173,4 +189,63 @@ export async function POST(req: Request) {
   })
 
   return NextResponse.json(post, { status: 201 })
+}
+
+function parsePrice(s?: string): number | null {
+  if (!s) return null
+  const n = parseFloat(s.replace(/[$,s]/g, ""))
+  return Number.isFinite(n) && n > 0 ? n : null
+}
+
+function fmtEntry(p: number): string {
+  if (p >= 1000) return p.toLocaleString("en-US", { maximumFractionDigits: 2 })
+  if (p >= 1) return p.toFixed(2)
+  return p.toFixed(6)
+}
+
+type Analysis = z.infer<typeof analysisSchema>
+
+async function prepareRankedCall(analysis: Analysis, tf: RankedTf):
+  Promise<{ error: string } | { analysis: NonNullable<Analysis>; data: Record<string, unknown> }> {
+  if (!analysis) return { error: "Ranked calls need a trade idea" }
+  if (analysis.direction === "neutral") return { error: "Ranked calls must be bullish or bearish" }
+  const target = parsePrice(analysis.target)
+  if (target == null) return { error: "Ranked calls need a target price" }
+  if (!analysis.priceKey || !analysis.priceSource) return { error: "Pick the asset from search to rank this call" }
+
+  const symbol = yahooSymbolFor(analysis.priceSource, analysis.priceKey, analysis.ticker)
+  const quote = symbol ? await getRankQuote(symbol) : null
+  if (!symbol || !quote) return { error: "We can't track live prices for this asset yet, so it can't be ranked. Post it as a regular idea." }
+
+  const kind = assetKindFor(analysis.priceSource)
+  const now = Date.now()
+  const window = rankedWindow(tf, kind, now, quote.session)
+  if (!window) {
+    return { error: isIntraday(tf) ? "This market is closed. 15M–4H deadlines open when it trades — pick 1D or longer." : "Couldn't set a deadline" }
+  }
+
+  const bull = analysis.direction === "bullish"
+  const reference = quote.price
+  const move = ((target - reference) / reference) * 100
+  if (bull ? move <= 0 : move >= 0) {
+    return { error: bull ? "A bullish target must be above the current price" : "A bearish target must be below the current price" }
+  }
+  const ratio = difficultyRatio(move, tf, kind, quote.dailySigmaPct)
+  if (ratio < MIN_RANKED_RATIO) return { error: "Target is too close for this deadline. Move it further out to rank the call." }
+
+  return {
+    analysis: { ...analysis, timeframe: tf, entry: fmtEntry(reference) },
+    data: {
+      rankedTf: tf,
+      rankedSymbol: symbol,
+      rankedStartsAt: new Date(window.startsAt),
+      rankedDeadline: new Date(window.deadline),
+      // Deferred calls (market closed) lock entry at the first price after the open.
+      rankedEntry: window.deferred ? null : reference,
+      rankedTarget: target,
+      rankedDifficulty: parseFloat(ratio.toFixed(3)),
+      rankedProgress: 0,
+      rankedLastPrice: reference,
+    },
+  }
 }

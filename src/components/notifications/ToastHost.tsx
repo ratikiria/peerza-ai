@@ -4,7 +4,7 @@ import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import {
-  Bell, MessageCircle, Heart, UserPlus, Phone, Repeat, X, Users, UserCheck, Swords,
+  Bell, MessageCircle, Heart, UserPlus, Phone, Repeat, X, Users, UserCheck, Swords, Trophy,
 } from "lucide-react"
 
 type ApiNotification = {
@@ -20,6 +20,7 @@ type ApiNotification = {
     | "CALL"
     | "GAME_DUEL_INVITE"
     | "GAME_DUEL_RESULT"
+    | "RANKED_CALL_RESULT"
   receiverId: string
   triggeredBy: string
   entityId: string | null
@@ -165,6 +166,14 @@ function describe(n: ApiNotification): { title: string; body: string; href: stri
         href: "/games/duels?box=sent",
         icon: <Swords size={14} />,
         iconColor: "#10b981",
+      }
+    case "RANKED_CALL_RESULT":
+      return {
+        title: "Ranked call settled",
+        body: "Tap to see if it hit",
+        href: n.entityId ? `/posts/${n.entityId}` : "/feed",
+        icon: <Trophy size={14} />,
+        iconColor: "#34d399",
       }
     default:
       return {

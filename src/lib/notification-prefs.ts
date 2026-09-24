@@ -11,6 +11,7 @@ export type NotificationKey =
   | "CALL"
   | "GAME_DUEL_INVITE"
   | "GAME_DUEL_RESULT"
+  | "RANKED_CALL_RESULT"
 
 export type NotificationPrefs = Record<NotificationKey, boolean>
 
@@ -25,6 +26,7 @@ export const NOTIFICATION_KEYS: NotificationKey[] = [
   "CALL",
   "GAME_DUEL_INVITE",
   "GAME_DUEL_RESULT",
+  "RANKED_CALL_RESULT",
 ]
 
 export const NOTIFICATION_LABELS: Record<NotificationKey, { title: string; hint: string }> = {
@@ -38,6 +40,7 @@ export const NOTIFICATION_LABELS: Record<NotificationKey, { title: string; hint:
   CALL: { title: "Audio & video calls", hint: "When someone calls you" },
   GAME_DUEL_INVITE: { title: "Game challenges", hint: "When someone challenges you to a game duel" },
   GAME_DUEL_RESULT: { title: "Game duel results", hint: "When your opponent finishes a duel you started" },
+  RANKED_CALL_RESULT: { title: "Ranked call results", hint: "When one of your ranked calls hits or expires" },
 }
 
 export const DEFAULT_PREFS: NotificationPrefs = {
@@ -51,6 +54,7 @@ export const DEFAULT_PREFS: NotificationPrefs = {
   CALL: true,
   GAME_DUEL_INVITE: true,
   GAME_DUEL_RESULT: true,
+  RANKED_CALL_RESULT: true,
 }
 
 function normalize(raw: unknown): NotificationPrefs {

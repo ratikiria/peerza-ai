@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import Link from "next/link"
-import { User, Heart, MessageCircle, UserPlus, Bell, Swords } from "lucide-react"
+import { User, Heart, MessageCircle, UserPlus, Bell, Swords, Trophy } from "lucide-react"
 import { formatRelativeTime } from "@/lib/utils"
 
 const notificationMeta: Record<string, { label: string; icon: React.ReactNode; color: string }> = {
@@ -55,6 +55,11 @@ const notificationMeta: Record<string, { label: string; icon: React.ReactNode; c
     icon: <Swords size={14} />,
     color: "text-emerald-400 bg-emerald-500/10",
   },
+  RANKED_CALL_RESULT: {
+    label: "Your ranked call settled — see the result",
+    icon: <Trophy size={14} />,
+    color: "text-emerald-400 bg-emerald-500/10",
+  },
 }
 
 export default async function NotificationsPage() {
@@ -97,6 +102,8 @@ export default async function NotificationsPage() {
             const href =
               n.type === "GAME_DUEL_INVITE" || n.type === "GAME_DUEL_RESULT"
                 ? "/games/duels"
+                : n.type === "RANKED_CALL_RESULT" && n.entityId
+                ? `/posts/${n.entityId}`
                 : n.entityId
                 ? n.type.includes("POST")
                   ? `/posts/${n.entityId}`
@@ -129,8 +136,14 @@ export default async function NotificationsPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-gray-200">
-                    <span className="font-semibold">{n.triggerer.name}</span>{" "}
-                    <span className="text-gray-400">{meta.label}</span>
+                    {n.type === "RANKED_CALL_RESULT" ? (
+                      <span className="font-semibold">{meta.label}</span>
+                    ) : (
+                      <>
+                        <span className="font-semibold">{n.triggerer.name}</span>{" "}
+                        <span className="text-gray-400">{meta.label}</span>
+                      </>
+                    )}
                   </p>
                   <p className="text-xs text-gray-600 mt-0.5">{formatRelativeTime(n.createdAt)}</p>
                 </div>

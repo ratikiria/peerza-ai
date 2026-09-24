@@ -25,6 +25,13 @@ model User {
   aiQuestionsToday Int       @default(0)
   aiQuotaResetAt   DateTime?
   showTrackRecord  Boolean   @default(true)
+  // Ranked Calls reputation, denormalized so feed cards can show rank + style
+  // without aggregating. Recomputed whenever one of the user's calls resolves.
+  repScore         Int       @default(500)
+  repTier          String?
+  repStyle         String?
+  repCalls         Int       @default(0)
+  repHits          Int       @default(0)
   hideFollowList   Boolean   @default(false)
   country          String?
   locale           String?   @default("en")
@@ -140,6 +147,18 @@ model Post {
   outcomeAt         DateTime?
   outcomeReturnPct  Float?
   outcomeCheckedAt  DateTime?
+  // Ranked Calls — set only when the author picked a deadline. See lib/ranked.ts.
+  rankedTf             String?
+  rankedSymbol         String?   // Yahoo symbol used for entry + settlement
+  rankedStartsAt       DateTime? // later than createdAt when posted while the market was closed
+  rankedDeadline       DateTime?
+  rankedEntry          Float?    // locked server-side; null until the market opens for deferred calls
+  rankedTarget         Float?
+  rankedDifficulty     Float?    // |move| / typical move for the window
+  rankedPoints         Int?      // signed, set on resolution
+  rankedProgress       Float?    // best progress toward target so far, 0–1
+  rankedLastPrice      Float?
+  rankedCheckedThrough DateTime? // settlement has scanned candles up to here
   editedAt          DateTime?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -155,11 +174,14 @@ model Post {
   @@index([createdAt])
   @@index([originalPostId])
   @@index([outcomeStatus, outcomeCheckedAt])
+  @@index([outcomeStatus, rankedDeadline])
 }
 
 enum OutcomeStatus {
   OPEN
   TARGET_HIT
+  EXPIRED   // ranked call missed its deadline
+  VOID      // ranked call market data couldn't settle fairly — no points
 }
 
 model Like {
@@ -394,6 +416,7 @@ enum NotificationType {
   STORY_REPLY
   GAME_DUEL_INVITE
   GAME_DUEL_RESULT
+  RANKED_CALL_RESULT
 }
 
 // ─── STORIES ─────────────────────────────────────────────────────────────────

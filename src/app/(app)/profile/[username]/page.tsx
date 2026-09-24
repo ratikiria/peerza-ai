@@ -17,6 +17,9 @@ import ProfilePostsTabs from "@/components/users/ProfilePostsTabs"
 import SocialLinks from "@/components/users/SocialLinks"
 import ProBadge from "@/components/shared/ProBadge"
 import { getTrackRecord } from "@/lib/track-record"
+import { getReputationProfile } from "@/lib/reputation"
+import ReputationCard from "@/components/users/ReputationCard"
+import RepChips from "@/components/shared/RepChips"
 import { getMutualConnections, getRecentOutcomes, getActiveChallengePerf } from "@/lib/profile-data"
 import { getUserGameStats } from "@/lib/games"
 
@@ -29,6 +32,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
     select: {
       id: true, name: true, username: true, bio: true, image: true, coverImage: true,
       isPremium: true, isPro: true, proExpiresAt: true, interests: true, country: true, createdAt: true, showTrackRecord: true,
+      repTier: true, repStyle: true,
       links: true,
       _count: { select: { followers: true, following: true, posts: true } },
     },
@@ -67,13 +71,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
   const baseUrl = `${proto}://${host}`
   const cookieHeader = reqHeaders.get("cookie") ?? ""
 
-  const [posts, pinnedPosts, trackRecord, mutuals, outcomes, activeChallenges, gameStats] = await Promise.all([
+  const [posts, pinnedPosts, trackRecord, mutuals, outcomes, activeChallenges, gameStats, reputation] = await Promise.all([
     db.post.findMany({
       where: { authorId: user.id, pinned: false },
       orderBy: { createdAt: "desc" },
       take: 20,
       include: {
-        author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, proExpiresAt: true } },
+        author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, proExpiresAt: true, repTier: true, repStyle: true } },
         likes: { select: { userId: true, reaction: true } },
         _count: { select: { comments: true, likes: true } },
         poll: { select: { id: true, question: true, options: true, authorId: true, votes: { select: { userId: true, optionIndex: true } } } },
@@ -84,7 +88,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
       orderBy: { createdAt: "desc" },
       take: 3,
       include: {
-        author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, proExpiresAt: true } },
+        author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, proExpiresAt: true, repTier: true, repStyle: true } },
         likes: { select: { userId: true, reaction: true } },
         _count: { select: { comments: true, likes: true } },
         poll: { select: { id: true, question: true, options: true, authorId: true, votes: { select: { userId: true, optionIndex: true } } } },
@@ -97,6 +101,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
     getRecentOutcomes(user.id),
     getActiveChallengePerf(user.id, baseUrl, cookieHeader),
     getUserGameStats(user.id),
+    getReputationProfile(user.id),
   ])
 
   const serializedPosts = posts.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() }))
@@ -172,6 +177,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>{user.name}</h1>
               {user.isPro && <ProBadge size="md" withLabel />}
+              <RepChips tier={user.repTier} style={user.repStyle} size="md" />
             </div>
             <p className="text-sm" style={{ color: "var(--text-secondary)" }}>@{user.username}</p>
             <SocialLinks links={user.links as Parameters<typeof SocialLinks>[0]["links"]} />
@@ -201,6 +207,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
 
         {/* Center: track record + posts */}
         <div className="space-y-4 order-1 lg:order-2 min-w-0">
+          <ReputationCard rep={reputation} isOwnProfile={isOwnProfile} />
+
           <TrackRecordCard
             record={trackRecord}
             isOwnProfile={isOwnProfile}

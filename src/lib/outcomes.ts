@@ -40,14 +40,17 @@ async function fetchPriceFor(priceKey: string, priceSource: "crypto" | "stooq", 
 interface PostForCheck {
   id: string
   analysis: unknown
-  outcomeStatus: "OPEN" | "TARGET_HIT"
+  outcomeStatus: "OPEN" | "TARGET_HIT" | "EXPIRED" | "VOID"
   outcomeCheckedAt: Date | null
+  rankedDeadline?: Date | null
 }
 
 export async function checkOutcomesForPosts(posts: PostForCheck[], baseUrl: string, cookieHeader: string): Promise<void> {
   const now = Date.now()
   const candidates = posts.filter((p) => {
     if (p.outcomeStatus !== "OPEN") return false
+    // Ranked calls are settled by lib/ranked-resolver.ts against candles, not here.
+    if (p.rankedDeadline) return false
     if (!p.analysis || typeof p.analysis !== "object") return false
     const a = p.analysis as AnalysisShape
     if (!a.target || !a.priceKey || !a.priceSource) return false

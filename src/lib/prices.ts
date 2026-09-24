@@ -93,7 +93,7 @@ async function fetchCoinGecko(id: string): Promise<number | null> {
 // (Railway included — observed 2026-05-12, empty list returned in prod).
 // Yahoo Finance serves crypto pairs at /v8/finance/chart/BTC-USD reliably
 // from any IP, so we keep it as a fallback for the common cryptos.
-const CRYPTO_TO_YAHOO: Record<string, string> = {
+export const CRYPTO_TO_YAHOO: Record<string, string> = {
   bitcoin:      "BTC-USD",
   ethereum:     "ETH-USD",
   solana:       "SOL-USD",

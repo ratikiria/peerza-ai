@@ -7,6 +7,9 @@ import { MessageCircle, Share2, Trash2, User, TrendingUp, TrendingDown, Minus, S
 import ShareModal, { type SharePayload } from "@/components/shared/ShareModal"
 import ProBadge from "@/components/shared/ProBadge"
 import PollCard from "@/components/polls/PollCard"
+import RankedCallStatus, { type RankedFields } from "@/components/feed/RankedCallStatus"
+import RepChips from "@/components/shared/RepChips"
+import { Trophy } from "lucide-react"
 
 const CATALYST_META: Record<string, { label: string; emoji: string }> = {
   technical:   { label: "Technical",   emoji: "📈" },
@@ -58,7 +61,7 @@ interface OriginalPost {
 }
 
 interface PostCardProps {
-  post: {
+  post: RankedFields & {
     id: string
     content: string
     imageUrl?: string | null
@@ -66,11 +69,10 @@ interface PostCardProps {
     videoMime?: string | null
     analysis?: PostAnalysis | null
     createdAt: string
-    author: { id: string; name: string; username: string; image?: string | null; isPremium: boolean; isPro?: boolean }
+    author: { id: string; name: string; username: string; image?: string | null; isPremium: boolean; isPro?: boolean; repTier?: string | null; repStyle?: string | null }
     likes: { userId: string; reaction: string }[]
     _count: { comments: number; likes: number }
     originalPost?: OriginalPost | null
-    outcomeStatus?: "OPEN" | "TARGET_HIT"
     outcomeAt?: string | null
     outcomeReturnPct?: number | null
     pinned?: boolean
@@ -289,6 +291,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
               {post.author.name}
             </Link>
             {post.author.isPro && <ProBadge size="sm" />}
+            <RepChips tier={post.author.repTier} style={post.author.repStyle} />
             <span className="text-xs" style={{ color: "var(--text-secondary)" }}>@{post.author.username}</span>
             <span style={{ color: "var(--border)" }}>·</span>
             <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
@@ -324,7 +327,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
               <Pencil size={14} />
             </button>
           )}
-          {isOwn && (
+          {isOwn && !post.rankedDeadline && (
             <button onClick={handleDelete}
               className="hover:text-rose-400 transition-colors p-1 rounded-lg hover:bg-rose-400/10"
               style={{ color: "var(--text-secondary)" }}
@@ -501,7 +504,8 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
         const isBear = a.direction === "bearish"
         const accentColor = isBull ? "#10b981" : isBear ? "#ef4444" : "#eab308"
         const DirIcon = isBull ? TrendingUp : isBear ? TrendingDown : Minus
-        const targetHit = post.outcomeStatus === "TARGET_HIT"
+        const isRanked = !!post.rankedDeadline
+        const targetHit = !isRanked && post.outcomeStatus === "TARGET_HIT"
         const outcomePct = post.outcomeReturnPct ?? null
         return (
           <div className="px-4 pb-3">
@@ -527,6 +531,13 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
+                  {isRanked && (
+                    <span className="flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded-lg"
+                      style={{ background: "rgba(16,185,129,0.1)", color: ink("#34d399") }}
+                      title="Ranked call — counts toward public reputation">
+                      <Trophy size={11} /> Ranked
+                    </span>
+                  )}
                   {targetHit && outcomePct != null && (
                     <span
                       className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg"
@@ -546,7 +557,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
               </div>
 
               {/* Price levels */}
-              {(a.entry || a.target) && (
+              {!isRanked && (a.entry || a.target) && (
                 <div className="grid grid-cols-2 gap-3 pt-2" style={{ borderTop: `1px solid ${accentColor}22` }}>
                   {a.entry && (
                     <div>
@@ -562,6 +573,8 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
                   )}
                 </div>
               )}
+
+              {isRanked && <RankedCallStatus call={post} />}
 
               {/* Conviction + Catalyst + Position */}
               {(a.conviction || a.catalyst || a.position) && (

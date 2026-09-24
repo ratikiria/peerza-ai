@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import {
-  Bell, Heart, MessageSquare, UserPlus, UserCheck, Users, Phone, Repeat, User as UserIcon,
+  Bell, Heart, MessageSquare, UserPlus, UserCheck, Users, Phone, Repeat, Trophy, User as UserIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -20,6 +20,7 @@ type ApiNotification = {
     | "POST_SHARE"
     | "MESSAGE"
     | "CALL"
+    | "RANKED_CALL_RESULT"
   isRead: boolean
   entityId: string | null
   createdAt: string
@@ -60,6 +61,8 @@ function describe(n: ApiNotification): { body: string; href: string; icon: React
       return { body: "accepted your connection",  href: `/profile/${n.triggerer.username}`,     icon: <UserCheck size={11} />,     iconColor: "#10b981" }
     case "CALL":
       return { body: "called you",                href: "/messages",                            icon: <Phone size={11} />,         iconColor: "#f59e0b" }
+    case "RANKED_CALL_RESULT":
+      return { body: "Your ranked call settled — see the result", href: n.entityId ? `/posts/${n.entityId}` : "/feed", icon: <Trophy size={11} />, iconColor: "#34d399" }
     default:
       return { body: "interacted with you",       href: "/notifications",                       icon: <Bell size={11} />,          iconColor: "#10b981" }
   }
@@ -273,8 +276,14 @@ export default function NotificationsFlyout({ active }: { active: boolean }) {
                           fontWeight: !n.isRead ? 700 : 500,
                         }}
                       >
-                        <span className="font-semibold">{n.triggerer.name}</span>
-                        <span className="font-normal" style={{ color: "var(--text-secondary)" }}> {desc.body}</span>
+                        {n.type === "RANKED_CALL_RESULT" ? (
+                          <span className="font-semibold">{desc.body}</span>
+                        ) : (
+                          <>
+                            <span className="font-semibold">{n.triggerer.name}</span>
+                            <span className="font-normal" style={{ color: "var(--text-secondary)" }}> {desc.body}</span>
+                          </>
+                        )}
                       </p>
                       <p className="text-[10px] mt-0.5" style={{ color: "var(--text-secondary)" }}>
                         {relTime(n.createdAt)}

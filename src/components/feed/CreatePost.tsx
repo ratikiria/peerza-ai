@@ -7,6 +7,8 @@ import { ImageIcon, Film, Smile, BarChart2, BarChart3, Send, User, X, TrendingUp
 import GifPicker, { PICKER_W, PICKER_H } from "@/components/posts/GifPicker"
 import PollComposerDialog from "@/components/polls/PollComposerDialog"
 import { yahooToStooq, flagForYahoo } from "@/lib/market"
+import RankedCallPicker, { type RankedAsset } from "@/components/feed/RankedCallPicker"
+import type { RankedTf } from "@/lib/ranked"
 
 const EmojiPicker = dynamic(
   () => import("@emoji-mart/react").then((m) => ({ default: m.default as any })),
@@ -162,6 +164,10 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
   const [priceLoading, setPriceLoading] = useState(false)
   const [selectedAsset, setSelectedAsset] = useState<AssetResult | null>(null)
   const [livePrice, setLivePrice] = useState<LivePrice | null>(null)
+  // Ranked Call: optional deadline that turns the idea into a scored call.
+  const [rankedOn, setRankedOn]         = useState(false)
+  const [rankedTf, setRankedTf]         = useState<RankedTf>("1D")
+  const [rankedBlocked, setRankedBlocked] = useState<string | null>(null)
   const tickerDropRef = useRef<HTMLDivElement>(null)
   const tickerInputRef = useRef<HTMLInputElement>(null)
 
@@ -305,11 +311,20 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
   }
 
   const hasAnalysis = showAnalysis && analysis.ticker.trim().length > 0
+  const rankedAsset: RankedAsset | null = selectedAsset
+    ? {
+        source: selectedAsset.source === "crypto" ? "crypto" : "stooq",
+        key: selectedAsset.source === "crypto" ? (selectedAsset.cgId ?? selectedAsset.id) : yahooToStooq(selectedAsset.yahooSymbol ?? selectedAsset.id),
+        ticker: selectedAsset.symbol,
+      }
+    : null
+  const isRanked = hasAnalysis && rankedOn
   const canSubmit   = (content.trim().length > 0 || !!poll) && !loading
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!canSubmit) return
+    if (isRanked && rankedBlocked) { setError(rankedBlocked); return }
     setLoading(true); setError(null)
     try {
       const body: Record<string, any> = { content: content.trim() }
@@ -333,7 +348,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
         body.analysis = {
           ticker:    analysis.ticker.trim().toUpperCase(),
           direction: analysis.direction,
-          timeframe: analysis.timeframe,
+          timeframe: isRanked ? rankedTf : analysis.timeframe,
           ...(entryFinal       ? { entry:    entryFinal      } : {}),
           ...(analysis.target  ? { target:   analysis.target } : {}),
           conviction: analysis.conviction,
@@ -342,6 +357,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
           ...(analysis.logoUrl  ? { logoUrl:     analysis.logoUrl  } : {}),
           ...(priceKey          ? { priceKey,    priceSource       } : {}),
         }
+        if (isRanked) body.ranked = { tf: rankedTf }
       }
       const res = await fetch("/api/posts", {
         method: "POST",
@@ -356,6 +372,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
         setShowAnalysis(false); setAnalysis(BLANK_ANALYSIS)
         setTickerQuery(""); setTickerResults([])
         setSelectedAsset(null); setLivePrice(null)
+        setRankedOn(false); setRankedTf("1D")
         setTopics([])
         setFocused(false)
       } else {
@@ -432,7 +449,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 <span className="text-xs font-semibold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
                   <BarChart2 size={13} className="text-emerald-400" /> Trade Idea
                 </span>
-                <button type="button" onClick={() => { setShowAnalysis(false); setAnalysis(BLANK_ANALYSIS); setTickerQuery(""); setTickerResults([]); setSelectedAsset(null); setLivePrice(null) }}
+                <button type="button" onClick={() => { setShowAnalysis(false); setAnalysis(BLANK_ANALYSIS); setTickerQuery(""); setTickerResults([]); setSelectedAsset(null); setLivePrice(null); setRankedOn(false) }}
                   className="w-5 h-5 flex items-center justify-center rounded transition-colors hover:bg-[var(--bg-elevated)]"
                   style={{ color: "var(--text-secondary)" }}>
                   <X size={12} />
@@ -579,8 +596,8 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 </div>
               )}
 
-              {/* Timeframe */}
-              <div className="flex gap-1.5">
+              {/* Timeframe — replaced by the deadline dial for ranked calls */}
+              {!rankedOn && <div className="flex gap-1.5">
                 {TIMEFRAMES.map((tf) => (
                   <button key={tf} type="button"
                     onClick={() => setAnalysis((a) => ({ ...a, timeframe: tf }))}
@@ -591,7 +608,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                     {tf}
                   </button>
                 ))}
-              </div>
+              </div>}
 
               {/* Price levels — placeholders derived from live price + direction */}
               <div className="grid grid-cols-2 gap-2">
@@ -608,10 +625,12 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                     <div key={key}>
                       <p className="text-[10px] mb-1 font-medium" style={{ color: ink(color) }}>{label}</p>
                       <input
-                        value={(analysis as any)[key]}
+                        value={key === "entry" && rankedOn ? "" : (analysis as any)[key]}
                         onChange={(e) => setAnalysis((a) => ({ ...a, [key]: e.target.value }))}
-                        placeholder={placeholder}
-                        className="w-full text-xs px-2 py-1.5 rounded-lg outline-none"
+                        disabled={key === "entry" && rankedOn}
+                        title={key === "entry" && rankedOn ? "Ranked calls lock entry at the live price when you post" : undefined}
+                        placeholder={key === "entry" && rankedOn ? "Locks when you post" : placeholder}
+                        className="w-full text-xs px-2 py-1.5 rounded-lg outline-none disabled:cursor-not-allowed"
                         style={{ background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}
                       />
                     </div>
@@ -626,6 +645,17 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                     : "flat target"}
                 </p>
               )}
+
+              <RankedCallPicker
+                enabled={rankedOn}
+                onEnabledChange={setRankedOn}
+                tf={rankedTf}
+                onTfChange={setRankedTf}
+                asset={rankedAsset}
+                direction={analysis.direction}
+                target={analysis.target}
+                onBlockedChange={setRankedBlocked}
+              />
 
               {/* Conviction */}
               <div className="flex items-center justify-between">
@@ -842,7 +872,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 className="flex items-center justify-center gap-2 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 w-9 h-9 rounded-full sm:w-auto sm:h-auto sm:rounded-xl sm:px-4 sm:py-1.5"
                 style={{ background: "#10b981", color: "#0f1117" }}>
                 <Send size={14} />
-                <span className="hidden sm:inline">{loading ? "Posting…" : "Post"}</span>
+                <span className="hidden sm:inline">{loading ? "Posting…" : isRanked ? "Post ranked call" : "Post"}</span>
               </button>
             </div>
           )}
