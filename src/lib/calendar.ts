@@ -1,7 +1,7 @@
 // Economic calendar data layer.
 //
-// Strategy: try FMP's `/economic_calendar` first (requires their Starter plan
-// or higher — free tier returns 403). On any failure, fall back to a curated
+// Strategy: try FMP's `/stable/economic-calendar` first (paid plans only —
+// ours returns 402; the legacy /api/v3 endpoint was retired Aug 2025). On any failure, fall back to a curated
 // list of major scheduled events (`calendar-seed.ts`) so the UI always shows
 // real, current data.
 //
@@ -126,14 +126,7 @@ function normalizeFmp(rows: FmpRow[]): EconomicEvent[] {
 
 // Filter curated events into the requested [from, to) window.
 function curatedInWindow(from: string, to: string): EconomicEvent[] {
-  const fromMs = Date.parse(from + "T00:00:00Z")
-  const toMs = Date.parse(to + "T00:00:00Z")
-  return curatedEvents()
-    .filter((e) => {
-      const t = Date.parse(e.time)
-      return t >= fromMs && t < toMs
-    })
-    .sort((a, b) => a.time.localeCompare(b.time))
+  return curatedEvents(from, to).sort((a, b) => a.time.localeCompare(b.time))
 }
 
 export async function getEconomicEvents(from: string, to: string): Promise<CalendarPayload> {
@@ -154,7 +147,7 @@ export async function getEconomicEvents(from: string, to: string): Promise<Calen
   }
 
   const apiKey = process.env.FINANCIAL_MODELING_PREP_API_KEY!
-  const url = `https://financialmodelingprep.com/api/v3/economic_calendar?from=${from}&to=${to}&apikey=${apiKey}`
+  const url = `https://financialmodelingprep.com/stable/economic-calendar?from=${from}&to=${to}&apikey=${apiKey}`
   try {
     const res = await fetch(url, { headers: { Accept: "application/json" } })
     if (!res.ok) throw new Error(`FMP ${res.status}`)
