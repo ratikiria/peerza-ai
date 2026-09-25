@@ -213,12 +213,14 @@ async function main() {
 
   // Wipe prior trade-idea posts authored by these demo users so re-running
   // doesn't pile up duplicates. Plain text posts (no `analysis` field) are
-  // intentionally left alone — those come from seed-demo.js.
+  // intentionally left alone — those come from seed-demo.js. Ranked calls
+  // (rankedDeadline set) are real market records, so they're never wiped.
   const userIds = users.map((u) => u.id)
   if (userIds.length) {
     const deleted = await db.post.deleteMany({
       where: {
         authorId: { in: userIds },
+        rankedDeadline: null,
         NOT: [{ analysis: { equals: null } }],
       },
     })

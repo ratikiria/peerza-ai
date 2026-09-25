@@ -21,7 +21,7 @@ function makeStoryImage(bgFrom, bgTo, emoji, line1, line2) {
   <text x="200" y="240" text-anchor="middle" font-size="80" font-family="serif">${emoji}</text>
   <text x="200" y="320" text-anchor="middle" font-size="28" font-weight="bold" fill="white" font-family="sans-serif">${line1}</text>
   <text x="200" y="360" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.75)" font-family="sans-serif">${line2}</text>
-  <text x="200" y="560" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.4)" font-family="sans-serif">peerio.ai</text>
+  <text x="200" y="560" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.4)" font-family="sans-serif">peerza.ai</text>
 </svg>`
   return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64")
 }
