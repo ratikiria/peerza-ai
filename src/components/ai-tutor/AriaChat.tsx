@@ -43,6 +43,29 @@ function chopSentences(text: string): { chunks: string[]; leftover: string } {
   return { chunks: out, leftover: buf }
 }
 
+interface VoiceSegment {
+  text: string
+  audio?: HTMLAudioElement // absent → speak via browser TTS
+}
+
+// Free fallback when ElevenLabs is unavailable. Resolves when speech ends.
+function speakWithBrowser(text: string): Promise<void> {
+  if (typeof window === "undefined" || !window.speechSynthesis) return Promise.resolve()
+  return new Promise((resolve) => {
+    const utter = new SpeechSynthesisUtterance(text)
+    utter.lang = "en-US"
+    const voices = window.speechSynthesis.getVoices()
+    const preferred = ["Samantha", "Google US English", "Microsoft Aria", "Microsoft Jenny", "Karen", "Moira"]
+    const voice =
+      voices.find((v) => preferred.some((name) => v.name.includes(name))) ??
+      voices.find((v) => v.lang.startsWith("en"))
+    if (voice) utter.voice = voice
+    utter.onend = () => resolve()
+    utter.onerror = () => resolve()
+    window.speechSynthesis.speak(utter)
+  })
+}
+
 interface Msg {
   role: "user" | "assistant"
   content: string
@@ -76,12 +99,18 @@ export default function AriaChat() {
   const [error, setError] = useState("")
   const scrollerRef = useRef<HTMLDivElement>(null)
 
-  // Voice state
+  // Voice state. Each queued segment is a promise so chunks play in the order
+  // they were requested, even if their TTS fetches finish out of order.
   const [voiceEnabled, setVoiceEnabled] = useState(false)
   const [speaking, setSpeaking] = useState(false)
-  const audioQueueRef = useRef<HTMLAudioElement[]>([])
+  const segmentQueueRef = useRef<Promise<VoiceSegment>[]>([])
   const audioPlayingRef = useRef(false)
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null)
   const objectUrlsRef = useRef<string[]>([])
+  // Bumped on stop so in-flight fetches / playback from before the stop are dropped.
+  const voiceGenRef = useRef(0)
+  // Once the server reports voice isn't configured, skip straight to browser TTS.
+  const serverVoiceDownRef = useRef(false)
 
   // Restore voice preference (default: ON if it was ever toggled on, OFF on first visit)
   useEffect(() => {
@@ -89,6 +118,9 @@ export default function AriaChat() {
     const stored = window.localStorage.getItem(VOICE_PREF_KEY)
     if (stored === "1") setVoiceEnabled(true)
   }, [])
+
+  // Browser speech outlives client-side navigation — silence it on unmount.
+  useEffect(() => () => stopAllAudio(), [])
 
   function persistVoicePref(on: boolean) {
     setVoiceEnabled(on)
@@ -99,71 +131,92 @@ export default function AriaChat() {
   }
 
   function stopAllAudio() {
-    for (const a of audioQueueRef.current) {
-      a.pause()
-      a.src = ""
+    voiceGenRef.current++
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause()
+      currentAudioRef.current.src = ""
+      currentAudioRef.current = null
     }
-    audioQueueRef.current = []
+    segmentQueueRef.current = []
     for (const url of objectUrlsRef.current) URL.revokeObjectURL(url)
     objectUrlsRef.current = []
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      try { window.speechSynthesis.cancel() } catch {}
+    }
     audioPlayingRef.current = false
     setSpeaking(false)
   }
 
-  // Drains the audio queue, playing one segment at a time.
-  function pumpAudioQueue() {
+  // Drains the segment queue, playing one segment at a time.
+  async function pumpAudioQueue() {
     if (audioPlayingRef.current) return
-    const next = audioQueueRef.current.shift()
+    const next = segmentQueueRef.current.shift()
     if (!next) {
       setSpeaking(false)
       return
     }
+    const gen = voiceGenRef.current
     audioPlayingRef.current = true
     setSpeaking(true)
-    next.onended = () => {
-      audioPlayingRef.current = false
-      pumpAudioQueue()
+    const segment = await next
+    if (gen !== voiceGenRef.current) return
+    if (segment.audio) {
+      const played = await playAudio(segment.audio)
+      // Autoplay blocked (mostly Safari after an async fetch) — use browser voice.
+      if (!played && gen === voiceGenRef.current) await speakWithBrowser(segment.text)
+    } else {
+      await speakWithBrowser(segment.text)
     }
-    next.onerror = () => {
-      audioPlayingRef.current = false
-      pumpAudioQueue()
-    }
-    next.play().catch(() => {
-      // Autoplay can block on some browsers — if it does, we silently drop
-      // and let the user try the per-message play button.
-      audioPlayingRef.current = false
-      pumpAudioQueue()
+    if (gen !== voiceGenRef.current) return
+    audioPlayingRef.current = false
+    pumpAudioQueue()
+  }
+
+  function playAudio(audio: HTMLAudioElement): Promise<boolean> {
+    currentAudioRef.current = audio
+    return new Promise((resolve) => {
+      audio.onended = () => resolve(true)
+      audio.onerror = () => resolve(false)
+      audio.play().catch(() => resolve(false))
     })
   }
 
-  // Fetch one TTS chunk and enqueue. Failures are swallowed — voice is a
-  // nice-to-have, not load-bearing.
-  async function speakChunk(text: string) {
-    const cleaned = stripMarkdownForVoice(text)
-    if (cleaned.length < 3) return
+  // Fetch one TTS chunk from ElevenLabs; falls back to browser TTS text when
+  // the server voice is unavailable (not configured, upstream error, offline).
+  async function fetchSegment(text: string): Promise<VoiceSegment> {
+    if (serverVoiceDownRef.current) return { text }
     try {
       const res = await fetch("/api/ai-tutor/voice", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: cleaned }),
+        body: JSON.stringify({ text }),
       })
-      if (!res.ok) return
+      if (res.status === 503) serverVoiceDownRef.current = true
+      if (!res.ok) return { text }
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
       objectUrlsRef.current.push(url)
       const audio = new Audio(url)
       audio.preload = "auto"
-      audioQueueRef.current.push(audio)
-      pumpAudioQueue()
+      return { text, audio }
     } catch {
-      // ignore — text already rendered; missing audio isn't fatal
+      return { text }
     }
   }
 
-  // One-shot replay button on past assistant messages
-  async function replayMessage(text: string) {
+  function speakChunk(text: string) {
+    const cleaned = stripMarkdownForVoice(text)
+    if (cleaned.length < 3) return
+    segmentQueueRef.current.push(fetchSegment(cleaned))
+    pumpAudioQueue()
+  }
+
+  // One-shot replay button on past assistant messages. Split into sentences so
+  // long answers stay under the TTS length cap and start playing quickly.
+  function replayMessage(text: string) {
     stopAllAudio()
-    await speakChunk(text)
+    const { chunks, leftover } = chopSentences(stripMarkdownForVoice(text))
+    for (const chunk of [...chunks, leftover]) speakChunk(chunk)
   }
 
   const refreshSessions = useCallback(async () => {
@@ -568,7 +621,7 @@ function MessageBubble({
               type="button"
               onClick={onReplay}
               title="Read aloud"
-              className="absolute -bottom-2.5 right-2 opacity-0 group-hover:opacity-100 transition-opacity inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold"
+              className="absolute -bottom-2.5 right-2 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold"
               style={{ background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-secondary)" }}
             >
               <Play size={9} fill="currentColor" /> Read aloud
