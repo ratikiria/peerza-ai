@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="robots" content="noindex,nofollow" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Peerza.ai — Solana Colosseum · All-Stars Track</title>
+<title>Peerza.ai — Seed Round · Investor Deck</title>
 <style>
   :root {
     --bg: #050507;
@@ -427,67 +427,6 @@
     font-weight: 900;
   }
 
-  /* IP / defensibility badge */
-  .ip-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-top: -0.3rem;
-    margin-bottom: 0.2rem;
-    padding: 0.5rem 1rem;
-    background: linear-gradient(95deg, rgba(153,69,255,0.12), rgba(20,241,149,0.08));
-    border: 1px solid var(--border-strong);
-    border-radius: 999px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    color: var(--text-soft);
-  }
-  .ip-badge .ip-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--sol-purple);
-    box-shadow: 0 0 10px var(--sol-purple);
-  }
-
-  /* IP slide */
-  .ip-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
-    margin-top: 1.2rem;
-  }
-  .ip-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.3rem 1.4rem;
-    position: relative;
-  }
-  .ip-card.purple-edge { border-left: 3px solid var(--sol-purple); }
-  .ip-card.green-edge { border-left: 3px solid var(--sol-green); }
-  .ip-card .kicker {
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 0.5rem;
-  }
-  .ip-card h3 { font-size: 1.08rem; margin-bottom: 0.45rem; }
-  .ip-card p { font-size: 0.88rem; line-height: 1.55; color: var(--text-dim); margin: 0; }
-  .ip-card ul { list-style: none; padding: 0; margin: 0.5rem 0 0; }
-  .ip-card li {
-    font-size: 0.85rem;
-    color: var(--text-soft);
-    line-height: 1.5;
-    padding: 0.22rem 0;
-    display: flex; align-items: baseline; gap: 0.55rem;
-  }
-  .ip-card li::before { content: "·"; color: var(--sol-green); }
-
   /* Audience */
   .stat-row {
     display: grid;
@@ -651,16 +590,19 @@
   /* Founder slide */
   .founder-hero {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 220px 1fr;
     gap: 2rem;
     align-items: center;
     margin-top: 0.4rem;
   }
   .founder-portrait {
-    width: 280px;
-    height: 340px;
+    width: 220px;
+    height: 262px;
     border-radius: 20px;
-    background-image: url('founder.jpg');
+    /* founder-web.jpg is a 700px-wide copy of founder.jpg (4.6MB / 3461x5202 original).
+       The full-size file is ~18 megapixels for a 280x340 box — slow to decode, so the
+       slide painted empty before it finished. Same aspect ratio, so the crop is unchanged. */
+    background-image: url('founder-web.jpg');
     background-size: cover;
     background-position: center 18%;
     border: 1px solid var(--border-strong);
@@ -728,7 +670,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 0.9rem;
   }
   .trio-card {
     background: var(--card);
@@ -854,21 +796,273 @@
 
   @media print {
     @page { size: 1280px 720px; margin: 0; }
+    /* Without this Chrome strips every background and the dark deck prints blank. */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
     html, body { overflow: visible; height: auto; background: var(--bg); }
     .deck { height: auto; }
     .slide {
       display: flex !important;
-      position: relative;
+      flex-direction: column !important;
+      justify-content: center !important;
+      position: relative !important;
+      inset: auto !important;
       width: 1280px; height: 720px;
+      padding: 40px 83px;
       page-break-after: always;
       break-after: page;
+      overflow: hidden;
     }
+    .slide:last-child { page-break-after: auto; break-after: auto; }
     .chrome, .arrows, .hint, .notes { display: none !important; }
   }
-</style>
-</head>
-<body>
 
+  /* ============================================================
+     INVESTOR DECK ADDITIONS
+     ============================================================ */
+
+  /* Loud placeholder — must be filled before this deck is sent */
+  .fill {
+    background: rgba(244,63,94,0.16);
+    color: #fda4af;
+    border: 1px dashed rgba(244,63,94,0.5);
+    padding: 0.08rem 0.45rem;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 0.86em;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  /* Revenue model */
+  .rev-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.1rem;
+  }
+  .rev-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.05rem 1.15rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .rev-card.live { border-left: 3px solid var(--sol-green); }
+  .rev-card.soon { border-left: 3px solid var(--sol-purple); }
+  .rev-card.later { border-left: 3px solid var(--warn); }
+  .rev-card .tag {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 800;
+    margin-bottom: 0.45rem;
+  }
+  .rev-card.live .tag { color: var(--sol-green); }
+  .rev-card.soon .tag { color: var(--sol-purple); }
+  .rev-card.later .tag { color: var(--warn); }
+  .rev-card h3 { font-size: 0.98rem; margin-bottom: 0.3rem; }
+  .rev-card .price {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0.15rem 0 0.4rem;
+  }
+  .rev-card p { font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; margin: 0; }
+
+  /* Competition table */
+  .comp-table {
+    margin-top: 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    font-size: 0.86rem;
+  }
+  .comp-table .r {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(5, 1fr);
+    align-items: center;
+  }
+  .comp-table .r + .r { border-top: 1px solid var(--border); }
+  .comp-table .r.head {
+    background: rgba(255,255,255,0.04);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+    color: var(--text-dim);
+  }
+  .comp-table .r.us {
+    background: linear-gradient(95deg, rgba(153,69,255,0.14), rgba(20,241,149,0.09));
+  }
+  .comp-table .r.us .c:first-child { color: var(--text); font-weight: 800; }
+  .comp-table .c {
+    padding: 0.62rem 0.8rem;
+    text-align: center;
+    color: var(--text-soft);
+  }
+  .comp-table .c:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-soft);
+  }
+  .comp-table .yes { color: var(--sol-green); font-weight: 900; }
+  .comp-table .no  { color: rgba(255,255,255,0.18); font-weight: 700; }
+  .comp-table .part { color: var(--warn); font-weight: 700; }
+
+  /* Market sizing rings */
+  .tam-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 1.1rem;
+  }
+  .tam {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.2rem 1.3rem;
+  }
+  .tam .k {
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 800;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+  }
+  .tam .v {
+    font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tam .d { margin-top: 0.5rem; font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; }
+  .tam.som { border-color: rgba(20,241,149,0.32); }
+
+  /* Use of funds */
+  .funds-bar {
+    display: flex;
+    height: 16px;
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 1.1rem 0 1rem;
+    border: 1px solid var(--border);
+  }
+  .funds-bar span { display: block; height: 100%; }
+  .funds-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.85rem;
+  }
+  .fund {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.85rem 0.95rem;
+    border-top: 3px solid var(--border);
+  }
+  .fund .amt {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .fund .pct { font-size: 0.7rem; color: var(--text-dim); font-weight: 700; margin-top: 0.2rem; }
+  .fund .what { font-size: 0.78rem; color: var(--text-soft); margin-top: 0.45rem; line-height: 1.45; }
+
+  /* Ask headline numbers */
+  .ask-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.1rem;
+    margin-top: 0.4rem;
+  }
+  .ask-big {
+    background: linear-gradient(135deg, rgba(153,69,255,0.14) 0%, rgba(20,241,149,0.07) 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    padding: 1.15rem 1.3rem;
+  }
+  .ask-big .k {
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 800;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+  }
+  .ask-big .v {
+    font-size: clamp(1.8rem, 3.6vw, 3rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .ask-big .d { margin-top: 0.45rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.45; }
+
+  /* Milestones */
+  .ms-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.85rem;
+    margin-top: 1rem;
+  }
+  .ms {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--sol-green);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+  }
+  .ms .v { font-size: 1.15rem; font-weight: 900; letter-spacing: -0.02em; color: var(--text); }
+  .ms .l { font-size: 0.76rem; color: var(--text-dim); margin-top: 0.3rem; line-height: 1.45; }
+
+  /* Traction */
+  .trac-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .trac {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.05rem 1.15rem;
+  }
+  .trac .v {
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--sol-purple), var(--sol-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .trac .l { margin-top: 0.45rem; font-size: 0.82rem; color: var(--text-soft); line-height: 1.45; }
+
+  /* Print rules live in the single @media print block above — do not duplicate here,
+     the later block was overriding the 1280x720 slide sizing. */
+</style>
+
+<body>
 <div class="deck">
 
   <!-- 1. TITLE -->
@@ -878,59 +1072,31 @@
         <div class="brand-mark">P</div>
         <span>Peerza.ai</span>
       </div>
-      <h1>On-chain reputation, <span class="gradient-text">finally.</span></h1>
+      <div class="eyebrow"><span class="dot"></span>Seed Round · 2026</div>
+      <h1>Investing, made <span class="gradient-text">social.</span></h1>
       <p class="lead">
-        Peerza is the consumer Solana app where every trade, lesson, and duel becomes a portable on-chain identity.
-        Built by an international trading champion, embedded in the community, shipped end-to-end by one founder.
+        Peerza is the social network for a generation that already trades — where you learn, practise, compete,
+        and build a track record that is actually provable. Built, deployed, and running in production today —
+        opening to a 47,000-person audience the founder already owns.
       </p>
       <div class="meta-row">
-        <span class="chip"><span class="marker"></span>Live · peerza.ai</span>
-        <span class="chip"><span class="marker"></span>Devnet on-chain today</span>
-        <span class="chip"><span class="marker"></span>Built by 2023 UAE Trading Champion</span>
-        <span class="chip"><span class="marker"></span>4 pillars · 4 languages</span>
+        <span class="chip"><span class="marker"></span>Live at www.peerza.ai</span>
+        <span class="chip">Public launch Q1 2027</span>
+        <span class="chip">4 languages · EN · KA · ES · TR</span>
+        <span class="chip">47,000 audience at launch</span>
+        <span class="chip">Peerza, Inc. · Delaware C-Corp</span>
+        <span class="chip">Founder: 2023 UAE Trading Champion</span>
       </div>
     </div>
   </section>
 
-  <!-- 2. THE SHIFT -->
+  <!-- 2. PROBLEM -->
   <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>The Shift</div>
-    <h2>Two waves are <span class="gradient-text">colliding right now.</span></h2>
-    <p class="lead">
-      The consumer Solana window opened in 2024. The retail-trading explosion never closed.
-      Nobody has built the social layer that fits both.
-    </p>
-
-    <div class="grid-3">
-      <div class="card purple-edge">
-        <div class="num">01 · Solana, for normal people</div>
-        <h3>Consumer Solana arrived.</h3>
-        <p>Phantom, Jupiter, Backpack proved retail can use Solana without knowing it's Solana. Sub-cent fees, mobile-first, real UX. The chain isn't the product anymore.</p>
-      </div>
-      <div class="card purple-edge">
-        <div class="num">02 · Self-directed traders, everywhere</div>
-        <h3>Retail trading exploded.</h3>
-        <p>Robinhood, Webull, meme coins, prop firms. A generation that grew up trading their own money — and learning how on Twitter, YouTube, and Discord.</p>
-      </div>
-      <div class="card green-edge">
-        <div class="num">03 · And the school broke</div>
-        <h3>Twitter is not a school.</h3>
-        <p>Algorithm churn. Course-sellers. No track record. No feedback loop. Every retail trader is rebuilding a learning stack from scratch, alone.</p>
-      </div>
-    </div>
-
-    <div class="callout">
-      <strong>The window is now.</strong> The consumer-Solana audience is here, the trader pain is acute, and the social layer doesn't exist yet.
-      Phantom defined wallets. Jupiter defined aggregation. The social + reputation layer is the next slot — and it's still empty.
-    </div>
-  </section>
-
-  <!-- 3. THE PROBLEM -->
-  <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>The Enemy</div>
+    <div class="eyebrow"><span class="dot"></span>The Problem</div>
     <h2>Trading is taught by the <span class="warn">worst possible system.</span></h2>
     <p class="lead">
-      Every retail trader rebuilds the same four pieces from scratch, on platforms that weren't designed for them, with no reputation that carries between any of them.
+      Every retail trader rebuilds the same four pieces from scratch, on platforms that weren't designed for them,
+      with no reputation that carries between any of them.
     </p>
 
     <div class="vs-row">
@@ -958,18 +1124,52 @@
 
     <div class="callout">
       <strong>No platform integrates these.</strong> No reputation layer survives between them.
-      A trader can be a top-1% performer on a simulator and a nobody when they walk into a Discord.
-      The reputation primitive doesn't exist yet — and it has to live on-chain to be real.
+      A trader can be a top-1% performer on a simulator and a nobody the moment they walk into a Discord.
+      The category is wide open — and the winner owns the trust layer for retail investing.
     </div>
   </section>
 
-  <!-- 4. THE SOLUTION -->
+  <!-- 3. WHY NOW -->
   <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>The Tool</div>
+    <div class="eyebrow"><span class="dot"></span>Why Now</div>
+    <h2>Three shifts are <span class="gradient-text">colliding right now.</span></h2>
+
+    <div class="grid-3">
+      <div class="card purple-edge">
+        <div class="num">01</div>
+        <h3>Retail trading became permanent.</h3>
+        <p>Retail investors traded <strong>$5.4 trillion in 2025 — up 47% year over year</strong>, the highest on record
+        <em style="color:var(--text-soft);">(Vanda Research)</em>. The 2020 cohort didn't leave. It compounded, and it
+        went global.</p>
+      </div>
+      <div class="card purple-edge">
+        <div class="num">02</div>
+        <h3>The social layer degraded.</h3>
+        <p>Twitter's collapse as a finance community left tens of millions of traders without a home. Discord is
+        fragmented and paywalled. Stocktwits stalled. The audience exists; the product doesn't.</p>
+      </div>
+      <div class="card green-edge">
+        <div class="num">03</div>
+        <h3>Provable identity got cheap.</h3>
+        <p>Sub-cent settlement makes per-action reputation economically viable for the first time. What used to be a
+        database row can now be a portable, verifiable credential the user actually owns.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The window is open because all three happened at once.</strong>
+      A trader-native social network was possible five years ago but had no reputation primitive.
+      A reputation primitive was possible two years ago but had no audience. Both now exist.
+    </div>
+  </section>
+
+  <!-- 4. PRODUCT — FOUR PILLARS -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Product</div>
     <h2>Four pillars. <span class="gradient-text">One reputation graph.</span></h2>
     <p class="lead">
-      Yes, four pillars. They're not features competing for attention — they're the four data streams that make on-chain trader reputation real.
-      Every action on every pillar becomes a data point. Every data point feeds the score. The score lives on Solana.
+      They're not features competing for attention — they're the four data streams that make trader reputation provable.
+      Every action on every pillar becomes a data point. Every data point feeds the score.
     </p>
 
     <div class="pillars">
@@ -988,7 +1188,7 @@
       <div class="pillar">
         <div class="icon">✦</div>
         <h3>AI Tutor</h3>
-        <p>Q&A + structured learning paths. Free tier + Pro tier ($10/mo).</p>
+        <p>Q&amp;A + structured learning paths. Free tier + Pro tier ($10/mo).</p>
         <div class="role">→ The knowledge</div>
       </div>
       <div class="pillar">
@@ -1000,389 +1200,336 @@
     </div>
 
     <div class="callout">
-      <strong>This is why &ldquo;are you doing too much?&rdquo; is the wrong question.</strong>
-      Without all four, you have noise, not a reputation primitive.
-      Twitter knows who posts. Robinhood knows who trades. Duolingo knows who learns. None of them know all three about the same person.
-      Peerza does — and writes the score to Solana so other apps can read it.
+      <strong>This is why &ldquo;isn't that too much?&rdquo; is the wrong question.</strong>
+      Twitter knows who posts. Robinhood knows who trades. Duolingo knows who learns.
+      None of them know all three about the same person. Peerza does — and that intersection is the defensible asset.
     </div>
   </section>
 
-  <!-- 5. PRODUCT WALKTHROUGH -->
+  <!-- 5. DISTRIBUTION -->
   <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>The Product</div>
-    <h2>What you actually see <span class="gradient-text">when you log in.</span></h2>
+    <div class="eyebrow"><span class="dot"></span>Distribution</div>
+    <h2>Launch isn't a cold start. <span class="gradient-text">It's a migration.</span></h2>
     <p class="lead">
-      Not wireframes. Not promises. Every surface below is in production at peerza.ai today — in four languages, on web and PWA, with Stripe-backed subscriptions and real on-chain transactions.
+      Peerza is built and running in production today. Public launch is Q1 2027 — and it opens to an audience the
+      founder has spent five years building through Traders' Hub, Georgia's financial-education company. These are
+      not leads. They are existing members of communities he already runs.
     </p>
 
-    <div class="grid-6">
-      <div class="surface-card">
-        <div class="tag">Social</div>
-        <div class="title">Feed &amp; Profiles</div>
-        <div class="features">Posts, polls, stories, comments, edits, shares, follows · followers/following modal · cover photos · bio · privacy controls.</div>
-        <div class="live">Live</div>
+    <div class="trac-row">
+      <div class="trac">
+        <div class="v">47,000</div>
+        <div class="l">Reachable at launch across four owned channels</div>
       </div>
-      <div class="surface-card">
-        <div class="tag">Messenger</div>
-        <div class="title">DMs &amp; Group Chats</div>
-        <div class="features">1:1 + group chats, voice messages, audio calls (WebRTC), notifications, edit messages, read receipts.</div>
-        <div class="live">Live</div>
+      <div class="trac">
+        <div class="v">25,000</div>
+        <div class="l">Email subscribers</div>
       </div>
-      <div class="surface-card">
-        <div class="tag">Workspace</div>
-        <div class="title">Charts &amp; Watchlist</div>
-        <div class="features">Embedded TradingView Advanced Charts, symbol search, watchlist, ticker-filtered community feed.</div>
-        <div class="live">Live</div>
+      <div class="trac">
+        <div class="v">20,000+</div>
+        <div class="l">Facebook members across 3 trading groups</div>
       </div>
-      <div class="surface-card">
-        <div class="tag">Simulation</div>
-        <div class="title">Trading Challenges</div>
-        <div class="features">Multi-asset, real prices, public/private/password challenges, live leaderboards · &ldquo;Q4 Trading Showdown&rdquo; live with 20 traders.</div>
-        <div class="live">Live</div>
-      </div>
-      <div class="surface-card">
-        <div class="tag">Portfolio</div>
-        <div class="title">Real Portfolio</div>
-        <div class="features">Holdings tile-grid, transaction timeline, 4 allocation analyses, sector + industry map, deterministic returns.</div>
-        <div class="live">Live</div>
-      </div>
-      <div class="surface-card">
-        <div class="tag">Tutor</div>
-        <div class="title">AI Financial Tutor</div>
-        <div class="features">Q&amp;A free tier · Pro tier with memory + structured paths · dictionary in 5 languages · Stripe-backed $10/mo.</div>
-        <div class="live">Live</div>
-      </div>
-      <div class="surface-card">
-        <div class="tag">Games</div>
-        <div class="title">Games &amp; Duels</div>
-        <div class="features">Guess the Direction, Build the Portfolio, Read the Tape · async multiplayer duels · seeded RNG so duelists see the same scenario.</div>
-        <div class="live">Live</div>
-      </div>
-      <div class="surface-card">
-        <div class="tag">Web3</div>
-        <div class="title">/web3 Layer</div>
-        <div class="features">Phantom connect, real memo achievement mints, real SOL micro-tipping, server-relayed devnet airdrop, prediction league UI.</div>
-        <div class="live">Live · Devnet</div>
-      </div>
-      <div class="surface-card">
-        <div class="tag">Tools</div>
-        <div class="title">Calendar · Currency · Stories</div>
-        <div class="features">Economic calendar, 165-currency widget (GEL included), 9:16 stories with reactions + replies, sponsored ads, animated logo.</div>
-        <div class="live">Live</div>
+      <div class="trac">
+        <div class="v">2,000+</div>
+        <div class="l">Telegram &amp; Discord community members</div>
       </div>
     </div>
-  </section>
 
-  <!-- 6. PROOF OF BUILD -->
-  <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>The Proof</div>
-    <h2>We didn't pitch this. <span class="gradient-text">We shipped it.</span></h2>
-    <p class="lead">
-      Live at peerza.ai. Four pillars in production. Real devnet transactions running today. No mock screens, no waitlist — a real product you can log into right now.
-    </p>
-
-    <div class="status-grid">
-      <div class="status-card live">
-        <div class="label">Shipped &amp; live</div>
-        <ul>
-          <li><strong>peerza.ai</strong> · Railway + Postgres 18</li>
-          <li>All 4 pillars in production</li>
-          <li>PWA · mobile + desktop</li>
-          <li>4 languages (EN · KA · ES · TR)</li>
-          <li>Stripe Pro tier · $10/mo live</li>
-          <li>Rate limit · CSRF · CSP · auth hardening shipped</li>
-          <li>Legal pages · email pipeline · animated brand</li>
-        </ul>
+    <div class="grid-3" style="margin-top:1.2rem;">
+      <div class="card green-edge">
+        <div class="num">PRODUCT — SHIPPED</div>
+        <p>Four pillars live in production. Feed, stories, polls, messenger, group chats, audio calls, trading
+        simulation, challenges, AI tutor, three games with async duels, portfolio analytics, TradingView workspace.</p>
       </div>
-      <div class="status-card devnet">
-        <div class="label">On-chain · devnet</div>
-        <ul>
-          <li><strong>/web3</strong> · Phantom connect, Helius RPC</li>
-          <li>Real memo achievements (Solana Explorer)</li>
-          <li>Real SOL micro-tipping</li>
-          <li>Server-relayed devnet airdrop (Railway IP fallback)</li>
-          <li>Prediction League + Games×Web3 UI prototyped</li>
-          <li><code style="font-size:0.78em;color:var(--sol-green);">@solana/web3.js</code> integrated</li>
-        </ul>
+      <div class="card green-edge">
+        <div class="num">AD REVENUE — ALREADY REAL</div>
+        <p>Traders' Hub's own web and mobile apps carry paid placement from a crypto exchange today. The sponsored
+        model on Peerza isn't a projection — it is the same advertiser demand, on a better surface.</p>
       </div>
-      <div class="status-card honest">
-        <div class="label">Honest gaps</div>
-        <ul>
-          <li>Pre-launch — no public DAU yet</li>
-          <li>Demo seed: 10 users · 30 trade ideas · 20-trader challenge active</li>
-          <li>No mainnet on-chain yet</li>
-          <li>No Anchor program shipped (Phase 2)</li>
-          <li>Solo founder · first hire post-Phase 2</li>
-        </ul>
+      <div class="card purple-edge">
+        <div class="num">GLOBAL FROM DAY ONE</div>
+        <p>Four languages shipped (EN · KA · ES · TR), PWA install, production-hardened — rate limiting, CSRF,
+        security headers, transactional email. Stripe subscriptions wired and live.</p>
       </div>
     </div>
 
     <div class="callout">
-      <strong>Try it: <span class="green">human@peerza.ai · demo1234</span></strong> &nbsp;·&nbsp;
-      then click the <span class="purple">Web3</span> nav, connect Phantom on devnet, mint a memo achievement, and check Solana Explorer.
-      The whole loop works today. This isn't a deck — it's a checkpoint.
+      <strong>Every consumer social company dies in the same place: the empty room.</strong>
+      Peerza opens with 47,000 people who already know the founder, already talk about markets daily, and already
+      trust him enough to subscribe. First 10,000 users cost approximately zero in paid acquisition — which is
+      exactly why this raise buys scale rather than survival.
     </div>
   </section>
 
-  <!-- 7. WHY SOLANA -->
+  <!-- 6. BUSINESS MODEL -->
   <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>Why Solana, not anything else</div>
-    <h2>Trader reputation needs <span class="gradient-text">Solana economics.</span></h2>
+    <div class="eyebrow"><span class="dot"></span>Business Model</div>
+    <h2>Consumer subscription first. <span class="gradient-text">Four lines after.</span></h2>
     <p class="lead">
-      We didn't pick Solana for the brand. We picked it because the reputation primitive only works at Solana's fee curve and composability model.
-      Remove Solana and the product becomes a walled garden. Keep it, and it becomes a Solana-native primitive other apps build on.
+      Revenue starts with a subscription that is already built, priced, and wired to Stripe — then compounds as the
+      reputation graph gets more valuable to third parties. One line is already producing cash today.
     </p>
 
-    <div class="reasons">
-      <div class="reason">
-        <div class="badge">01 · Fees</div>
-        <h3>Per-action minting is viable.</h3>
-        <p>Every duel won, lesson completed, winning trade — can mint a cNFT proof. Sub-cent fees + Bubblegum make this economically real. On L2s it's $0.20–$2 per action. That kills the unit economics before launch.</p>
+    <div class="rev-row">
+      <div class="rev-card live">
+        <div class="tag">● Built &amp; priced</div>
+        <h3>Peerza Pro</h3>
+        <div class="price">$10<span style="font-size:0.9rem;font-weight:700;">/mo</span></div>
+        <p>Unlimited AI tutor, advanced analytics, premium challenges, profile flair. Stripe-backed and live —
+        switches on with the Q1 2027 launch. The core engine.</p>
       </div>
-      <div class="reason">
-        <div class="badge">02 · Composability</div>
-        <h3>Identity is portable by default.</h3>
-        <p>Trader score is a public account on Solana. Any other Solana app — DEX, lending market, DAO, prediction pool — reads it directly. No SDK to integrate, no API key to issue. Composability is what makes reputation a primitive instead of a feature.</p>
+      <div class="rev-card live">
+        <div class="tag">● Earning today</div>
+        <h3>Sponsored placements</h3>
+        <div class="price">CPM</div>
+        <p>A crypto exchange already pays for placement in Traders' Hub's apps. Native units are built across
+        Peerza's feed, sidebar, and workspace — same advertiser demand, far better surface.</p>
       </div>
-      <div class="reason">
-        <div class="badge">03 · Rails</div>
-        <h3>Global creator payouts work.</h3>
-        <p>USDC tipping + Pro subscription via Solana Pay. We pay a creator in Lagos and another in Tbilisi without negotiating Stripe coverage country by country. Stablecoin rails are the only ones that scale to where Peerza's audience actually lives.</p>
+      <div class="rev-card later">
+        <div class="tag">▲ Next</div>
+        <h3>Creator economy</h3>
+        <div class="price">Take rate</div>
+        <p>Paid challenges, tournaments, and premium communities run by proven traders. Peerza takes a percentage
+        of every pool it settles.</p>
+      </div>
+      <div class="rev-card later">
+        <div class="tag">▲ Next</div>
+        <h3>Reputation API</h3>
+        <div class="price">B2B</div>
+        <p>Brokers, prop firms, and DeFi protocols paying to read verified trader scores for onboarding, funding
+        decisions, and undercollateralised risk.</p>
       </div>
     </div>
 
     <div class="callout">
-      <strong>Acid test:</strong> if you removed Solana from Peerza, you'd have another walled-garden trader-Twitter. Solana is what makes the reputation portable, the economics viable, and the payouts global. The chain isn't a logo — it's load-bearing.
+      <strong>The sequencing matters.</strong> Subscription revenue funds the graph. The graph makes the API valuable.
+      The API is the line that turns a consumer app into infrastructure — and it is the reason the ceiling is not
+      &ldquo;another social app.&rdquo;
     </div>
   </section>
 
-  <!-- 8. THE REPUTATION PRIMITIVE -->
+  <!-- 7. MARKET -->
   <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>The Primitive</div>
-    <h2>Trader score, written to Solana. <span class="gradient-text">Read by anyone.</span></h2>
-    <p class="lead">
-      Other consumer apps stop at the walled garden. Peerza's trader score is a public Solana account — any other program reads it directly, no SDK, no API key, no gatekeeping. That's what turns a feature into a primitive.
-    </p>
-
-    <div class="ip-badge">
-      <span class="ip-dot"></span>
-      Proprietary reputation engine · IP protection process underway
-    </div>
-
-    <div class="flow-row">
-      <div class="flow-node inputs">
-        <div class="stage">01 · Inputs</div>
-        <h3>Every action counts.</h3>
-        <ul>
-          <li>Winning simulated trade</li>
-          <li>Completed lesson / quiz</li>
-          <li>Duel win (seeded RNG)</li>
-          <li>Accurate prediction</li>
-          <li>Community signal (likes, follows on calls)</li>
-        </ul>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node compute">
-        <div class="stage">02 · Compute</div>
-        <h3>On-chain settlement.</h3>
-        <ul>
-          <li>Anchor program holds the score account</li>
-          <li>Switchboard VRF for fair duel outcomes</li>
-          <li>Pyth oracles for trade resolution</li>
-          <li>cNFT achievements via Bubblegum</li>
-          <li>USDC settlement via Solana Pay</li>
-        </ul>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node reads">
-        <div class="stage">03 · Reads</div>
-        <h3>Anyone can read it.</h3>
-        <ul>
-          <li>DEXs gate beta / fee-tier by score</li>
-          <li>Lending markets adjust collateral</li>
-          <li>DAOs weight votes by trader rep</li>
-          <li>Prediction pools handicap by rank</li>
-          <li>Other social apps import the score</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="callout">
-      <strong>The moat:</strong> nobody else collects this data across all four pillars. Twitter has likes. Brokerages have trades. Duolingo has lessons. None of them write to Solana. None of them tie all three to one identity. We do — and the on-chain layer is what makes the score outlast our app.
-    </div>
-  </section>
-
-  <!-- 9. IP & DEFENSIBILITY -->
-  <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>Defensibility</div>
-    <h2>IP &amp; <span class="gradient-text">defensibility.</span></h2>
-    <p class="lead">
-      Peerza is built around a proprietary reputation engine that transforms user behavior, simulated trading performance,
-      AI learning progress, and competitive duel outcomes into a portable trader identity layer.
-    </p>
-
-    <div class="ip-grid">
-      <div class="ip-card purple-edge">
-        <div class="kicker">01 · Proprietary IP</div>
-        <h3>Built around proprietary technology.</h3>
-        <p>The core scoring logic, reputation architecture, and data model are developed as proprietary IP — designed from the ground up for IP protection.</p>
-        <ul>
-          <li>Confidential technical architecture</li>
-          <li>Proprietary scoring logic</li>
-          <li>Core technology designed for IP protection</li>
-        </ul>
-      </div>
-      <div class="ip-card green-edge">
-        <div class="kicker">02 · Protection underway</div>
-        <h3>IP protection process underway.</h3>
-        <p>We are actively running an IP protection process, including a patentability assessment in progress and the protection of confidential technical components.</p>
-        <ul>
-          <li>Patentability assessment in progress</li>
-          <li>Confidential technical components protected</li>
-          <li>Formal IP strategy in motion</li>
-        </ul>
-      </div>
-      <div class="ip-card purple-edge">
-        <div class="kicker">03 · Compounding moat</div>
-        <h3>A defensible product layer.</h3>
-        <p>The more users interact, learn, trade, and compete, the stronger and harder-to-replicate the reputation graph becomes — a moat that compounds with usage, not just code.</p>
-        <ul>
-          <li>Data depth across all four pillars</li>
-          <li>Network effects on the reputation graph</li>
-          <li>Hard to copy the concept, harder to copy the data</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="callout">
-      <span class="ip-badge" style="margin:0 0 0.2rem;"><span class="ip-dot"></span>Proprietary reputation engine · IP protection process underway</span><br>
-      <strong>The concept is not easily copied.</strong> A competitor can clone a feed; they cannot clone the proprietary scoring architecture, the confidential reputation logic, or the multi-pillar behavioral data that compounds behind it.
-    </div>
-  </section>
-
-  <!-- 10. AUDIENCE / MARKET -->
-  <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>The Audience</div>
+    <div class="eyebrow"><span class="dot"></span>Market</div>
     <h2>A generation that already trades. <span class="gradient-text">Online. Globally.</span></h2>
-    <p class="lead">
-      We're not creating a behavior — we're hosting one that already happens, badly, on five different platforms. The target user already trades, already learns online, and is already crypto-curious.
-    </p>
 
-    <div class="stat-row">
-      <div class="stat">
-        <div class="num">~30M</div>
-        <div class="lbl">Self-directed retail traders globally (Robinhood + Webull + eToro user bases).</div>
-        <div class="src">Source: company-reported actives</div>
+    <div class="tam-row">
+      <div class="tam">
+        <div class="k">TAM</div>
+        <div class="v">$10.9B</div>
+        <div class="d">Global online trading platform market, 2025 — reaching $19.9B by 2033.
+        <em style="color:var(--text-soft);">Source: Grand View Research, 2025.</em></div>
       </div>
-      <div class="stat">
-        <div class="num">~15M</div>
-        <div class="lbl">Phantom wallet installs — the proxy for &ldquo;Solana-curious retail.&rdquo;</div>
-        <div class="src">Source: Phantom public stats</div>
+      <div class="tam">
+        <div class="k">SAM</div>
+        <div class="v">~30M</div>
+        <div class="d">Self-directed retail traders in English, Spanish, Turkish, and Georgian-speaking markets —
+        the four languages Peerza already ships.</div>
       </div>
-      <div class="stat">
-        <div class="num">~40%</div>
-        <div class="lbl">Retail traders who hold or have held crypto. The overlap that becomes Peerza's wedge.</div>
-        <div class="src">Source: BIS + industry surveys</div>
+      <div class="tam som">
+        <div class="k">SOM · 3 years</div>
+        <div class="v">1M</div>
+        <div class="d">3.3% of our four-language SAM. Ties directly to the 300,000-user milestone on the ask slide.</div>
       </div>
     </div>
-
-    <p class="lead" style="margin-top:1.2rem;font-size:0.95rem;">
-      Multi-lingual from day one. Not a 2026 roadmap — already shipped.
-    </p>
 
     <div class="geo-row">
       <div class="geo">
+        <div class="flag">🇺🇸</div>
         <div class="name">United States</div>
-        <div class="lang">EN · shipped</div>
-        <div class="note">Post-HQ-relocation focus. Largest retail-trading base.</div>
+        <div class="lang">EN — SHIPPED</div>
+        <div class="note">HQ from 2026. Largest retail trading market and the centre of gravity for the raise.</div>
       </div>
       <div class="geo">
-        <div class="name">LATAM / US Hispanic</div>
-        <div class="lang">ES · shipped</div>
-        <div class="note">600M Spanish speakers. Rising retail + Solana adoption.</div>
+        <div class="flag">🇪🇸</div>
+        <div class="name">LATAM + US Hispanic</div>
+        <div class="lang">ES — SHIPPED</div>
+        <div class="note">600M+ speakers. Fastest-growing retail investing cohort, chronically underserved by product.</div>
       </div>
       <div class="geo">
-        <div class="name">Turkey / MENA</div>
-        <div class="lang">TR · shipped</div>
-        <div class="note">#1 country by retail crypto adoption per capita.</div>
+        <div class="flag">🇹🇷</div>
+        <div class="name">Turkey</div>
+        <div class="lang">TR — SHIPPED</div>
+        <div class="note">Among the highest retail trading and crypto adoption rates per capita globally.</div>
       </div>
       <div class="geo">
-        <div class="name">Caucasus / CIS</div>
-        <div class="lang">KA · shipped</div>
-        <div class="note">Founder home base. Tbilisi is the crypto regional hub.</div>
+        <div class="flag">🇬🇪</div>
+        <div class="name">Georgia</div>
+        <div class="lang">KA — SHIPPED</div>
+        <div class="note">Home market. Founder's existing Traders' Hub audience — the first distribution beachhead.</div>
       </div>
+    </div>
+
+    <div class="callout">
+      <strong>We sit in the fastest-growing slice of that market.</strong> Social trading is a $2.6B sub-segment
+      growing at 12–17% CAGR — roughly twice the rate of the parent market <em style="color:var(--text-soft);">(The Business
+      Research Company, 2025)</em>. And four languages are already in production: localisation is normally a Series-A
+      cost line, so for us geographic expansion is a marketing decision, not an engineering project.
+    </div>
+  </section>
+
+  <!-- 8. COMPETITION -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>Competition</div>
+    <h2>Everyone owns one piece. <span class="gradient-text">Nobody owns the stack.</span></h2>
+
+    <div class="comp-table">
+      <div class="r head">
+        <div class="c">Platform</div>
+        <div class="c">Social</div>
+        <div class="c">Simulation</div>
+        <div class="c">Learning</div>
+        <div class="c">Competition</div>
+        <div class="c">Provable rep.</div>
+      </div>
+      <div class="r">
+        <div class="c">Twitter / X</div>
+        <div class="c yes">✓</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+      </div>
+      <div class="r">
+        <div class="c">Stocktwits</div>
+        <div class="c yes">✓</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+      </div>
+      <div class="r">
+        <div class="c">eToro</div>
+        <div class="c part">~</div>
+        <div class="c yes">✓</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+        <div class="c part">~</div>
+      </div>
+      <div class="r">
+        <div class="c">Investopedia Sim</div>
+        <div class="c no">—</div>
+        <div class="c yes">✓</div>
+        <div class="c yes">✓</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+      </div>
+      <div class="r">
+        <div class="c">Discord communities</div>
+        <div class="c yes">✓</div>
+        <div class="c no">—</div>
+        <div class="c part">~</div>
+        <div class="c no">—</div>
+        <div class="c no">—</div>
+      </div>
+      <div class="r us">
+        <div class="c">Peerza</div>
+        <div class="c yes">✓</div>
+        <div class="c yes">✓</div>
+        <div class="c yes">✓</div>
+        <div class="c yes">✓</div>
+        <div class="c yes">✓</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>eToro is the closest analogue — and it validates the thesis at scale.</strong>
+      Copy-trading proved people will follow verified performance. But eToro is a broker that bolted on social;
+      Peerza is a social network where performance is the primitive, learning is native, and the reputation is
+      portable rather than locked inside one broker's walled garden.
+    </div>
+  </section>
+
+  <!-- 9. MOAT -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>The Moat</div>
+    <h2>The reputation graph <span class="gradient-text">compounds. Feeds don't.</span></h2>
+    <p class="lead">
+      Content is commoditised — anyone can clone a feed in a quarter. What can't be cloned is four years of verified,
+      cross-pillar behavioural history about the same person.
+    </p>
+
+    <div class="grid-3">
+      <div class="card green-edge">
+        <div class="num">01 · DATA DEPTH</div>
+        <h3>Four streams, one identity.</h3>
+        <p>Posts, simulated trades, lessons completed, duels won — scored together. A competitor would have to ship a
+        social network, a trading simulator, a tutor, and a game engine before they collected the first useful data point.</p>
+      </div>
+      <div class="card green-edge">
+        <div class="num">02 · PORTABILITY</div>
+        <h3>The user owns the score.</h3>
+        <p>Settled on Solana, so the credential leaves the platform with the user. That inverts the usual walled-garden
+        trade and makes Peerza the issuer of record rather than a silo — a position competitors can't copy without
+        abandoning their own lock-in.</p>
+      </div>
+      <div class="card purple-edge">
+        <div class="num">03 · DEMAND SIDE</div>
+        <h3>Third parties want to read it.</h3>
+        <p>Prop firms allocate capital on proven skill. Brokers price risk on it. DeFi protocols underwrite on it.
+        Every external reader makes the score more valuable to hold — and raises switching costs for the trader.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The acid test:</strong> without the reputation layer, Peerza is a very good social app. With it, it's the
+      trust infrastructure retail investing has never had. <strong>Already live:</strong> Ranked Calls, deadline-bound
+      calls settled automatically against market data, scored so random guessing loses points.
     </div>
   </section>
 
   <!-- 10. ROADMAP -->
   <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>What we ship next</div>
-    <h2>From devnet checkpoint to <span class="gradient-text">mainnet primitive.</span></h2>
+    <div class="eyebrow"><span class="dot"></span>Roadmap</div>
+    <h2>From live product to <span class="gradient-text">market infrastructure.</span></h2>
 
     <div class="roadmap-row">
       <div class="phase now">
-        <div class="ph">Phase 1 · Done</div>
-        <div class="when">Today · devnet</div>
+        <div class="ph">Phase 1 · Now</div>
+        <div class="when">Shipped · 100% founder-funded</div>
         <ul>
-          <li>Phantom wallet connect</li>
-          <li>Memo achievement proofs</li>
-          <li>SOL micro-tipping</li>
-          <li>Prediction League + Games×Web3 UI</li>
-          <li>4-pillar product live at peerza.ai</li>
+          <li>Four pillars live in production</li>
+          <li>Pro subscription live via Stripe</li>
+          <li>Four languages, PWA, prod-hardened</li>
+          <li>Reputation score live (off-chain)</li>
+          <li>Delaware C-Corp incorporated</li>
         </ul>
       </div>
       <div class="phase next">
-        <div class="ph">Phase 2 · Mainnet beta</div>
-        <div class="when">~90 days from green light</div>
+        <div class="ph">Phase 2 · 0–12 months</div>
+        <div class="when">This raise</div>
         <ul>
-          <li>Anchor prediction-pool program (audited)</li>
-          <li>Compressed-NFT trader achievements (Bubblegum)</li>
-          <li>Switchboard VRF for duel settlement</li>
-          <li>USDC tipping + Pro subscription via Solana Pay</li>
-          <li>Trader score account · readable by any program</li>
+          <li><strong>Public launch Q1 2027</strong> — migrate the 47K</li>
+          <li>First engineering hires — mobile + backend</li>
+          <li>Native iOS and Android</li>
+          <li>Reputation score to mainnet + audit</li>
+          <li>Paid growth engine in US + LATAM</li>
+          <li>60,000 registered users by month 12</li>
         </ul>
       </div>
       <div class="phase future">
-        <div class="ph">Phase 3 · Public</div>
-        <div class="when">~6 months · open</div>
+        <div class="ph">Phase 3 · 12–24 months</div>
+        <div class="when">This raise</div>
         <ul>
-          <li>Tokenized strategies / copy-trading</li>
-          <li>Game-duel stake escrow</li>
-          <li>Creator monetization payouts</li>
-          <li>Open-source Anchor program release</li>
+          <li>Creator economy + tournament take rate</li>
+          <li>Reputation API in market with design partners</li>
+          <li>Regulated brokerage or partner integration</li>
+          <li>Series A on proven retention + ARR</li>
         </ul>
       </div>
     </div>
 
-    <div class="ask-card">
-      <h3>⚡ How Solana can help</h3>
-      <div class="ask-grid">
-        <div class="ask-cell">
-          <div class="lbl">Engineering</div>
-          <div class="val">Anchor review + audit network access</div>
-        </div>
-        <div class="ask-cell">
-          <div class="lbl">Infra</div>
-          <div class="val">Mainnet RPC + indexer partners</div>
-        </div>
-        <div class="ask-cell">
-          <div class="lbl">Distribution</div>
-          <div class="val">Foundation channels + wallet partners</div>
-        </div>
-        <div class="ask-cell">
-          <div class="lbl">Milestone</div>
-          <div class="val">1K wallets · 1st on-chain market settled</div>
-        </div>
-      </div>
-      <div class="use">
-        <strong>The product is built. The ask is the on-chain layer — cleanly.</strong> Engineering review, audit access, mainnet RPC, and ecosystem distribution. We're not asking for runway. We're asking to be part of the consumer Solana cohort and to ship Phase 2 with the right reviewers behind it.
-      </div>
+    <div class="callout">
+      <strong>Phase 1 was paid for out of pocket — and built AI-native.</strong> 91 APIs, 38 data models,
+      ~46,000 lines of production code: conservatively <strong>$300K+ and <span style="white-space:nowrap">6–9 months</span></strong> for a 5-person
+      team — <strong>$500K+ at US agency rates</strong> — shipped by one founder directing AI coding agents. The same workflow keeps the team this raise
+      funds small. This raise buys distribution and team, not discovery.
     </div>
   </section>
 
-  <!-- 11. ABOUT ME -->
+  <!-- 11. FOUNDER -->
   <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>The Builder</div>
+    <div class="eyebrow"><span class="dot"></span>The Founder</div>
 
     <div class="founder-hero">
       <div class="founder-portrait">
@@ -1390,7 +1537,7 @@
       </div>
       <div class="founder-meta">
         <div class="name">Rati Kiria.</div>
-        <div class="role">Champion. Educator. Builder. Three founders' worth of credentials in one person — won the trading game, built the financial-education company, then shipped a consumer Solana product solo.</div>
+        <div class="role">Champion. Educator. Builder. Won the trading game, built the financial-education company, then shipped the consumer product solo.</div>
         <div class="chips">
           <span class="chip green">2023 UAE Trading Champion · 3,000+ traders</span>
           <span class="chip green">1st Georgian finalist · UK Global Alumni Award 2026</span>
@@ -1405,78 +1552,171 @@
       <div class="trio-card">
         <div class="role">01 · Champion</div>
         <h3>Won the trading game.</h3>
-        <p>2023 UAE International Trading Championship — beat 3,000+ traders globally. First Georgian ever to win the title. 10+ years actively trading and investing across markets. The credibility a retail-trader audience can't dismiss.</p>
+        <p>2023 UAE International Trading Championship — beat 3,000+ traders globally, first Georgian ever to win the title.
+        10+ years actively trading across markets. The credibility a retail-trader audience cannot dismiss.</p>
       </div>
       <div class="trio-card">
         <div class="role">02 · Educator</div>
         <h3>Built the school first.</h3>
-        <p>Founded Traders' Hub in 2021 — a financial-education company. Developed programs for schools and universities. Created a Student-Managed Investment Fund giving students real practical investment experience. MSc Investment Analysis, University of Stirling — and 1st Georgian finalist for the UK Global Alumni Award 2026 (Business &amp; Innovation category, winner announced in August).</p>
+        <p>Founded Traders' Hub in 2021 — a financial-education company with programs for schools and universities, and a
+        Student-Managed Investment Fund. MSc Investment Analysis, Stirling. First Georgian finalist for the UK Global
+        Alumni Award 2026 (Business &amp; Innovation).</p>
       </div>
       <div class="trio-card">
         <div class="role">03 · Builder</div>
         <h3>Shipped Peerza. Solo.</h3>
-        <p>One founder. Four pillars, four languages, PWA, web3 integration, Stripe-backed subscriptions, full prod hardening — built end-to-end by one person. Velocity is the proof; the product is the artifact.</p>
+        <p>One founder. Four pillars, four languages, PWA, Stripe subscriptions, full production hardening —
+        architected by one person, with AI coding agents as the engineering team. Velocity is the proof; the live
+        product is the artifact.</p>
       </div>
     </div>
 
-    <div class="callout" style="margin-top:1.1rem;">
-      <strong>Peerza isn't pitched from a market memo — it's built from lived experience on every side of the problem.</strong> The founder won the championship traders dream of, built the financial-education company most pitches only promise to become, and shipped the consumer Solana product solo. Three founders' worth of evidence behind one product.
+    <div class="callout" style="margin-top:0.9rem;">
+      <strong>Peerza isn't pitched from a market memo — it's built from lived experience on every side of the problem.</strong>
+      Distribution advantage included: an existing financial-education audience from day one.
     </div>
   </section>
 
-  <!-- 12. INVITATION -->
+  <!-- 12. THE ASK -->
   <section class="slide">
-    <div class="eyebrow"><span class="dot"></span>Let's build</div>
-    <h2>Peerza is the engine. <span class="gradient-text">Web3 is the layer.</span></h2>
+    <div class="eyebrow"><span class="dot"></span>The Ask</div>
+    <h2>Raising <span class="gradient-text">$5M</span> to turn a live product into a category.</h2>
+
+    <div class="ask-head">
+      <div class="ask-big">
+        <div class="k">Target round</div>
+        <div class="v">$5M</div>
+        <div class="d">Seed. SAFE. Terms shared on request.</div>
+      </div>
+      <div class="ask-big">
+        <div class="k">First close</div>
+        <div class="v">$1.5M</div>
+        <div class="d">Available now — funds the team and mobile build immediately.</div>
+      </div>
+      <div class="ask-big">
+        <div class="k">Runway</div>
+        <div class="v">24 mo</div>
+        <div class="d">To Series A metrics on proven retention and ARR.</div>
+      </div>
+    </div>
+
+    <div class="funds-bar">
+      <span style="width:48%;background:linear-gradient(90deg,#9945FF,#7c3aed);"></span>
+      <span style="width:22%;background:linear-gradient(90deg,#7c3aed,#14F195);"></span>
+      <span style="width:15%;background:#14F195;"></span>
+      <span style="width:9%;background:#0ea5e9;"></span>
+      <span style="width:6%;background:#fbbf24;"></span>
+    </div>
+
+    <div class="funds-list">
+      <div class="fund" style="border-top-color:#9945FF;">
+        <div class="amt">$2.4M</div>
+        <div class="pct">48% · ENGINEERING</div>
+        <div class="what">Team of 8 by month 12 — 4 engineers, mobile, design, growth, community. First hires inside 60
+        days of close. Majority hired in Tbilisi at roughly one-third US fully-loaded cost: this $2.4M buys what
+        $7M buys in the Bay.</div>
+      </div>
+      <div class="fund" style="border-top-color:#7c3aed;">
+        <div class="amt">$1.1M</div>
+        <div class="pct">22% · GROWTH</div>
+        <div class="what">Paid acquisition, creator partnerships, and community seeding across US, LATAM, and Turkey.</div>
+      </div>
+      <div class="fund" style="border-top-color:#14F195;">
+        <div class="amt">$750K</div>
+        <div class="pct">15% · LEGAL &amp; COMPLIANCE</div>
+        <div class="what">Multi-jurisdiction licensing, financial-content compliance, audits, and IP. The capital-intensive line.</div>
+      </div>
+      <div class="fund" style="border-top-color:#0ea5e9;">
+        <div class="amt">$450K</div>
+        <div class="pct">9% · INFRASTRUCTURE</div>
+        <div class="what">AI inference at scale, market data licensing, hosting, and on-chain settlement costs.</div>
+      </div>
+      <div class="fund" style="border-top-color:#fbbf24;">
+        <div class="amt">$300K</div>
+        <div class="pct">6% · OPERATIONS</div>
+        <div class="what">US entity operations, finance, and buffer. Extends runway past 24 months if growth lags.</div>
+      </div>
+    </div>
+
+    <div class="ms-row">
+      <div class="ms">
+        <div class="v">300,000</div>
+        <div class="l">Registered users by month 24 — 60,000 by month 12</div>
+      </div>
+      <div class="ms">
+        <div class="v">$1.5M</div>
+        <div class="l">ARR by month 24 — 3% Pro conversion plus brand placements</div>
+      </div>
+      <div class="ms">
+        <div class="v">iOS + Android</div>
+        <div class="l">Native apps shipped by month 12</div>
+      </div>
+      <div class="ms">
+        <div class="v">Reputation API</div>
+        <div class="l">In market with design partners by month 18</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. CLOSE -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>Let's talk</div>
+    <h2>The product is built. <span class="gradient-text">Now we scale it.</span></h2>
     <p class="lead">
-      We're not pitching the future. We're showing you a product that already works — used today via demo accounts, with real Solana devnet transactions, in four languages, on web and PWA.
-      We're asking Solana to help us put the rails on it.
+      Most seed decks ask you to believe a team can build something. This one asks you to look at something that
+      already works — live, in four languages, with an audience already waiting for it — and fund the distribution
+      it deserves.
     </p>
 
     <div class="contact-grid">
       <div class="contact-card">
-        <div class="lbl">Founder</div>
-        <div class="val">Rati Kiria · Champion · Educator · Builder</div>
+        <div class="lbl">Founder &amp; CEO</div>
+        <div class="val">Rati Kiria</div>
+      </div>
+      <div class="contact-card">
+        <div class="lbl">Email</div>
+        <div class="val"><a href="mailto:rati.kiria06@gmail.com">rati.kiria06@gmail.com</a></div>
       </div>
       <div class="contact-card">
         <div class="lbl">Live product</div>
         <div class="val"><a href="https://www.peerza.ai" target="_blank">www.peerza.ai</a></div>
       </div>
       <div class="contact-card">
-        <div class="lbl">Demo login</div>
+        <div class="lbl">Investor demo login</div>
         <div class="val">human@peerza.ai / demo1234</div>
       </div>
       <div class="contact-card">
-        <div class="lbl">Web3 demo</div>
-        <div class="val"><a href="https://www.peerza.ai/web3" target="_blank">peerza.ai/web3</a></div>
+        <div class="lbl">Entity</div>
+        <div class="val">Peerza, Inc. · Delaware C-Corp</div>
       </div>
       <div class="contact-card">
-        <div class="lbl">Email</div>
-        <div class="val"><a href="mailto:rati.kiria06@gmail.com">rati.kiria06@gmail.com</a></div>
+        <div class="lbl">Raising</div>
+        <div class="val">$5M seed · $1.5M first close</div>
       </div>
+    </div>
+
+    <div class="callout" style="margin-top:1.3rem;">
+      <strong>Peerza is the engine. The reputation layer is the moat.</strong>
+      Retail investing has never had a trust primitive. We're building the one the next generation will carry with them.
     </div>
   </section>
 
 </div>
 
-<div class="hint">←/→ navigate · N notes · P print</div>
-<div class="chrome"><span id="counter">1 / 12</span></div>
+<div class="hint">←/→ navigate · P print</div>
+<div class="chrome"><span id="counter">1 / 13</span></div>
 <div class="arrows">
   <button onclick="prev()" aria-label="previous">‹</button>
   <button onclick="next()" aria-label="next">›</button>
 </div>
 
 
-
 <script>
-  const NOTES = [];
-
+  
   let i = 0;
   const slides = Array.from(document.querySelectorAll('.slide'));
   const counter = document.getElementById('counter');
-  const notes = document.getElementById('notes');
-  const notesBody = document.getElementById('notes-body');
-
+    
   function render() {
     slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
     counter.textContent = `${i + 1} / ${slides.length}`;
@@ -1486,23 +1726,17 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
     if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
-    if (e.key === 'n' || e.key === 'N') { notes.classList.toggle('show'); }
     if (e.key === 'p' || e.key === 'P') { window.print(); }
     if (e.key === 'Home') { i = 0; render(); }
     if (e.key === 'End') { i = slides.length - 1; render(); }
   });
   document.addEventListener('click', (e) => {
-    if (e.target.closest('button, a, .notes')) return;
+    if (e.target.closest('button, a')) return;
     const w = window.innerWidth;
     if (e.clientX > w / 2) next(); else prev();
   });
   render();
 </script>
 
-<script>
-document.addEventListener('keydown', function(e){
-  if (e.key === 'n' || e.key === 'N') { e.stopImmediatePropagation(); e.preventDefault(); }
-}, true);
-</script>
 </body>
 </html>
