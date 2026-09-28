@@ -59,6 +59,7 @@ const MEDIA_SRC = "'self' data: blob:"
 
 const FRAME_SRC = [
   "'self'",
+  "https://s.tradingview.com", // tv.js widget iframe (workspace + chart modal)
   "https://s3.tradingview.com",
   "https://www.tradingview.com",
   "https://www.tradingview-widget.com",
@@ -114,10 +115,11 @@ const securityHeaders = [
       "interest-cohort=()",
     ].join(", "),
   },
-  // Report-Only — violations log to console, page still works.
-  // Flip the key name to "Content-Security-Policy" once verified clean.
+  // Enforcing since 2026-09-28, after a Report-Only audit of every main page
+  // (only violation found: s.tradingview.com frame, now allowed). If a new
+  // external host breaks, add it to the lists above.
   {
-    key: "Content-Security-Policy-Report-Only",
+    key: "Content-Security-Policy",
     value: CSP_DIRECTIVES,
   },
   ...(isProd
