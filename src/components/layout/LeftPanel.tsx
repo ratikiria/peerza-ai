@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { ink } from "@/lib/ink"
 import Link from "next/link"
 import { getTranslations } from "next-intl/server"
@@ -115,20 +116,30 @@ export default async function LeftPanel({ user }: LeftPanelProps) {
 
         {/* Mobile apps — coming soon */}
         <div
-          className="rounded-2xl p-3 flex items-center gap-3"
+          className="relative rounded-2xl p-3 overflow-hidden"
           style={{
-            background: "rgba(16,185,129,0.06)",
-            border: "1px dashed rgba(16,185,129,0.35)",
+            background: "linear-gradient(135deg, rgba(16,185,129,0.10) 0%, rgba(59,130,246,0.08) 100%)",
+            border: "1px solid rgba(16,185,129,0.3)",
           }}
         >
-          <Smartphone size={18} className="flex-shrink-0" style={{ color: ink("#10b981") }} />
-          <div className="min-w-0">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-10 -right-10 w-28 h-28 rounded-full"
+            style={{ background: "radial-gradient(circle, rgba(16,185,129,0.28) 0%, rgba(16,185,129,0) 70%)" }}
+          />
+          <div className="relative flex items-center gap-2 mb-2.5">
+            <span className="relative flex w-2 h-2 flex-shrink-0">
+              <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-75 animate-ping" />
+              <span className="relative w-2 h-2 rounded-full bg-emerald-400" />
+            </span>
             <p className="text-xs font-semibold leading-tight" style={{ color: "var(--text-primary)" }}>
               {t("mobile_apps_title")}
             </p>
-            <p className="text-[10px] tracking-wide mt-0.5" style={{ color: ink("#10b981") }}>
-              {t("mobile_apps_subtitle")}
-            </p>
+            <Smartphone size={14} className="ml-auto flex-shrink-0" style={{ color: ink("#10b981") }} />
+          </div>
+          <div className="relative grid grid-cols-2 gap-2">
+            <StoreBadge label={t("mobile_apps_soon_on")} store="App Store" icon={<AppleLogo />} />
+            <StoreBadge label={t("mobile_apps_soon_on")} store="Google Play" icon={<AndroidLogo />} />
           </div>
         </div>
 
@@ -138,5 +149,51 @@ export default async function LeftPanel({ user }: LeftPanelProps) {
         </p>
       </div>
     </aside>
+  )
+}
+
+// Store-style badge — always dark, like the official App Store / Play badges.
+function StoreBadge({ label, store, icon }: { label: string; store: string; icon: ReactNode }) {
+  return (
+    <div
+      className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 transition-transform hover:-translate-y-0.5"
+      style={{
+        background: "linear-gradient(180deg, #1a1f2b 0%, #0b0e14 100%)",
+        border: "1px solid rgba(255,255,255,0.14)",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+        color: "#ffffff",
+      }}
+    >
+      <span className="flex-shrink-0">{icon}</span>
+      <span className="min-w-0 leading-none">
+        <span className="block text-[8px] uppercase tracking-wide truncate" style={{ color: "rgba(255,255,255,0.6)" }}>
+          {label}
+        </span>
+        <span className="block text-[11px] font-semibold mt-0.5 whitespace-nowrap" style={{ color: "#ffffff" }}>
+          {store}
+        </span>
+      </span>
+    </div>
+  )
+}
+
+function AppleLogo() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="#ffffff" aria-hidden="true">
+      <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+    </svg>
+  )
+}
+
+function AndroidLogo() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path d="M7.6 10.6 5.6 7.2M16.4 10.6l2-3.4" stroke="#3ddc84" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        fillRule="evenodd"
+        fill="#3ddc84"
+        d="M2.5 18.5a9.5 9.5 0 0 1 19 0z M7.2 14.8a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0z M14.6 14.8a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0z"
+      />
+    </svg>
   )
 }
