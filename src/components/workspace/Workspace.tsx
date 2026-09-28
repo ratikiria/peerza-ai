@@ -2,10 +2,11 @@
 
 import { ink } from "@/lib/ink"
 import { useEffect, useState } from "react"
-import { Search, Star, X, Users, PanelRightClose, PanelRightOpen } from "lucide-react"
+import { Search, Star, X, Users, PanelRightClose, PanelRightOpen, Zap } from "lucide-react"
 import TradingViewChart from "./TradingViewChart"
 import WorkspacePanel from "./WorkspacePanel"
 import SymbolStats from "./SymbolStats"
+import TradeDrawer from "./TradeDrawer"
 import SidebarAdCard from "@/components/ads/SidebarAdCard"
 import type { AdCardData } from "@/components/ads/AdCard"
 import { QUICK_PICKS, toTvSymbol, tvToTicker } from "@/lib/tv-symbols"
@@ -71,6 +72,7 @@ export default function Workspace() {
   const [search, setSearch]   = useState("")
   const [showCommunity, setShowCommunity] = useState(true)
   const [workspaceAd, setWorkspaceAd] = useState<AdCardData | null>(null)
+  const [tradeOpen, setTradeOpen] = useState(false)
 
   useEffect(() => {
     setSymbol(loadLast())
@@ -196,6 +198,20 @@ export default function Workspace() {
         </p>
 
         <button
+          onClick={() => setTradeOpen(true)}
+          className="relative inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-lg text-white transition-all hover:brightness-110 hover:-translate-y-px flex-shrink-0"
+          style={{
+            background: "linear-gradient(135deg, #10b981 0%, #047857 100%)",
+            boxShadow: "0 4px 14px rgba(16,185,129,0.4)",
+          }}
+          aria-label="Trade with your broker or paper trade"
+        >
+          <Zap size={12} fill="currentColor" />
+          <span className="hidden sm:inline">Trade with your broker</span>
+          <span className="sm:hidden">Trade</span>
+        </button>
+
+        <button
           onClick={toggleCommunity}
           className="hidden md:inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg transition-colors"
           style={{
@@ -299,6 +315,8 @@ export default function Workspace() {
           </aside>
         )}
       </div>
+
+      <TradeDrawer key={symbol} open={tradeOpen} onClose={() => setTradeOpen(false)} tv={symbol} />
     </div>
   )
 }

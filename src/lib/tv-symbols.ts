@@ -151,3 +151,72 @@ export const QUICK_PICKS: { group: string; items: QuickPick[] }[] = [
     ],
   },
 ]
+
+export type TradableClass = "crypto" | "stocks" | "forex" | "commodities"
+
+export interface Tradable {
+  /** Display ticker, e.g. "BTC", "AAPL", "EUR/USD", "GOLD" */
+  symbol: string
+  /** Asset type as stored on Holding/Trade rows */
+  assetType: "crypto" | "stock" | "forex" | "commodity"
+  /** Challenge.assetClasses value this asset belongs to */
+  assetClass: TradableClass
+  /** Price key understood by fetchAssetPrice / /api/market/prices */
+  priceKey: string
+  /** Lowercased exchange for stocks (nasdaq, nyse, amex), when known */
+  exchange?: string
+}
+
+const CG_BY_CRYPTO: Record<string, string> = Object.fromEntries(
+  Object.entries(CRYPTO_BY_CG).map(([cg, t]) => [t, cg]),
+)
+
+const COMMODITY_LABEL: Record<string, string> = {
+  xauusd: "GOLD", xagusd: "SILVER", "cl.f": "OIL", "ng.f": "GAS",
+}
+
+const STOCK_EXCHANGES = new Set(["NASDAQ", "NYSE", "AMEX", "NYSEARCA", "BATS"])
+
+/**
+ * Map a TradingView symbol to something the Peerza paper-trading engine can
+ * price. Returns null for things we can't trade (indices, unknown crypto,
+ * non-US stock exchanges).
+ */
+export function tvToTradable(tv: string): Tradable | null {
+  const upper = tv.toUpperCase()
+  const [prefix, rest] = upper.includes(":") ? upper.split(":") : ["", upper]
+
+  if (prefix === "BINANCE" || prefix === "COINBASE") {
+    const base = rest.replace(/(USDT|USDC|USD)$/, "")
+    const cg = CG_BY_CRYPTO[base]
+    return cg ? { symbol: base, assetType: "crypto", assetClass: "crypto", priceKey: cg } : null
+  }
+
+  // Commodities + FX: reverse the maps used by toTvSymbol
+  for (const [key, mapped] of Object.entries(COMMODITY_MAP)) {
+    if (mapped === upper || (!prefix && key === rest.toLowerCase())) {
+      return { symbol: COMMODITY_LABEL[key] ?? rest, assetType: "commodity", assetClass: "commodities", priceKey: key }
+    }
+  }
+  for (const [key, mapped] of Object.entries(FX_MAP)) {
+    if (mapped === upper || (!prefix && key === rest.toLowerCase())) {
+      return {
+        symbol: `${key.slice(0, 3).toUpperCase()}/${key.slice(3).toUpperCase()}`,
+        assetType: "forex", assetClass: "forex", priceKey: key,
+      }
+    }
+  }
+
+  if (prefix === "TVC" || prefix === "SP" || prefix === "DJ") return null
+
+  if ((!prefix || STOCK_EXCHANGES.has(prefix)) && /^[A-Z][A-Z0-9.]{0,6}$/.test(rest)) {
+    return {
+      symbol: rest,
+      assetType: "stock",
+      assetClass: "stocks",
+      priceKey: `${rest.toLowerCase()}.us`,
+      exchange: prefix ? prefix.toLowerCase() : undefined,
+    }
+  }
+  return null
+}
