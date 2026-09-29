@@ -26,7 +26,7 @@ const TARGET_LANGUAGES = [
 
 const SOURCE_FILE   = path.join(__dirname, "..", "src", "data", "dictionary", "en.json")
 const OUTPUT_DIR    = path.join(__dirname, "..", "src", "data", "dictionary")
-const MODEL         = "claude-haiku-4-5"
+const MODEL         = process.env.TRANSLATE_MODEL || "claude-haiku-4-5"
 
 const args  = process.argv.slice(2)
 const force = args.includes("--force")
@@ -51,6 +51,7 @@ TRANSLATION RULES:
 4. Use established local financial terminology. If a concept doesn't have a clean local term, transliterate or use the English term in parentheses.
 5. Match the tone of the source: clear, direct, plain-language. No filler or pleasantries.
 6. Output VALID JSON ONLY. No prose, no preamble, no markdown code fences.
+7. Inside string values, never use a bare " character — use the target language's quotation marks (e.g. „ “ or « ») or escape it as \\".
 
 You must return the EXACT same JSON shape as the input — same field names, same structure, only the human-readable values translated.`
 }
@@ -74,6 +75,8 @@ ${JSON.stringify(entry, null, 2)}`
   // Strip code fences if Claude added them despite instructions
   if (raw.startsWith("```")) raw = raw.replace(/^```(?:json)?\n?/, "").replace(/```$/, "").trim()
 
+  // Georgian/Russian-style quotes often come back as „text" (ASCII closer), which breaks JSON.
+  raw = raw.replace(/„([^"„“\n]*)"/g, "„$1“")
   const translated = JSON.parse(raw)
   // Force-preserve identifiers
   translated.id            = entry.id

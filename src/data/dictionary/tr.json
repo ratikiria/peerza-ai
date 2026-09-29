@@ -1,19 +1,19 @@
 {
   "language": "tr",
-  "generatedAt": "2026-04-28",
+  "generatedAt": "2026-09-29",
   "entries": [
     {
       "id": "fed-rate-decision",
-      "name": "Fed Interest Rate Decision",
+      "name": "Fed Faiz Oranı Kararı",
       "abbreviation": "FOMC",
       "category": "central-bank",
       "country": "US",
-      "frequency": "8 times per year (every ~6 weeks)",
-      "definition": "The Federal Reserve's Federal Open Market Committee (FOMC) sets the target range for the federal funds rate — the overnight rate banks charge each other. This is the most important interest rate in global finance.",
-      "whyItMatters": "It directly affects mortgage rates, business borrowing, the dollar's strength, and the discount rate used to value every stock on Earth. A surprise hike or cut can move every market within seconds.",
+      "frequency": "Yılda 8 kez (yaklaşık 6 haftada bir)",
+      "definition": "Federal Rezerv'in Federal Açık Piyasa Komitesi (FOMC), bankaların birbirlerine uyguladığı gecelik faiz oranı olan federal fon oranı için hedef aralığını belirler. Bu, küresel finansın en önemli faiz oranıdır.",
+      "whyItMatters": "İpotek oranları, işletme borçlanma maliyetleri, doların gücü ve hisse senetlerini değerlemek için kullanılan iskonto oranını doğrudan etkiler. Sürpriz bir artış veya düşüş, tüm piyasaları saniyeler içinde hareket ettirebilir.",
       "marketReaction": {
-        "higher": "Surprise hike: USD strengthens, stocks fall (especially growth/tech), bond yields rise, gold typically dips.",
-        "lower": "Surprise cut or dovish hold: USD weakens, stocks rally, bond prices rise, gold strengthens."
+        "higher": "Sürpriz artış: USD güçlenişi, hisse senetleri düşüşü (özellikle büyüme/teknoloji), tahvil getirileri yükselişi, altın tipik olarak düşüşü.",
+        "lower": "Sürpriz düşüş veya dovish hold: USD zayıflaması, hisse senedi ralisi, tahvil fiyatları yükselişi, altın güçlenişi."
       },
       "watchedAssets": [
         "DXY",
@@ -26,16 +26,16 @@
     },
     {
       "id": "fomc-press-conference",
-      "name": "FOMC Press Conference",
+      "name": "FOMC Basın Konferansı",
       "abbreviation": "FOMC PC",
       "category": "central-bank",
       "country": "US",
-      "frequency": "Follows each FOMC meeting (8x/year)",
-      "definition": "30 minutes after the rate decision, the Fed Chair takes questions from reporters. The tone — hawkish (favoring tighter policy) or dovish (favoring easier policy) — often moves markets more than the rate decision itself.",
-      "whyItMatters": "Markets parse every word for hints about the next meeting. A single phrase ('we are not even thinking about thinking about raising rates') can re-rate trillions of dollars in assets.",
+      "frequency": "Her FOMC toplantısını takiben (yılda 8 kez)",
+      "definition": "Faiz kararının 30 dakika sonrasında, Fed Başkanı gazetecilerin sorularını yanıtlar. Ton — hawkish (sıkı politika lehinde) veya dovish (gevşek politika lehinde) — çoğu zaman faiz kararının kendisinden daha fazla piyasaları hareket ettirir.",
+      "whyItMatters": "Piyasalar bir sonraki toplantı hakkında ipuçları için her kelimeyi analiz eder. Tek bir cümle ('biz faiz artırmayı düşünmeyi bile düşünmüyoruz') trilyon dolarlık varlıkları yeniden fiyatlandırabilir.",
       "marketReaction": {
-        "higher": "Hawkish tone (signals more hikes): USD up, stocks down, yields rise.",
-        "lower": "Dovish tone (signals cuts or pause): USD down, stocks rally, yields fall."
+        "higher": "Hawkish ton (daha fazla artış sinyali): USD yükselir, hisse senetleri düşer, getiriler artar.",
+        "lower": "Dovish ton (indirim veya duraklama sinyali): USD düşer, hisse senetleri yükselir, getiriler düşer."
       },
       "watchedAssets": [
         "DXY",
@@ -46,16 +46,16 @@
     },
     {
       "id": "fomc-minutes",
-      "name": "FOMC Meeting Minutes",
+      "name": "FOMC Toplantı Tutanakları",
       "abbreviation": "FOMC Minutes",
       "category": "central-bank",
       "country": "US",
-      "frequency": "3 weeks after each FOMC meeting",
-      "definition": "Detailed summary of the discussion at the most recent FOMC meeting. Reveals the range of views among the 12 voting members and any dissent.",
-      "whyItMatters": "Sometimes contradicts the public statement and shows where the committee is split. Surprises about hawkish or dovish dissent can shift rate-cut expectations.",
+      "frequency": "Her FOMC toplantısından 3 hafta sonra",
+      "definition": "En son FOMC toplantısındaki tartışmaların detaylı özeti. 12 oy kullanan üyenin görüş aralığını ve herhangi bir muhalefeti ortaya çıkarır.",
+      "whyItMatters": "Bazen kamuya açık açıklamayı çeliştirir ve komite içindeki ayrışmaları gösterir. Şahin (hawkish) ya da güvercin (dovish) muhalefet şaşırtıcılığı, faiz indirim beklentilerini değiştirebilir.",
       "marketReaction": {
-        "higher": "Hawkish minutes (members worried about inflation): USD up, stocks dip, yields rise.",
-        "lower": "Dovish minutes (members worried about growth): USD down, stocks rally, yields fall."
+        "higher": "Şahin tutanakları (üyeler enflasyondan endişeli): USD yükselir, hisseler düşer, getiriler yükselir.",
+        "lower": "Güvercin tutanakları (üyeler büyümeden endişeli): USD düşer, hisseler yükselir, getiriler düşer."
       },
       "watchedAssets": [
         "DXY",
@@ -65,16 +65,16 @@
     },
     {
       "id": "ecb-rate-decision",
-      "name": "ECB Interest Rate Decision",
+      "name": "ECB Faiz Kararı",
       "abbreviation": "ECB",
       "category": "central-bank",
       "country": "EU",
-      "frequency": "8 times per year",
-      "definition": "The European Central Bank sets the deposit rate, main refinancing rate, and marginal lending facility rate for the 20-country Eurozone.",
-      "whyItMatters": "Sets monetary policy for the world's second-largest currency bloc. Drives EUR/USD, European bond yields, and the Euro Stoxx index.",
+      "frequency": "yılda 8 kez",
+      "definition": "Avrupa Merkez Bankası, 20 ülkeli Eurozone için mevduat oranı, ana refinansman oranı ve marjinal kredi imkanı oranını belirler.",
+      "whyItMatters": "Dünyanın ikinci en büyük para birimi bloğunun para politikasını belirler. EUR/USD, Avrupa tahvil getirileri ve Euro Stoxx endeksini etkiler.",
       "marketReaction": {
-        "higher": "Hawkish surprise: EUR strengthens, European stocks fall, bund yields rise.",
-        "lower": "Dovish surprise: EUR weakens, European stocks rally, bund yields fall."
+        "higher": "Şahin hareketi: EUR güçlenir, Avrupa hisseleri düşer, bund getirileri yükselir.",
+        "lower": "Güvercin hareketi: EUR zayıflar, Avrupa hisseleri yükselir, bund getirileri düşer."
       },
       "watchedAssets": [
         "EURUSD",
@@ -85,16 +85,16 @@
     },
     {
       "id": "boe-rate-decision",
-      "name": "BoE Interest Rate Decision",
+      "name": "İngiltere Merkez Bankası Faiz Kararı",
       "abbreviation": "BoE",
       "category": "central-bank",
       "country": "GB",
-      "frequency": "8 times per year",
-      "definition": "The Bank of England's Monetary Policy Committee (MPC) sets the Bank Rate. Voting splits among the 9 members are watched closely.",
-      "whyItMatters": "Drives GBP and UK bond yields. The MPC vote breakdown often signals the next move — a 5-4 vote vs. unanimous matters.",
+      "frequency": "Yılda 8 kez",
+      "definition": "İngiltere Merkez Bankası'nın Para Politikası Komitesi (MPC) Banka Oranını belirler. 9 üyenin oy dağılımı yakından takip edilir.",
+      "whyItMatters": "GBP ve İngiltere devlet tahvili getirilerini yönlendirir. MPC oy dağılımı sıklıkla bir sonraki hamleyi işaret eder — 5-4 oy ile oybirliği farklıdır.",
       "marketReaction": {
-        "higher": "Hawkish: GBP strengthens, UK stocks dip, gilt yields rise.",
-        "lower": "Dovish: GBP weakens, UK stocks rally, gilt yields fall."
+        "higher": "Enflasyonist (Hawkish): GBP güçlenirse, İngiltere hisseleri düşer, devlet tahvili getirileri yükselir.",
+        "lower": "Gevşek (Dovish): GBP zayıflarsa, İngiltere hisseleri yükselir, devlet tahvili getirileri düşer."
       },
       "watchedAssets": [
         "GBPUSD",
@@ -105,16 +105,16 @@
     },
     {
       "id": "boj-rate-decision",
-      "name": "BoJ Interest Rate Decision",
+      "name": "BoJ Faiz Kararı",
       "abbreviation": "BoJ",
       "category": "central-bank",
       "country": "JP",
-      "frequency": "8 times per year",
-      "definition": "The Bank of Japan sets short-term policy rates and has used yield curve control on 10-year JGB yields. Japan's policy is unique because rates were negative or zero for years.",
-      "whyItMatters": "Any shift away from ultra-loose policy moves the yen sharply and ripples through global carry trades.",
+      "frequency": "Yılda 8 kez",
+      "definition": "Japonya Merkez Bankası kısa vadeli politika oranlarını belirler ve 10 yıllık JGB getirileri üzerinde getiri eğrisi kontrolü uygulamıştır. Japonya'nın politikası benzersizdir çünkü oranlar yıllarca negatif veya sıfırdı.",
+      "whyItMatters": "Ultra gevşek politikadan herhangi bir sapma yeni'yi keskin şekilde hareket ettirir ve küresel carry trade'lerde dalgalanmalar yaratır.",
       "marketReaction": {
-        "higher": "Hawkish surprise (rare): JPY strengthens sharply, Nikkei falls, JGB yields rise.",
-        "lower": "Continued dovish stance: JPY weakens, Nikkei rallies."
+        "higher": "Şahinleştirici sürpriz (nadir): JPY keskin şekilde güçlenir, Nikkei düşer, JGB getirileri yükselir.",
+        "lower": "Devam eden dovish tutum: JPY zayıflar, Nikkei yükselir."
       },
       "watchedAssets": [
         "USDJPY",
@@ -124,16 +124,16 @@
     },
     {
       "id": "non-farm-payrolls",
-      "name": "Non-Farm Payrolls",
+      "name": "Tarım Dışı Bordro (Non-Farm Payrolls)",
       "abbreviation": "NFP",
       "category": "employment",
       "country": "US",
-      "frequency": "Monthly, first Friday at 8:30 AM ET",
-      "definition": "The monthly count of jobs added or lost in the US economy, excluding farm workers, government employees, private household staff, and non-profits.",
-      "whyItMatters": "The most-watched US labor market report. The Fed uses it to gauge economic strength and decide on rates. Massive volatility in the 5 minutes after the release.",
+      "frequency": "Aylık, ilk Cuma saat 8:30 AM ET",
+      "definition": "ABD ekonomisinde aylık olarak eklenen veya kaybedilen işlerin sayısı; çiftçi işçileri, devlet çalışanları, özel hane çalışanları ve kar amacı gütmeyen kuruluşları hariç tutar.",
+      "whyItMatters": "En çok takip edilen ABD işgücü piyasası raporu. Fed ekonomik gücü ölçmek ve faiz kararlarını almak için bunu kullanır. Verilerin açıklanmasının ardından ilk 5 dakikada muazzam volatilite yaşanır.",
       "marketReaction": {
-        "higher": "Stronger than expected: USD typically strengthens (Fed may stay hawkish), stocks reaction depends on context — strong economy is good but rate-hike fears can dominate.",
-        "lower": "Weaker than expected: USD weakens (Fed may cut), stocks often rally on rate-cut hopes, gold strengthens."
+        "higher": "Beklentileri aşan sonuç: USD tipik olarak güçlenebilir (Fed sert kalabilir), hisse senetlerinin tepkisi bağlama bağlıdır — güçlü ekonomi olumludur ancak faiz artırımı endişeleri hakimiyet sağlayabilir.",
+        "lower": "Beklentilerin altında sonuç: USD zayıflayabilir (Fed indirim yapabilir), hisse senetleri faiz indirim umutlarıyla sıklıkla yükselir, altın güçlenir."
       },
       "watchedAssets": [
         "DXY",
@@ -145,16 +145,16 @@
     },
     {
       "id": "unemployment-rate",
-      "name": "Unemployment Rate",
+      "name": "İşsizlik Oranı",
       "abbreviation": "U-3",
       "category": "employment",
       "country": "US",
-      "frequency": "Monthly, released with NFP",
-      "definition": "Percentage of the labor force actively seeking work. Released alongside Non-Farm Payrolls.",
-      "whyItMatters": "Half of the Fed's dual mandate is 'maximum employment.' The Fed eyes 3.5–4.5% as roughly full employment in the US.",
+      "frequency": "Aylık, NFP ile birlikte yayınlanır",
+      "definition": "İş gücü içinde aktif olarak iş arayan kişilerin yüzdesi. İş Gücü Dışı Bordro (NFP) ile birlikte yayınlanır.",
+      "whyItMatters": "Fed'in çift görevinin yarısı 'maksimum istihdam'dır. Fed, ABD'de kabaca tam istihdam olarak %3,5–4,5'i hedeflemektedir.",
       "marketReaction": {
-        "higher": "Higher unemployment: USD weakens, stocks may rally on rate-cut hopes, bond yields fall.",
-        "lower": "Lower unemployment: USD strengthens (tight labor market = inflationary), bond yields rise."
+        "higher": "Daha yüksek işsizlik: USD zayıflar, faiz indirimi umutlarıyla hisse senetleri yükselebilir, tahvil getirileri düşer.",
+        "lower": "Daha düşük işsizlik: USD güçlenir (sıkı işgücü piyasası = enflasyoncu), tahvil getirileri yükselir."
       },
       "watchedAssets": [
         "DXY",
@@ -164,16 +164,16 @@
     },
     {
       "id": "initial-jobless-claims",
-      "name": "Initial Jobless Claims",
+      "name": "İlk İşsizlik Talepleri",
       "abbreviation": "Claims",
       "category": "employment",
       "country": "US",
-      "frequency": "Weekly, every Thursday",
-      "definition": "Number of Americans filing for unemployment benefits for the first time in the past week.",
-      "whyItMatters": "The most timely labor market indicator — only one week stale. A sustained rise above ~250K signals labor market weakness.",
+      "frequency": "Haftalık, her Perşembe",
+      "definition": "Geçen hafta ilk kez işsizlik yardımı başvurusu yapan Amerikalıların sayısı.",
+      "whyItMatters": "En güncel işgücü piyasası göstergesi — sadece bir hafta geride. ~250K üzerinde sürdürülen bir artış işgücü piyasasının zayıflığını işaret eder.",
       "marketReaction": {
-        "higher": "Higher claims: USD weakens slightly, stocks may rally on rate-cut hopes.",
-        "lower": "Lower claims: USD strengthens slightly, signals tight labor market."
+        "higher": "Daha yüksek talepler: USD hafifçe zayıflar, hisse senetleri faiz indirimi umutlarıyla yükselebilir.",
+        "lower": "Daha düşük talepler: USD hafifçe güçlenir, sıkı işgücü piyasasını işaret eder."
       },
       "watchedAssets": [
         "DXY",
@@ -182,16 +182,16 @@
     },
     {
       "id": "average-hourly-earnings",
-      "name": "Average Hourly Earnings",
+      "name": "Ortalama Saatlik Kazançlar",
       "abbreviation": "AHE",
       "category": "employment",
       "country": "US",
-      "frequency": "Monthly, released with NFP",
-      "definition": "Year-over-year change in average hourly wages for private-sector workers. A leading indicator of consumer inflation.",
-      "whyItMatters": "Wage growth feeds directly into services inflation. The Fed watches this closely — wages rising faster than productivity is a red flag.",
+      "frequency": "Aylık, NFP ile birlikte yayınlanır",
+      "definition": "Özel sektör çalışanlarının ortalama saatlik ücretlerindeki yıldan yıla değişim. Tüketici enflasyonunun öncü göstergesi.",
+      "whyItMatters": "Ücret artışı doğrudan hizmetler enflasyonuna yansır. Fed bunu yakından izler — ücretlerin verimliliğin üzerine çıkması kırmızı bayrak.",
       "marketReaction": {
-        "higher": "Stronger wages: USD up (Fed stays hawkish), stocks down (rate fears), bond yields rise.",
-        "lower": "Weaker wages: USD down, stocks rally, bond yields fall."
+        "higher": "Daha güçlü ücretler: USD yükseliş (Fed hawkish kalır), hisse senetleri düşüş (oran endişeleri), tahvil verimleri yükseliş.",
+        "lower": "Daha zayıf ücretler: USD düşüş, hisse senetleri yükseliş, tahvil verimleri düşüş."
       },
       "watchedAssets": [
         "DXY",
@@ -201,16 +201,16 @@
     },
     {
       "id": "cpi-yoy",
-      "name": "CPI YoY",
+      "name": "TÜFE YoY",
       "abbreviation": "CPI",
       "category": "inflation",
       "country": "US",
-      "frequency": "Monthly, around the 12th",
-      "definition": "Year-over-year change in the Consumer Price Index — the cost of a basket of goods and services bought by typical urban households.",
-      "whyItMatters": "Headline inflation. The Fed targets 2% (using PCE, but CPI moves markets more). Above 3% = restrictive policy; below 2% = stimulus likely.",
+      "frequency": "Aylık, 12. gün civarında",
+      "definition": "Tüketici Fiyat Endeksi'nin yıldan yıla değişimi — tipik şehirli hanelerin satın aldığı mal ve hizmetler sepetinin maliyeti.",
+      "whyItMatters": "Başlık enflasyonu. Fed %2'yi hedeflemektedir (PCE kullanılsa da, TÜFE piyasaları daha fazla hareket ettirir). %3'ün üzeri = kısıtlayıcı politika; %2'nin altı = teşvik olasıdır.",
       "marketReaction": {
-        "higher": "Hot CPI: USD strengthens (Fed hawkish), stocks fall, bond yields rise, gold mixed.",
-        "lower": "Cool CPI: USD weakens (Fed dovish), stocks rally, bond yields fall."
+        "higher": "Yüksek TÜFE: USD güçlenir (Fed sıkı), hisseler düşer, tahvil getirileri yükselir, altın karışık.",
+        "lower": "Düşük TÜFE: USD zayıflar (Fed gevşek), hisseler yükselir, tahvil getirileri düşer."
       },
       "watchedAssets": [
         "DXY",
@@ -222,16 +222,16 @@
     },
     {
       "id": "core-cpi",
-      "name": "Core CPI YoY",
+      "name": "Çekirdek TÜFE YoY",
       "abbreviation": "Core CPI",
       "category": "inflation",
       "country": "US",
-      "frequency": "Monthly, released with CPI",
-      "definition": "CPI excluding volatile food and energy prices. The Fed watches Core more than headline because it shows the underlying trend.",
-      "whyItMatters": "Removes noise from oil shocks and weather. If Core stays sticky while headline falls, the Fed stays hawkish.",
+      "frequency": "Aylık, TÜFE ile birlikte yayınlanır",
+      "definition": "Uçucu gıda ve enerji fiyatlarını hariç tutan TÜFE. Fed, temel eğilimi gösterdiği için Çekirdek TÜFE'yi başlık TÜFE'den daha yakından izler.",
+      "whyItMatters": "Petrol şoklarından ve hava durumunun etkilerinden gürültüyü giderir. Çekirdek TÜFE yapışkanlığını korurken başlık TÜFE düşerse, Fed sert tavrını sürdürür.",
       "marketReaction": {
-        "higher": "Sticky Core CPI: USD up, stocks down, yields up. More important than headline for Fed pricing.",
-        "lower": "Cooling Core CPI: USD down, stocks up, yields down."
+        "higher": "Yapışkan Çekirdek TÜFE: USD yükselir, hisse senetleri düşer, getiriler yükselir. Fed fiyatlandırması için başlık TÜFE'den daha önemlidir.",
+        "lower": "Soğuyan Çekirdek TÜFE: USD düşer, hisse senetleri yükselir, getiriler düşer."
       },
       "watchedAssets": [
         "DXY",
@@ -241,16 +241,16 @@
     },
     {
       "id": "core-pce",
-      "name": "Core PCE Price Index YoY",
+      "name": "Temel PCE Fiyat Endeksi YoY",
       "abbreviation": "Core PCE",
       "category": "inflation",
       "country": "US",
-      "frequency": "Monthly, last week of the month",
-      "definition": "The Fed's preferred inflation gauge — Personal Consumption Expenditures index excluding food and energy.",
-      "whyItMatters": "This is THE number the Fed targets at 2%. More accurate than CPI for actual consumer behavior because it accounts for substitution.",
+      "frequency": "Aylık, ayın son haftası",
+      "definition": "Fed'in tercih ettiği enflasyon göstergesi — Gıda ve enerji hariç Kişisel Tüketim Harcamaları endeksi.",
+      "whyItMatters": "Fed'in %2 hedeflediği temel sayı budur. Tüketici davranışı için TÜFE'den daha doğrudur çünkü ikame etme etkisini hesaba katar.",
       "marketReaction": {
-        "higher": "Hot Core PCE: USD up, stocks down, yields up. Confirms Fed hawkish stance.",
-        "lower": "Cool Core PCE: USD down, stocks rally, yields down. Validates rate-cut hopes."
+        "higher": "Yüksek Temel PCE: USD yükselişe geçer, hisse senetleri düşer, getiriler yükselir. Fed'in sert duruşunu doğrular.",
+        "lower": "Düşük Temel PCE: USD düşer, hisse senetleri yükselir, getiriler düşer. Faiz indirimi umutlarını doğrular."
       },
       "watchedAssets": [
         "DXY",
@@ -261,16 +261,16 @@
     },
     {
       "id": "ppi",
-      "name": "Producer Price Index",
+      "name": "Üretici Fiyat Endeksi",
       "abbreviation": "PPI",
       "category": "inflation",
       "country": "US",
-      "frequency": "Monthly, day before CPI",
-      "definition": "Wholesale prices charged by producers — a leading indicator of consumer inflation 1-3 months ahead.",
-      "whyItMatters": "If producer prices are rising fast, those costs eventually pass to consumers. Markets use it to handicap the next CPI.",
+      "frequency": "Aylık, TÜFE'den bir gün önce",
+      "definition": "Üreticilerin talep ettikleri toptan fiyatlar — tüketici enflasyonunun 1-3 ay öncesini gösteren öncü göstergedir.",
+      "whyItMatters": "Üretici fiyatları hızlı yükseliyorsa, bu maliyetler sonunda tüketicilere yansır. Piyasalar bunu kullanarak gelecek TÜFE'yi tahmin etmeye çalışır.",
       "marketReaction": {
-        "higher": "Hot PPI: previews hot CPI — USD up, stocks down, yields up.",
-        "lower": "Cool PPI: previews cool CPI — USD down, stocks up, yields down."
+        "higher": "Yüksek PPI: yüksek TÜFE'yi işaret eder — USD yükselir, hisse senetleri düşer, getiriler yükselir.",
+        "lower": "Düşük PPI: düşük TÜFE'yi işaret eder — USD düşer, hisse senetleri yükselir, getiriler düşer."
       },
       "watchedAssets": [
         "DXY",
@@ -280,16 +280,16 @@
     },
     {
       "id": "gdp-qoq",
-      "name": "GDP QoQ",
+      "name": "GSYİH Ç/Ç",
       "abbreviation": "GDP",
       "category": "growth",
       "country": "US",
-      "frequency": "Quarterly (advance, second, final estimates)",
-      "definition": "Quarter-over-quarter change in Gross Domestic Product, annualized. The broadest measure of economic activity.",
-      "whyItMatters": "Defines whether the economy is in recession (two consecutive negative quarters) or expanding. Less market-moving than higher-frequency data because it's released months after the quarter ends.",
+      "frequency": "Üç aylık (ön tahmin, ikinci tahmin, son tahmin)",
+      "definition": "Gayri Safi Yurtiçi Hasıla'nın çeyrek dönem bazında değişimi, yıllıklandırılmış. Ekonomik aktivitenin en geniş ölçüsü.",
+      "whyItMatters": "Ekonominin resesyonda olup olmadığını (iki ardışık negatif çeyrek) veya genişleyip genişlemediğini belirler. Çeyrek dönem bittikten aylar sonra yayınlandığı için daha sık yayınlanan verilere kıyasla pazar hareketliliği daha azdır.",
       "marketReaction": {
-        "higher": "Strong GDP: USD up, stocks may rally on growth, bond yields rise.",
-        "lower": "Weak GDP: USD down, stocks may fall on recession fears OR rally on rate-cut hopes — depends on context."
+        "higher": "Güçlü GSYİH: USD yükseliş, hisse senetleri büyüme üzerine yükselebilir, tahvil getirileri yükseliş.",
+        "lower": "Zayıf GSYİH: USD düşüş, hisse senetleri resesyon endişeleriyle düşebilir VEYA faiz indirimi beklentileriyle yükselişe geçebilir — bağlama göre değişir."
       },
       "watchedAssets": [
         "DXY",
@@ -299,16 +299,16 @@
     },
     {
       "id": "retail-sales",
-      "name": "Retail Sales MoM",
+      "name": "Perakende Satışlar Aylık",
       "abbreviation": "Retail Sales",
       "category": "consumer",
       "country": "US",
-      "frequency": "Monthly, around the 15th",
-      "definition": "Month-over-month change in total sales at retail and food service establishments. Measures consumer spending — ~70% of US GDP.",
-      "whyItMatters": "Consumer spending is the engine of the US economy. Strong retail sales = strong economy = Fed stays hawkish.",
+      "frequency": "Aylık, 15. gün civarında",
+      "definition": "Perakende ve gıda hizmetleri işletmelerindeki toplam satışlardaki aylık değişim. Tüketici harcamalarını ölçer — ABD GSYİH'sinin ~%70'i.",
+      "whyItMatters": "Tüketici harcamaları ABD ekonomisinin motorudur. Güçlü perakende satışları = güçlü ekonomi = Fed sert kalır.",
       "marketReaction": {
-        "higher": "Strong retail sales: USD up, stocks may rally on growth, bond yields rise.",
-        "lower": "Weak retail sales: USD down, stocks fall on recession fears, bond yields fall."
+        "higher": "Güçlü perakende satışları: USD yükselir, hisseler büyüme beklentisiyle yükselir, tahvil getirileri artar.",
+        "lower": "Zayıf perakende satışları: USD düşer, hisseler resesyon endişeleriyle düşer, tahvil getirileri düşer."
       },
       "watchedAssets": [
         "DXY",
@@ -318,16 +318,16 @@
     },
     {
       "id": "ism-manufacturing-pmi",
-      "name": "ISM Manufacturing PMI",
+      "name": "ISM İmalat PMI",
       "abbreviation": "ISM Mfg",
       "category": "manufacturing",
       "country": "US",
-      "frequency": "Monthly, first business day",
-      "definition": "Survey of US manufacturing executives. A reading above 50 indicates expansion; below 50 indicates contraction.",
-      "whyItMatters": "Leading indicator of manufacturing health. Sustained readings below 48 historically precede recessions.",
+      "frequency": "Aylık, ilk iş günü",
+      "definition": "ABD imalat yöneticilerine yönelik anket. 50'nin üzerindeki okuma genişlemeyi, 50'nin altındaki okuma daralmasını gösterir.",
+      "whyItMatters": "İmalat sağlığının öncü göstergesi. Tarihsel olarak 48'in altındaki süregelen okumaların öncesinde resesyon gelmiştir.",
       "marketReaction": {
-        "higher": "Above 50 expanding: USD up, stocks rally on growth, yields rise.",
-        "lower": "Below 50 contracting: USD down, stocks may fall, yields fall on rate-cut hopes."
+        "higher": "50'nin üzerinde genişleme: USD yükseliş, hisse senetleri büyüme nedeniyle yükselişe geçer, getiriler artar.",
+        "lower": "50'nin altında daralma: USD düşüş, hisse senetleri düşebilir, faiz indirimi beklentileriyle getiriler düşer."
       },
       "watchedAssets": [
         "DXY",
@@ -338,16 +338,16 @@
     },
     {
       "id": "ism-services-pmi",
-      "name": "ISM Services PMI",
+      "name": "ISM Hizmetler PMI",
       "abbreviation": "ISM Svc",
       "category": "manufacturing",
       "country": "US",
-      "frequency": "Monthly, third business day",
-      "definition": "Survey of US services-sector executives. Services are ~80% of the US economy, so this matters more than manufacturing PMI.",
-      "whyItMatters": "Services are stickier than manufacturing — strong services PMI means inflation pressure persists.",
+      "frequency": "Aylık, üçüncü iş günü",
+      "definition": "ABD hizmetler sektörü yöneticilerinin anketi. Hizmetler ABD ekonomisinin ~%80'ini oluşturduğu için imalat PMI'sından daha önemlidir.",
+      "whyItMatters": "Hizmetler imalattan daha istikrarlıdır — güçlü hizmetler PMI, enflasyon baskısının devam ettiği anlamına gelir.",
       "marketReaction": {
-        "higher": "Strong services PMI: USD up, stocks rally on growth, bond yields rise.",
-        "lower": "Weak services PMI: USD down, stocks fall, yields fall."
+        "higher": "Güçlü hizmetler PMI: USD yükseliş, hisse senetleri büyümeyle rallisi, tahvil getirileri yükseliş.",
+        "lower": "Zayıf hizmetler PMI: USD düşüş, hisse senetleri düşüş, getirileri düşüş."
       },
       "watchedAssets": [
         "DXY",
@@ -357,16 +357,16 @@
     },
     {
       "id": "consumer-confidence",
-      "name": "Consumer Confidence",
+      "name": "Tüketici Güveni",
       "abbreviation": "CCI",
       "category": "sentiment",
       "country": "US",
-      "frequency": "Monthly, last Tuesday",
-      "definition": "Survey by the Conference Board measuring how consumers feel about current and future economic conditions.",
-      "whyItMatters": "Confident consumers spend more. A drop signals weaker future retail sales and growth.",
+      "frequency": "Aylık, son Salı",
+      "definition": "Conference Board tarafından yapılan ve tüketicilerin mevcut ve gelecekteki ekonomik koşullar hakkında hissettikleri ölçen anket.",
+      "whyItMatters": "Güveni yüksek tüketiciler daha fazla harcama yaparlar. Düşüş, gelecekteki perakende satışlar ve büyümenin zayıflamasını işaret eder.",
       "marketReaction": {
-        "higher": "Higher confidence: USD up modestly, stocks rally on growth optimism.",
-        "lower": "Lower confidence: USD down modestly, stocks may fall on recession fears."
+        "higher": "Yüksek güven: USD hafifçe yükselir, hisse senetleri büyüme iyimserliğiyle toparlanır.",
+        "lower": "Düşük güven: USD hafifçe düşer, resesyon korkusuyla hisse senetleri düşebilir."
       },
       "watchedAssets": [
         "SPY",
@@ -375,16 +375,16 @@
     },
     {
       "id": "michigan-sentiment",
-      "name": "Michigan Consumer Sentiment",
+      "name": "Michigan Tüketici Duyarlılığı",
       "abbreviation": "Mich Sentiment",
       "category": "sentiment",
       "country": "US",
-      "frequency": "Monthly (preliminary mid-month, final end-month)",
-      "definition": "University of Michigan survey of consumer attitudes. Includes 1-year and 5-year inflation expectations — the latter is closely watched by the Fed.",
-      "whyItMatters": "The 5-year inflation expectation embedded here is one of the Fed's favorite anchors. If it un-anchors above 3%, the Fed gets hawkish.",
+      "frequency": "Aylık (ön rapor ay ortası, nihai rapor ay sonu)",
+      "definition": "Michigan Üniversitesi tarafından yapılan tüketici tutumları anketi. 1 yıl ve 5 yıl enflasyon beklentilerini içerir — son gösterge Fed tarafından yakından izlenir.",
+      "whyItMatters": "Burada yer alan 5 yıl enflasyon beklentisi, Fed'in en sevdiği sabitlemelerinden biridir. Eğer %3'ün üzerine çıkarsa, Fed sıkılaştırıcı bir tutum alır.",
       "marketReaction": {
-        "higher": "Higher inflation expectations: USD up, stocks down, bond yields rise.",
-        "lower": "Lower inflation expectations: USD down, stocks rally, yields fall."
+        "higher": "Yüksek enflasyon beklentileri: USD yükselir, hisseler düşer, tahvil getirileri yükselir.",
+        "lower": "Düşük enflasyon beklentileri: USD düşer, hisseler yükselir, getirileri düşer."
       },
       "watchedAssets": [
         "DXY",
@@ -394,16 +394,16 @@
     },
     {
       "id": "building-permits",
-      "name": "Building Permits",
+      "name": "İnşaat İzinleri",
       "abbreviation": "Permits",
       "category": "housing",
       "country": "US",
-      "frequency": "Monthly, around the 17th",
-      "definition": "Number of new residential construction permits issued. A leading indicator of housing starts.",
-      "whyItMatters": "Permits today become construction in 1-3 months. Tracks the housing market's trajectory.",
+      "frequency": "Aylık, yaklaşık 17. günü",
+      "definition": "Verilen yeni konut inşaat izinlerinin sayısı. Konut başlangıçlarının öncü göstergesi.",
+      "whyItMatters": "Bugünkü izinler 1-3 ay içinde inşaata dönüşür. Konut pazarının yönünü izler.",
       "marketReaction": {
-        "higher": "More permits: housing strong, USD up modestly, homebuilder stocks rally.",
-        "lower": "Fewer permits: housing weak, homebuilder stocks fall."
+        "higher": "Daha fazla izin: konut piyasası güçlü, USD hafifçe yükselir, ev inşaatçısı hisse senetleri yükselir.",
+        "lower": "Daha az izin: konut piyasası zayıf, ev inşaatçısı hisse senetleri düşer."
       },
       "watchedAssets": [
         "XHB",
@@ -412,16 +412,16 @@
     },
     {
       "id": "existing-home-sales",
-      "name": "Existing Home Sales",
+      "name": "Mevcut Ev Satışları",
       "abbreviation": "EHS",
       "category": "housing",
       "country": "US",
-      "frequency": "Monthly, around the 20th",
-      "definition": "Annualized rate of existing-home sale closings (completed transactions, not pending).",
-      "whyItMatters": "Largest part of the US housing market. Reflects mortgage-rate sensitivity — rises when rates fall.",
+      "frequency": "Aylık, ayın 20. günü civarında",
+      "definition": "Tamamlanan mevcut ev satışlarının (beklemede olan değil, nihai işlemler) yıllıklandırılmış oranı.",
+      "whyItMatters": "ABD konut pazarının en geniş bölümü. İpotek oranlarına duyarlılığı yansıtır — oranlar düştüğünde artar.",
       "marketReaction": {
-        "higher": "Strong sales: housing recovering, homebuilder stocks rally.",
-        "lower": "Weak sales: housing slumping, homebuilder stocks fall."
+        "higher": "Güçlü satışlar: konut piyasası toparlanıyor, inşaat şirketi hisseleri yükseliyor.",
+        "lower": "Zayıf satışlar: konut piyasası durgunlaşıyor, inşaat şirketi hisseleri düşüyor."
       },
       "watchedAssets": [
         "XHB",
@@ -430,16 +430,16 @@
     },
     {
       "id": "trade-balance",
-      "name": "Trade Balance",
+      "name": "Ticaret Dengesi",
       "abbreviation": "Trade",
       "category": "trade",
       "country": "US",
-      "frequency": "Monthly, around the 5th",
-      "definition": "Difference between exports and imports. The US runs a persistent trade deficit (imports > exports).",
-      "whyItMatters": "Tracks competitiveness and demand for the dollar. A widening deficit can pressure USD long-term.",
+      "frequency": "Aylık, ayın 5'i civarında",
+      "definition": "İhracat ve ithalatın farkı. ABD kalıcı bir ticaret açığı yürütür (ithalatlar > ihracatlar).",
+      "whyItMatters": "Rekabet gücünü ve dolar talebini takip eder. Genişleyen açık uzun vadede dolar üzerinde baskı oluşturabilir.",
       "marketReaction": {
-        "higher": "Smaller deficit / larger surplus: USD up modestly, stocks neutral.",
-        "lower": "Larger deficit: USD down modestly, stocks neutral."
+        "higher": "Daha küçük açık / daha büyük fazla: Dolar hafifçe yükselir, hisse senetleri nötr.",
+        "lower": "Daha büyük açık: Dolar hafifçe düşer, hisse senetleri nötr."
       },
       "watchedAssets": [
         "DXY"
@@ -447,16 +447,16 @@
     },
     {
       "id": "durable-goods-orders",
-      "name": "Durable Goods Orders",
+      "name": "Dayanıklı Mal Siparişleri",
       "abbreviation": "Durables",
       "category": "manufacturing",
       "country": "US",
-      "frequency": "Monthly, around the 27th",
-      "definition": "New orders for items expected to last 3+ years (cars, appliances, machinery, aircraft). Often quoted ex-transportation to remove aircraft volatility.",
-      "whyItMatters": "Leading indicator of business investment. Rising orders = expansion; falling = recession risk.",
+      "frequency": "Aylık, ayın 27'si civarında",
+      "definition": "3 yıldan fazla süre kullanılması beklenen ürünlere yönelik yeni siparişler (otomobil, beyaz eşya, makine, uçak). Uçak oynaklığını ortadan kaldırmak için çoğunlukla ulaştırma hariç olarak açıklanır.",
+      "whyItMatters": "İşletme yatırımının öncü göstergesi. Artan siparişler = genişleme; düşen = durgunluk riski.",
       "marketReaction": {
-        "higher": "Strong durables: USD up, stocks rally on growth.",
-        "lower": "Weak durables: USD down, stocks may fall, recession concerns rise."
+        "higher": "Güçlü dayanıklı mallar: USD yükseliş, hisse senetleri büyümeyle yükseliş.",
+        "lower": "Zayıf dayanıklı mallar: USD düşüş, hisse senetleri düşebilir, durgunluk endişeleri artar."
       },
       "watchedAssets": [
         "DXY",
@@ -466,16 +466,16 @@
     },
     {
       "id": "manufacturing-pmi-flash",
-      "name": "Manufacturing PMI Flash",
+      "name": "İmalat PMI Flash",
       "abbreviation": "Mfg PMI Flash",
       "category": "manufacturing",
       "country": "GLOBAL",
-      "frequency": "Monthly, ~22nd of the month",
-      "definition": "S&P Global's preliminary manufacturing survey for major economies (US, EU, UK, Japan). Released ~10 days before final.",
-      "whyItMatters": "First glimpse of manufacturing trends each month. 50 separates expansion from contraction.",
+      "frequency": "Aylık, ayın ~22. günü",
+      "definition": "S&P Global'ın major ekonomiler (ABD, AB, İngiltere, Japonya) için yayınladığı ön imalat anketi. Final veriden ~10 gün önce açıklanır.",
+      "whyItMatters": "Ay içinde imalat trendlerinin ilk göstergesi. 50, genişlemeden daralma ayrımını belirler.",
       "marketReaction": {
-        "higher": "Above 50 expanding: local currency up, local stocks rally.",
-        "lower": "Below 50 contracting: local currency down, local stocks may fall."
+        "higher": "50 üzerinde genişleme: yerel para birimi yükselir, yerel hisse senetleri rallı yapar.",
+        "lower": "50 altında daralma: yerel para birimi düşer, yerel hisse senetleri düşebilir."
       },
       "watchedAssets": [
         "DXY",
@@ -485,16 +485,16 @@
     },
     {
       "id": "composite-pmi-flash",
-      "name": "Composite PMI Flash",
+      "name": "Bileşik PMI Flash",
       "abbreviation": "Comp PMI",
       "category": "manufacturing",
       "country": "GLOBAL",
-      "frequency": "Monthly, with Manufacturing PMI Flash",
-      "definition": "Combined manufacturing + services PMI, weighted by sector size. Best single read on overall economic momentum.",
-      "whyItMatters": "Single number summarizing the whole economy's trajectory. Sustained readings below 48 signal recession risk.",
+      "frequency": "Aylık, İmalat PMI Flash ile birlikte",
+      "definition": "İmalat + hizmetler PMI'ının sektör büyüklüğüne göre ağırlıklandırılmış birleşimi. Genel ekonomik momentum hakkında en iyi tek gösterge.",
+      "whyItMatters": "Tüm ekonominin yörüngesini özetleyen tek sayı. 48'in altında süregelen okumalar resesyon riskini işaret eder.",
       "marketReaction": {
-        "higher": "Above 50: local currency up, stocks rally.",
-        "lower": "Below 50: local currency down, stocks fall, rate-cut hopes rise."
+        "higher": "50'nin üstü: yerel para değer kazanır, hisse senetleri yükselir.",
+        "lower": "50'nin altı: yerel para değer kaybeder, hisse senetleri düşer, faiz indirimi beklentileri artar."
       },
       "watchedAssets": [
         "DXY",
@@ -504,16 +504,16 @@
     },
     {
       "id": "zew-economic-sentiment",
-      "name": "ZEW Economic Sentiment",
+      "name": "ZEW Ekonomik Duyarlılığı",
       "abbreviation": "ZEW",
       "category": "sentiment",
       "country": "DE",
-      "frequency": "Monthly, mid-month",
-      "definition": "Survey of ~350 financial analysts about Germany's expected economic conditions over the next 6 months.",
-      "whyItMatters": "Germany is the Eurozone's largest economy. ZEW is a leading indicator of Eurozone GDP and a key driver of EUR.",
+      "frequency": "Aylık, ayın ortasında",
+      "definition": "Almanya'nın önümüzdeki 6 ay içindeki beklenen ekonomik koşulları hakkında ~350 finansal analistin katıldığı anket.",
+      "whyItMatters": "Almanya, Avro Bölgesi'nin en büyük ekonomisidir. ZEW, Avro Bölgesi GSYİH'sinin öncü bir göstergesidir ve EUR'nin ana itici gücüdür.",
       "marketReaction": {
-        "higher": "Higher ZEW: EUR strengthens, DAX rallies.",
-        "lower": "Lower ZEW: EUR weakens, DAX falls."
+        "higher": "Daha yüksek ZEW: EUR güçlenir, DAX yükselir.",
+        "lower": "Daha düşük ZEW: EUR zayıflar, DAX düşer."
       },
       "watchedAssets": [
         "EURUSD",
@@ -522,16 +522,16 @@
     },
     {
       "id": "ifo-business-climate",
-      "name": "Ifo Business Climate",
+      "name": "Ifo İş Kliması",
       "abbreviation": "Ifo",
       "category": "sentiment",
       "country": "DE",
-      "frequency": "Monthly, last week",
-      "definition": "Survey of ~9000 German firms about current conditions and expectations for the next 6 months.",
-      "whyItMatters": "Tracks the actual business pulse of Germany — broader than ZEW which surveys analysts. Strong predictor of German GDP.",
+      "frequency": "Aylık, son hafta",
+      "definition": "Almanya'daki ~9000 firmaya mevcut koşullar ve sonraki 6 ay için beklentileri sorgulaması.",
+      "whyItMatters": "Almanya'nın gerçek iş nabzını takip eder — analisleri sorgulayan ZEW'den daha geniştir. Alman GSYİH'nin güçlü öngörücüsü.",
       "marketReaction": {
-        "higher": "Stronger Ifo: EUR strengthens, DAX rallies.",
-        "lower": "Weaker Ifo: EUR weakens, DAX falls."
+        "higher": "Güçlü Ifo: EUR güçlenir, DAX yükselir.",
+        "lower": "Zayıf Ifo: EUR zayıflar, DAX düşer."
       },
       "watchedAssets": [
         "EURUSD",
@@ -540,16 +540,16 @@
     },
     {
       "id": "china-manufacturing-pmi",
-      "name": "China Manufacturing PMI",
+      "name": "Çin İmalat PMI",
       "abbreviation": "China PMI",
       "category": "manufacturing",
       "country": "CN",
-      "frequency": "Monthly, end of month (official) and start of month (Caixin)",
-      "definition": "Two versions: official NBS PMI (large state-owned firms) and Caixin PMI (smaller private firms). Both release the same metric: 50 = expansion threshold.",
-      "whyItMatters": "China is the world's factory and largest commodities consumer. Strong China PMI lifts copper, oil, iron ore, and AUD/NZD.",
+      "frequency": "Aylık, ayın sonunda (resmi) ve ayın başında (Caixin)",
+      "definition": "İki versiyon: resmi NBS PMI (büyük devlet işletmeleri) ve Caixin PMI (daha küçük özel firmalar). Her ikisi de aynı metriği yayınlar: 50 = genişleme eşiği.",
+      "whyItMatters": "Çin dünyanın fabrikası ve en büyük emtia tüketicisidir. Güçlü Çin PMI'ı bakır, petrol, demir cevheri ve AUD/NZD'yi yükseltir.",
       "marketReaction": {
-        "higher": "Above 50: AUD/NZD strengthen, copper/oil rally, China-exposed stocks rally.",
-        "lower": "Below 50: AUD/NZD weaken, commodities fall, recession fears."
+        "higher": "50 üzerinde: AUD/NZD güçlenir, bakır/petrol yükselir, Çin'e bağlı hisseler yükselir.",
+        "lower": "50 altında: AUD/NZD zayıflar, emtialar düşer, resesyon endişeleri."
       },
       "watchedAssets": [
         "AUDUSD",
@@ -560,16 +560,16 @@
     },
     {
       "id": "rba-rate-decision",
-      "name": "RBA Interest Rate Decision",
+      "name": "RBA Faiz Oranı Kararı",
       "abbreviation": "RBA",
       "category": "central-bank",
       "country": "AU",
-      "frequency": "8 times per year (first Tuesday of most months)",
-      "definition": "Reserve Bank of Australia sets the cash rate. Australia is highly sensitive to commodity prices and China demand.",
-      "whyItMatters": "Drives AUD and Australian bond yields. AUD is also a proxy for risk sentiment and China exposure.",
+      "frequency": "Yılda 8 kez (çoğu ayın ilk Salısı)",
+      "definition": "Avustralya Rezerv Bankası nakit oranını belirler. Avustralya emtia fiyatlarına ve Çin talebine oldukça duyarlıdır.",
+      "whyItMatters": "AUD ve Avustralya tahvil getirilerini yönlendirir. AUD aynı zamanda risk duyarlılığı ve Çin maruziyetinin bir göstergesidir.",
       "marketReaction": {
-        "higher": "Hawkish: AUD up, ASX falls, AGB yields rise.",
-        "lower": "Dovish: AUD down, ASX rallies, yields fall."
+        "higher": "Hawkish: AUD yükselir, ASX düşer, AGB getirileri yükselir.",
+        "lower": "Dovish: AUD düşer, ASX rallisi, getiriler düşer."
       },
       "watchedAssets": [
         "AUDUSD",

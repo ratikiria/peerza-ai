@@ -1,19 +1,19 @@
 {
   "language": "ru",
-  "generatedAt": "2026-04-28",
+  "generatedAt": "2026-09-29",
   "entries": [
     {
       "id": "fed-rate-decision",
-      "name": "Fed Interest Rate Decision",
+      "name": "Решение ФРС об уровне процентной ставки",
       "abbreviation": "FOMC",
       "category": "central-bank",
       "country": "US",
-      "frequency": "8 times per year (every ~6 weeks)",
-      "definition": "The Federal Reserve's Federal Open Market Committee (FOMC) sets the target range for the federal funds rate — the overnight rate banks charge each other. This is the most important interest rate in global finance.",
-      "whyItMatters": "It directly affects mortgage rates, business borrowing, the dollar's strength, and the discount rate used to value every stock on Earth. A surprise hike or cut can move every market within seconds.",
+      "frequency": "8 раз в год (примерно каждые 6 недель)",
+      "definition": "Федеральный комитет открытого рынка (FOMC) Федеральной резервной системы устанавливает целевой диапазон для ставки по федеральным фондам — ночной ставки, под которую банки кредитуют друг друга. Это самая важная процентная ставка в мировых финансах.",
+      "whyItMatters": "Она напрямую влияет на ставки по ипотеке, стоимость заимствований для бизнеса, силу доллара и коэффициент дисконтирования, используемый для оценки каждой акции в мире. Неожиданное повышение или снижение может сдвинуть все рынки в течение секунд.",
       "marketReaction": {
-        "higher": "Surprise hike: USD strengthens, stocks fall (especially growth/tech), bond yields rise, gold typically dips.",
-        "lower": "Surprise cut or dovish hold: USD weakens, stocks rally, bond prices rise, gold strengthens."
+        "higher": "Неожиданное повышение: доллар укрепляется, акции падают (особенно growth/tech), доходность облигаций растет, золото обычно падает.",
+        "lower": "Неожиданное снижение или голубиная позиция на удержании: доллар ослабевает, акции растут, цены облигаций повышаются, золото укрепляется."
       },
       "watchedAssets": [
         "DXY",
@@ -26,16 +26,16 @@
     },
     {
       "id": "fomc-press-conference",
-      "name": "FOMC Press Conference",
+      "name": "Пресс-конференция FOMC",
       "abbreviation": "FOMC PC",
       "category": "central-bank",
       "country": "US",
-      "frequency": "Follows each FOMC meeting (8x/year)",
-      "definition": "30 minutes after the rate decision, the Fed Chair takes questions from reporters. The tone — hawkish (favoring tighter policy) or dovish (favoring easier policy) — often moves markets more than the rate decision itself.",
-      "whyItMatters": "Markets parse every word for hints about the next meeting. A single phrase ('we are not even thinking about thinking about raising rates') can re-rate trillions of dollars in assets.",
+      "frequency": "После каждого заседания FOMC (8 раз в год)",
+      "definition": "Через 30 минут после объявления решения по ставке председатель ФРС отвечает на вопросы журналистов. Тон высказываний — ястребиный (в пользу ужесточения политики) или голубиный (в пользу смягчения политики) — часто движет рынками сильнее самого решения по ставке.",
+      "whyItMatters": "Рынки разбирают каждое слово в поисках намеков на следующее заседание. Одна фраза ('мы даже не думаем о том, чтобы думать о повышении ставок') может переоценить триллионы долларов активов.",
       "marketReaction": {
-        "higher": "Hawkish tone (signals more hikes): USD up, stocks down, yields rise.",
-        "lower": "Dovish tone (signals cuts or pause): USD down, stocks rally, yields fall."
+        "higher": "Ястребиный тон (сигнализирует о большем количестве повышений): доллар растет, акции падают, доходности повышаются.",
+        "lower": "Голубиный тон (сигнализирует о снижениях или паузе): доллар падает, акции растут, доходности снижаются."
       },
       "watchedAssets": [
         "DXY",
@@ -46,16 +46,16 @@
     },
     {
       "id": "fomc-minutes",
-      "name": "FOMC Meeting Minutes",
+      "name": "Протоколы заседания FOMC",
       "abbreviation": "FOMC Minutes",
       "category": "central-bank",
       "country": "US",
-      "frequency": "3 weeks after each FOMC meeting",
-      "definition": "Detailed summary of the discussion at the most recent FOMC meeting. Reveals the range of views among the 12 voting members and any dissent.",
-      "whyItMatters": "Sometimes contradicts the public statement and shows where the committee is split. Surprises about hawkish or dovish dissent can shift rate-cut expectations.",
+      "frequency": "3 недели после каждого заседания FOMC",
+      "definition": "Детальное резюме обсуждения на последнем заседании FOMC. Раскрывает спектр мнений среди 12 голосующих членов и любые разногласия.",
+      "whyItMatters": "Иногда противоречит публичному заявлению и показывает, где комитет разделен. Неожиданности по поводу ястребиных или голубиных разногласий могут сдвинуть ожидания по снижению ставок.",
       "marketReaction": {
-        "higher": "Hawkish minutes (members worried about inflation): USD up, stocks dip, yields rise.",
-        "lower": "Dovish minutes (members worried about growth): USD down, stocks rally, yields fall."
+        "higher": "Ястребиные протоколы (члены обеспокоены инфляцией): USD растет, акции падают, доходность растет.",
+        "lower": "Голубиные протоколы (члены обеспокоены ростом): USD падает, акции растут, доходность падает."
       },
       "watchedAssets": [
         "DXY",
@@ -65,16 +65,16 @@
     },
     {
       "id": "ecb-rate-decision",
-      "name": "ECB Interest Rate Decision",
+      "name": "Решение ЕЦБ по процентным ставкам",
       "abbreviation": "ECB",
       "category": "central-bank",
       "country": "EU",
-      "frequency": "8 times per year",
-      "definition": "The European Central Bank sets the deposit rate, main refinancing rate, and marginal lending facility rate for the 20-country Eurozone.",
-      "whyItMatters": "Sets monetary policy for the world's second-largest currency bloc. Drives EUR/USD, European bond yields, and the Euro Stoxx index.",
+      "frequency": "8 раз в год",
+      "definition": "Европейский центральный банк устанавливает ставку по депозитам, основную ставку рефинансирования и ставку по маржинальному кредитованию для Еврозоны из 20 стран.",
+      "whyItMatters": "Определяет денежно-кредитную политику второго по величине валютного блока в мире. Влияет на EUR/USD, доходность европейских облигаций и индекс Euro Stoxx.",
       "marketReaction": {
-        "higher": "Hawkish surprise: EUR strengthens, European stocks fall, bund yields rise.",
-        "lower": "Dovish surprise: EUR weakens, European stocks rally, bund yields fall."
+        "higher": "Ястребиный сюрприз: укрепление евро, падение европейских акций, рост доходности бундов.",
+        "lower": "Голубиный сюрприз: ослабление евро, рост европейских акций, снижение доходности бундов."
       },
       "watchedAssets": [
         "EURUSD",
@@ -85,16 +85,16 @@
     },
     {
       "id": "boe-rate-decision",
-      "name": "BoE Interest Rate Decision",
+      "name": "Решение Банка Англии по процентной ставке",
       "abbreviation": "BoE",
       "category": "central-bank",
       "country": "GB",
-      "frequency": "8 times per year",
-      "definition": "The Bank of England's Monetary Policy Committee (MPC) sets the Bank Rate. Voting splits among the 9 members are watched closely.",
-      "whyItMatters": "Drives GBP and UK bond yields. The MPC vote breakdown often signals the next move — a 5-4 vote vs. unanimous matters.",
+      "frequency": "8 раз в год",
+      "definition": "Комитет по денежно-кредитной политике (MPC) Банка Англии устанавливает базовую ставку. Внимательно отслеживаются результаты голосования среди 9 членов комитета.",
+      "whyItMatters": "Определяет курс GBP и доходность британских облигаций. Структура голосования MPC часто сигнализирует о следующем шаге — голос 5-4 против единогласия имеет значение.",
       "marketReaction": {
-        "higher": "Hawkish: GBP strengthens, UK stocks dip, gilt yields rise.",
-        "lower": "Dovish: GBP weakens, UK stocks rally, gilt yields fall."
+        "higher": "Ястребиный сценарий: укрепление GBP, падение британских акций, рост доходности гилтов.",
+        "lower": "Голубиный сценарий: ослабление GBP, рост британских акций, падение доходности гилтов."
       },
       "watchedAssets": [
         "GBPUSD",
@@ -105,16 +105,16 @@
     },
     {
       "id": "boj-rate-decision",
-      "name": "BoJ Interest Rate Decision",
+      "name": "Решение Банка Японии по процентной ставке",
       "abbreviation": "BoJ",
       "category": "central-bank",
       "country": "JP",
-      "frequency": "8 times per year",
-      "definition": "The Bank of Japan sets short-term policy rates and has used yield curve control on 10-year JGB yields. Japan's policy is unique because rates were negative or zero for years.",
-      "whyItMatters": "Any shift away from ultra-loose policy moves the yen sharply and ripples through global carry trades.",
+      "frequency": "8 раз в год",
+      "definition": "Банк Японии устанавливает краткосрочные ставки политики и использует контроль кривой доходности по 10-летним облигациям (JGB). Политика Японии уникальна, так как ставки были отрицательными или нулевыми в течение многих лет.",
+      "whyItMatters": "Любой отход от сверхмягкой политики вызывает резкое движение иены и создает волновой эффект на глобальные carry-trade операции.",
       "marketReaction": {
-        "higher": "Hawkish surprise (rare): JPY strengthens sharply, Nikkei falls, JGB yields rise.",
-        "lower": "Continued dovish stance: JPY weakens, Nikkei rallies."
+        "higher": "Ястребиный сюрприз (редко): иена укрепляется резко, индекс Nikkei падает, доходность JGB растет.",
+        "lower": "Продолжение голубиной позиции: иена ослабляется, индекс Nikkei растет."
       },
       "watchedAssets": [
         "USDJPY",
@@ -124,16 +124,16 @@
     },
     {
       "id": "non-farm-payrolls",
-      "name": "Non-Farm Payrolls",
+      "name": "Непроизводственные Рабочие Места",
       "abbreviation": "NFP",
       "category": "employment",
       "country": "US",
-      "frequency": "Monthly, first Friday at 8:30 AM ET",
-      "definition": "The monthly count of jobs added or lost in the US economy, excluding farm workers, government employees, private household staff, and non-profits.",
-      "whyItMatters": "The most-watched US labor market report. The Fed uses it to gauge economic strength and decide on rates. Massive volatility in the 5 minutes after the release.",
+      "frequency": "Ежемесячно, первая пятница в 8:30 AM ET",
+      "definition": "Ежемесячный подсчёт созданных или потерянных рабочих мест в экономике США, за исключением сельскохозяйственных рабочих, государственных служащих, домашнего персонала и некоммерческих организаций.",
+      "whyItMatters": "Самый ожидаемый отчёт о рынке труда США. ФРС использует его для оценки экономической силы и принятия решений по ставкам. Огромная волатильность в течение 5 минут после выпуска данных.",
       "marketReaction": {
-        "higher": "Stronger than expected: USD typically strengthens (Fed may stay hawkish), stocks reaction depends on context — strong economy is good but rate-hike fears can dominate.",
-        "lower": "Weaker than expected: USD weakens (Fed may cut), stocks often rally on rate-cut hopes, gold strengthens."
+        "higher": "Выше ожиданий: доллар обычно укрепляется (ФРС может остаться ястребиной), реакция акций зависит от контекста — сильная экономика позитивна, но опасения по поводу повышения ставок могут доминировать.",
+        "lower": "Ниже ожиданий: доллар ослабляется (ФРС может снизить ставки), акции часто растут из-за надежд на снижение ставок, золото укрепляется."
       },
       "watchedAssets": [
         "DXY",
@@ -145,16 +145,16 @@
     },
     {
       "id": "unemployment-rate",
-      "name": "Unemployment Rate",
+      "name": "Уровень безработицы",
       "abbreviation": "U-3",
       "category": "employment",
       "country": "US",
-      "frequency": "Monthly, released with NFP",
-      "definition": "Percentage of the labor force actively seeking work. Released alongside Non-Farm Payrolls.",
-      "whyItMatters": "Half of the Fed's dual mandate is 'maximum employment.' The Fed eyes 3.5–4.5% as roughly full employment in the US.",
+      "frequency": "Ежемесячно, опубликовано вместе с NFP",
+      "definition": "Процент рабочей силы, активно ищущей работу. Опубликовано вместе с данными о несельскохозяйственной занятости (Non-Farm Payrolls).",
+      "whyItMatters": "Половина двойного мандата ФРС — это «максимальная занятость». ФРС рассматривает 3,5–4,5% как примерно полную занятость в США.",
       "marketReaction": {
-        "higher": "Higher unemployment: USD weakens, stocks may rally on rate-cut hopes, bond yields fall.",
-        "lower": "Lower unemployment: USD strengthens (tight labor market = inflationary), bond yields rise."
+        "higher": "Более высокая безработица: доллар слабеет, акции могут расти на надеждах на снижение ставок, доходность облигаций падает.",
+        "lower": "Более низкая безработица: доллар укрепляется (напряженный рынок труда = инфляционное давление), доходность облигаций растет."
       },
       "watchedAssets": [
         "DXY",
@@ -164,16 +164,16 @@
     },
     {
       "id": "initial-jobless-claims",
-      "name": "Initial Jobless Claims",
+      "name": "Начальные заявки на пособие по безработице",
       "abbreviation": "Claims",
       "category": "employment",
       "country": "US",
-      "frequency": "Weekly, every Thursday",
-      "definition": "Number of Americans filing for unemployment benefits for the first time in the past week.",
-      "whyItMatters": "The most timely labor market indicator — only one week stale. A sustained rise above ~250K signals labor market weakness.",
+      "frequency": "Еженедельно, каждый четверг",
+      "definition": "Количество американцев, подавших заявку на пособие по безработице впервые за прошедшую неделю.",
+      "whyItMatters": "Самый актуальный индикатор рынка труда — отстает всего на одну неделю. Устойчивый рост выше ~250K сигнализирует об ослаблении рынка труда.",
       "marketReaction": {
-        "higher": "Higher claims: USD weakens slightly, stocks may rally on rate-cut hopes.",
-        "lower": "Lower claims: USD strengthens slightly, signals tight labor market."
+        "higher": "Рост заявок: доллар слабеет незначительно, акции могут расти в надежде на снижение ставок.",
+        "lower": "Снижение заявок: доллар укрепляется незначительно, свидетельствует о напряженности на рынке труда."
       },
       "watchedAssets": [
         "DXY",
@@ -182,16 +182,16 @@
     },
     {
       "id": "average-hourly-earnings",
-      "name": "Average Hourly Earnings",
+      "name": "Средний почасовой заработок",
       "abbreviation": "AHE",
       "category": "employment",
       "country": "US",
-      "frequency": "Monthly, released with NFP",
-      "definition": "Year-over-year change in average hourly wages for private-sector workers. A leading indicator of consumer inflation.",
-      "whyItMatters": "Wage growth feeds directly into services inflation. The Fed watches this closely — wages rising faster than productivity is a red flag.",
+      "frequency": "Ежемесячно, опубликовано вместе с NFP",
+      "definition": "Годовое изменение среднего почасового заработка работников частного сектора. Опережающий индикатор инфляции потребителей.",
+      "whyItMatters": "Рост заработной платы напрямую влияет на инфляцию услуг. ФРС внимательно следит за этим — рост зарплаты быстрее роста производительности — это тревожный сигнал.",
       "marketReaction": {
-        "higher": "Stronger wages: USD up (Fed stays hawkish), stocks down (rate fears), bond yields rise.",
-        "lower": "Weaker wages: USD down, stocks rally, bond yields fall."
+        "higher": "Более сильная заработная плата: доллар растет (ФРС остается жесткой), акции падают (риск повышения ставок), доходность облигаций растет.",
+        "lower": "Более слабая заработная плата: доллар падает, акции растут, доходность облигаций падает."
       },
       "watchedAssets": [
         "DXY",
@@ -201,16 +201,16 @@
     },
     {
       "id": "cpi-yoy",
-      "name": "CPI YoY",
+      "name": "ИПЦ год к году",
       "abbreviation": "CPI",
       "category": "inflation",
       "country": "US",
-      "frequency": "Monthly, around the 12th",
-      "definition": "Year-over-year change in the Consumer Price Index — the cost of a basket of goods and services bought by typical urban households.",
-      "whyItMatters": "Headline inflation. The Fed targets 2% (using PCE, but CPI moves markets more). Above 3% = restrictive policy; below 2% = stimulus likely.",
+      "frequency": "Ежемесячно, примерно 12-го числа",
+      "definition": "Годовое изменение Индекса потребительских цен — стоимость корзины товаров и услуг, покупаемых типичными городскими домохозяйствами.",
+      "whyItMatters": "Основная инфляция. ФРС нацелена на 2% (используя ПСЕ, но ИПЦ сильнее движет рынки). Выше 3% = ужесточение политики; ниже 2% = вероятен стимул.",
       "marketReaction": {
-        "higher": "Hot CPI: USD strengthens (Fed hawkish), stocks fall, bond yields rise, gold mixed.",
-        "lower": "Cool CPI: USD weakens (Fed dovish), stocks rally, bond yields fall."
+        "higher": "Высокий ИПЦ: доллар усиливается (ФРС ястреб), акции падают, доходы облигаций растут, золото смешанная реакция.",
+        "lower": "Низкий ИПЦ: доллар ослабевает (ФРС голубь), акции растут, доходы облигаций падают."
       },
       "watchedAssets": [
         "DXY",
@@ -222,16 +222,16 @@
     },
     {
       "id": "core-cpi",
-      "name": "Core CPI YoY",
+      "name": "Базовый ИПЦ в годовом исчислении",
       "abbreviation": "Core CPI",
       "category": "inflation",
       "country": "US",
-      "frequency": "Monthly, released with CPI",
-      "definition": "CPI excluding volatile food and energy prices. The Fed watches Core more than headline because it shows the underlying trend.",
-      "whyItMatters": "Removes noise from oil shocks and weather. If Core stays sticky while headline falls, the Fed stays hawkish.",
+      "frequency": "Ежемесячно, публикуется вместе с ИПЦ",
+      "definition": "ИПЦ исключая волатильные цены на продукты питания и энергию. ФРС следит за Базовым показателем внимательнее, чем за общим, так как он отражает основную тенденцию.",
+      "whyItMatters": "Исключает шум от скачков цен на нефть и погодных условий. Если Базовый ИПЦ остаётся липким, а общий падает, ФРС остаётся в жёсткой позиции.",
       "marketReaction": {
-        "higher": "Sticky Core CPI: USD up, stocks down, yields up. More important than headline for Fed pricing.",
-        "lower": "Cooling Core CPI: USD down, stocks up, yields down."
+        "higher": "Липкий Базовый ИПЦ: доллар вверх, акции вниз, доходность бумаг вверх. Более важен, чем общий показатель для оценки позиции ФРС.",
+        "lower": "Охлаждение Базового ИПЦ: доллар вниз, акции вверх, доходность бумаг вниз."
       },
       "watchedAssets": [
         "DXY",
@@ -241,16 +241,16 @@
     },
     {
       "id": "core-pce",
-      "name": "Core PCE Price Index YoY",
+      "name": "Индекс цен PCE базовый (без учета продуктов питания и энергии), год к году",
       "abbreviation": "Core PCE",
       "category": "inflation",
       "country": "US",
-      "frequency": "Monthly, last week of the month",
-      "definition": "The Fed's preferred inflation gauge — Personal Consumption Expenditures index excluding food and energy.",
-      "whyItMatters": "This is THE number the Fed targets at 2%. More accurate than CPI for actual consumer behavior because it accounts for substitution.",
+      "frequency": "Ежемесячно, последняя неделя месяца",
+      "definition": "Предпочитаемый Федеральной резервной системой показатель инфляции — индекс личных потребительских расходов (PCE) без учета продуктов питания и энергии.",
+      "whyItMatters": "Это ОСНОВНОЙ показатель, на который ориентируется ФРС — целевой уровень 2%. Более точен, чем ИПЦ для оценки реального поведения потребителей, так как учитывает эффект замещения товаров.",
       "marketReaction": {
-        "higher": "Hot Core PCE: USD up, stocks down, yields up. Confirms Fed hawkish stance.",
-        "lower": "Cool Core PCE: USD down, stocks rally, yields down. Validates rate-cut hopes."
+        "higher": "Высокий Core PCE: доллар растет, акции падают, доходности облигаций растут. Подтверждает ястребиную позицию ФРС.",
+        "lower": "Низкий Core PCE: доллар падает, акции растут, доходности облигаций падают. Подтверждает надежды на снижение ставок."
       },
       "watchedAssets": [
         "DXY",
@@ -261,16 +261,16 @@
     },
     {
       "id": "ppi",
-      "name": "Producer Price Index",
+      "name": "Индекс цен производителей",
       "abbreviation": "PPI",
       "category": "inflation",
       "country": "US",
-      "frequency": "Monthly, day before CPI",
-      "definition": "Wholesale prices charged by producers — a leading indicator of consumer inflation 1-3 months ahead.",
-      "whyItMatters": "If producer prices are rising fast, those costs eventually pass to consumers. Markets use it to handicap the next CPI.",
+      "frequency": "Ежемесячно, день перед CPI",
+      "definition": "Оптовые цены, установленные производителями — опережающий индикатор потребительской инфляции на 1–3 месяца вперед.",
+      "whyItMatters": "Если цены производителей растут быстро, эти издержки в итоге передаются потребителям. Рынки используют этот показатель для прогноза следующего CPI.",
       "marketReaction": {
-        "higher": "Hot PPI: previews hot CPI — USD up, stocks down, yields up.",
-        "lower": "Cool PPI: previews cool CPI — USD down, stocks up, yields down."
+        "higher": "Высокий PPI: предвещает высокий CPI — доллар вверх, акции вниз, доходность вверх.",
+        "lower": "Низкий PPI: предвещает низкий CPI — доллар вниз, акции вверх, доходность вниз."
       },
       "watchedAssets": [
         "DXY",
@@ -280,16 +280,16 @@
     },
     {
       "id": "gdp-qoq",
-      "name": "GDP QoQ",
+      "name": "ВВП за квартал",
       "abbreviation": "GDP",
       "category": "growth",
       "country": "US",
-      "frequency": "Quarterly (advance, second, final estimates)",
-      "definition": "Quarter-over-quarter change in Gross Domestic Product, annualized. The broadest measure of economic activity.",
-      "whyItMatters": "Defines whether the economy is in recession (two consecutive negative quarters) or expanding. Less market-moving than higher-frequency data because it's released months after the quarter ends.",
+      "frequency": "Квартально (предварительная, вторая и финальная оценки)",
+      "definition": "Квартальное изменение валового внутреннего продукта в годовом исчислении. Самый широкий показатель экономической активности.",
+      "whyItMatters": "Определяет, находится ли экономика в рецессии (два последовательных квартала с отрицательным ростом) или развивается. Менее волатилен, чем данные более высокой частоты, так как публикуется через месяцы после окончания квартала.",
       "marketReaction": {
-        "higher": "Strong GDP: USD up, stocks may rally on growth, bond yields rise.",
-        "lower": "Weak GDP: USD down, stocks may fall on recession fears OR rally on rate-cut hopes — depends on context."
+        "higher": "Сильный ВВП: доллар растёт, акции могут взлететь на волне роста, доходность облигаций повышается.",
+        "lower": "Слабый ВВП: доллар падает, акции могут упасть из-за опасений рецессии ИЛИ вырасти в надежде на снижение ставок — зависит от контекста."
       },
       "watchedAssets": [
         "DXY",
@@ -299,16 +299,16 @@
     },
     {
       "id": "retail-sales",
-      "name": "Retail Sales MoM",
+      "name": "Розничные продажи МоМ",
       "abbreviation": "Retail Sales",
       "category": "consumer",
       "country": "US",
-      "frequency": "Monthly, around the 15th",
-      "definition": "Month-over-month change in total sales at retail and food service establishments. Measures consumer spending — ~70% of US GDP.",
-      "whyItMatters": "Consumer spending is the engine of the US economy. Strong retail sales = strong economy = Fed stays hawkish.",
+      "frequency": "Ежемесячно, около 15-го числа",
+      "definition": "Месячное изменение общего объёма продаж в розничной торговле и сфере услуг питания. Измеряет потребительские расходы — ~70% ВВП США.",
+      "whyItMatters": "Потребительские расходы — двигатель экономики США. Сильные розничные продажи = сильная экономика = ФРС остаётся жёсткой.",
       "marketReaction": {
-        "higher": "Strong retail sales: USD up, stocks may rally on growth, bond yields rise.",
-        "lower": "Weak retail sales: USD down, stocks fall on recession fears, bond yields fall."
+        "higher": "Сильные розничные продажи: доллар растёт, акции могут подняться на росте экономики, доходность облигаций увеличивается.",
+        "lower": "Слабые розничные продажи: доллар падает, акции падают на страхах рецессии, доходность облигаций снижается."
       },
       "watchedAssets": [
         "DXY",
@@ -318,16 +318,16 @@
     },
     {
       "id": "ism-manufacturing-pmi",
-      "name": "ISM Manufacturing PMI",
+      "name": "PMI производства ISM",
       "abbreviation": "ISM Mfg",
       "category": "manufacturing",
       "country": "US",
-      "frequency": "Monthly, first business day",
-      "definition": "Survey of US manufacturing executives. A reading above 50 indicates expansion; below 50 indicates contraction.",
-      "whyItMatters": "Leading indicator of manufacturing health. Sustained readings below 48 historically precede recessions.",
+      "frequency": "Ежемесячно, первый рабочий день",
+      "definition": "Опрос руководителей американских производственных предприятий. Показатель выше 50 указывает на расширение; ниже 50 указывает на сокращение.",
+      "whyItMatters": "Опережающий индикатор здоровья производственного сектора. Исторически устойчивые показатели ниже 48 предшествуют рецессиям.",
       "marketReaction": {
-        "higher": "Above 50 expanding: USD up, stocks rally on growth, yields rise.",
-        "lower": "Below 50 contracting: USD down, stocks may fall, yields fall on rate-cut hopes."
+        "higher": "Выше 50 — расширение: USD растёт, акции растут на оптимизме роста, доходность повышается.",
+        "lower": "Ниже 50 — сокращение: USD падает, акции могут упасть, доходность падает на ожиданиях снижения ставок."
       },
       "watchedAssets": [
         "DXY",
@@ -342,12 +342,12 @@
       "abbreviation": "ISM Svc",
       "category": "manufacturing",
       "country": "US",
-      "frequency": "Monthly, third business day",
-      "definition": "Survey of US services-sector executives. Services are ~80% of the US economy, so this matters more than manufacturing PMI.",
-      "whyItMatters": "Services are stickier than manufacturing — strong services PMI means inflation pressure persists.",
+      "frequency": "Ежемесячно, третий рабочий день",
+      "definition": "Опрос руководителей сектора услуг США. Услуги составляют ~80% экономики США, поэтому этот показатель важнее, чем PMI производства.",
+      "whyItMatters": "Сектор услуг более устойчив, чем производство — высокий PMI услуг означает сохранение давления на инфляцию.",
       "marketReaction": {
-        "higher": "Strong services PMI: USD up, stocks rally on growth, bond yields rise.",
-        "lower": "Weak services PMI: USD down, stocks fall, yields fall."
+        "higher": "Высокий PMI услуг: доллар растёт, акции вверх на росте, доходность облигаций повышается.",
+        "lower": "Низкий PMI услуг: доллар падает, акции падают, доходность облигаций снижается."
       },
       "watchedAssets": [
         "DXY",
@@ -357,16 +357,16 @@
     },
     {
       "id": "consumer-confidence",
-      "name": "Consumer Confidence",
+      "name": "Индекс потребительского доверия",
       "abbreviation": "CCI",
       "category": "sentiment",
       "country": "US",
-      "frequency": "Monthly, last Tuesday",
-      "definition": "Survey by the Conference Board measuring how consumers feel about current and future economic conditions.",
-      "whyItMatters": "Confident consumers spend more. A drop signals weaker future retail sales and growth.",
+      "frequency": "Ежемесячно, последний вторник",
+      "definition": "Опрос Конференции советов (Conference Board), измеряющий настроения потребителей относительно текущих и будущих экономических условий.",
+      "whyItMatters": "Уверенные потребители больше тратят. Снижение индекса сигнализирует о ослаблении розничных продаж и экономического роста в будущем.",
       "marketReaction": {
-        "higher": "Higher confidence: USD up modestly, stocks rally on growth optimism.",
-        "lower": "Lower confidence: USD down modestly, stocks may fall on recession fears."
+        "higher": "Рост доверия: доллар укрепляется скромно, акции растут на оптимизме относительно роста.",
+        "lower": "Падение доверия: доллар ослабляется скромно, акции могут упасть из-за опасений рецессии."
       },
       "watchedAssets": [
         "SPY",
@@ -375,16 +375,16 @@
     },
     {
       "id": "michigan-sentiment",
-      "name": "Michigan Consumer Sentiment",
+      "name": "Индекс потребительских настроений Мичигана",
       "abbreviation": "Mich Sentiment",
       "category": "sentiment",
       "country": "US",
-      "frequency": "Monthly (preliminary mid-month, final end-month)",
-      "definition": "University of Michigan survey of consumer attitudes. Includes 1-year and 5-year inflation expectations — the latter is closely watched by the Fed.",
-      "whyItMatters": "The 5-year inflation expectation embedded here is one of the Fed's favorite anchors. If it un-anchors above 3%, the Fed gets hawkish.",
+      "frequency": "Ежемесячно (предварительная оценка в середине месяца, окончательная в конце месяца)",
+      "definition": "Опрос Университета Мичигана о настроениях потребителей. Включает ожидания инфляции на 1 год и на 5 лет — последние внимательно отслеживает ФРС.",
+      "whyItMatters": "Ожидание инфляции на 5 лет, заложенное в этом индексе, — один из основных якорей ФРС. Если оно выйдет из-под контроля выше 3%, ФРС займёт жёсткую позицию.",
       "marketReaction": {
-        "higher": "Higher inflation expectations: USD up, stocks down, bond yields rise.",
-        "lower": "Lower inflation expectations: USD down, stocks rally, yields fall."
+        "higher": "Более высокие ожидания инфляции: доллар растёт, акции падают, доходность облигаций растёт.",
+        "lower": "Более низкие ожидания инфляции: доллар падает, акции растут, доходность облигаций падает."
       },
       "watchedAssets": [
         "DXY",
@@ -394,16 +394,16 @@
     },
     {
       "id": "building-permits",
-      "name": "Building Permits",
+      "name": "Разрешения на строительство",
       "abbreviation": "Permits",
       "category": "housing",
       "country": "US",
-      "frequency": "Monthly, around the 17th",
-      "definition": "Number of new residential construction permits issued. A leading indicator of housing starts.",
-      "whyItMatters": "Permits today become construction in 1-3 months. Tracks the housing market's trajectory.",
+      "frequency": "Ежемесячно, около 17-го числа",
+      "definition": "Количество выданных разрешений на строительство жилых объектов. Опережающий индикатор начала строительства жилья.",
+      "whyItMatters": "Разрешения сегодня становятся строительством через 1-3 месяца. Отслеживает траекторию жилищного рынка.",
       "marketReaction": {
-        "higher": "More permits: housing strong, USD up modestly, homebuilder stocks rally.",
-        "lower": "Fewer permits: housing weak, homebuilder stocks fall."
+        "higher": "Больше разрешений: жилищный сектор силён, доллар растёт скромно, акции строительных компаний взлетают.",
+        "lower": "Меньше разрешений: жилищный сектор слаб, акции строительных компаний падают."
       },
       "watchedAssets": [
         "XHB",
@@ -412,16 +412,16 @@
     },
     {
       "id": "existing-home-sales",
-      "name": "Existing Home Sales",
+      "name": "Продажи существующих жилых домов",
       "abbreviation": "EHS",
       "category": "housing",
       "country": "US",
-      "frequency": "Monthly, around the 20th",
-      "definition": "Annualized rate of existing-home sale closings (completed transactions, not pending).",
-      "whyItMatters": "Largest part of the US housing market. Reflects mortgage-rate sensitivity — rises when rates fall.",
+      "frequency": "Ежемесячно, около 20-го числа",
+      "definition": "Годовой темп завершённых сделок по продаже существующих жилых домов (закрытые сделки, не ожидающие закрытия).",
+      "whyItMatters": "Самая крупная часть рынка жилья в США. Отражает чувствительность к изменениям процентных ставок — растёт при снижении ставок.",
       "marketReaction": {
-        "higher": "Strong sales: housing recovering, homebuilder stocks rally.",
-        "lower": "Weak sales: housing slumping, homebuilder stocks fall."
+        "higher": "Сильные продажи: восстановление жилищного рынка, акции строительных компаний растут.",
+        "lower": "Слабые продажи: спад на жилищном рынке, акции строительных компаний падают."
       },
       "watchedAssets": [
         "XHB",
@@ -430,16 +430,16 @@
     },
     {
       "id": "trade-balance",
-      "name": "Trade Balance",
+      "name": "Торговый баланс",
       "abbreviation": "Trade",
       "category": "trade",
       "country": "US",
-      "frequency": "Monthly, around the 5th",
-      "definition": "Difference between exports and imports. The US runs a persistent trade deficit (imports > exports).",
-      "whyItMatters": "Tracks competitiveness and demand for the dollar. A widening deficit can pressure USD long-term.",
+      "frequency": "Ежемесячно, около 5-го числа",
+      "definition": "Разница между экспортом и импортом. США имеют устойчивый торговый дефицит (импорт > экспорт).",
+      "whyItMatters": "Отслеживает конкурентоспособность и спрос на доллар. Растущий дефицит может оказывать давление на USD в долгосрочной перспективе.",
       "marketReaction": {
-        "higher": "Smaller deficit / larger surplus: USD up modestly, stocks neutral.",
-        "lower": "Larger deficit: USD down modestly, stocks neutral."
+        "higher": "Меньший дефицит / больший профицит: USD растёт скромно, акции нейтральны.",
+        "lower": "Больший дефицит: USD падает скромно, акции нейтральны."
       },
       "watchedAssets": [
         "DXY"
@@ -447,16 +447,16 @@
     },
     {
       "id": "durable-goods-orders",
-      "name": "Durable Goods Orders",
+      "name": "Заказы на товары длительного пользования",
       "abbreviation": "Durables",
       "category": "manufacturing",
       "country": "US",
-      "frequency": "Monthly, around the 27th",
-      "definition": "New orders for items expected to last 3+ years (cars, appliances, machinery, aircraft). Often quoted ex-transportation to remove aircraft volatility.",
-      "whyItMatters": "Leading indicator of business investment. Rising orders = expansion; falling = recession risk.",
+      "frequency": "Ежемесячно, около 27-го числа",
+      "definition": "Новые заказы на товары со сроком службы 3+ года (автомобили, бытовая техника, оборудование, самолёты). Часто приводится без транспорта, чтобы исключить влияние самолётов.",
+      "whyItMatters": "Опережающий индикатор деловых инвестиций. Рост заказов = расширение; снижение = риск рецессии.",
       "marketReaction": {
-        "higher": "Strong durables: USD up, stocks rally on growth.",
-        "lower": "Weak durables: USD down, stocks may fall, recession concerns rise."
+        "higher": "Крепкие данные: доллар растёт, акции выше на фоне роста.",
+        "lower": "Слабые данные: доллар падает, акции могут упасть, растёт беспокойство по рецессии."
       },
       "watchedAssets": [
         "DXY",
@@ -470,12 +470,12 @@
       "abbreviation": "Mfg PMI Flash",
       "category": "manufacturing",
       "country": "GLOBAL",
-      "frequency": "Monthly, ~22nd of the month",
-      "definition": "S&P Global's preliminary manufacturing survey for major economies (US, EU, UK, Japan). Released ~10 days before final.",
-      "whyItMatters": "First glimpse of manufacturing trends each month. 50 separates expansion from contraction.",
+      "frequency": "Ежемесячно, ~22-го числа месяца",
+      "definition": "Предварительное исследование S&P Global в области производства для крупных экономик (США, ЕС, Великобритания, Япония). Публикуется ~10 дней до финального показателя.",
+      "whyItMatters": "Первый взгляд на тенденции в производстве каждый месяц. 50 разделяет расширение от сокращения.",
       "marketReaction": {
-        "higher": "Above 50 expanding: local currency up, local stocks rally.",
-        "lower": "Below 50 contracting: local currency down, local stocks may fall."
+        "higher": "Выше 50 — расширение: национальная валюта растет, акции местного рынка ралли.",
+        "lower": "Ниже 50 — сокращение: национальная валюта падает, акции местного рынка могут снизиться."
       },
       "watchedAssets": [
         "DXY",
@@ -489,12 +489,12 @@
       "abbreviation": "Comp PMI",
       "category": "manufacturing",
       "country": "GLOBAL",
-      "frequency": "Monthly, with Manufacturing PMI Flash",
-      "definition": "Combined manufacturing + services PMI, weighted by sector size. Best single read on overall economic momentum.",
-      "whyItMatters": "Single number summarizing the whole economy's trajectory. Sustained readings below 48 signal recession risk.",
+      "frequency": "Ежемесячно, вместе с Manufacturing PMI Flash",
+      "definition": "Комбинированный индекс производства и услуг, взвешенный по размеру секторов. Лучший единственный показатель общего экономического импульса.",
+      "whyItMatters": "Единое число, суммирующее траекторию всей экономики. Устойчивые значения ниже 48 сигнализируют о риске рецессии.",
       "marketReaction": {
-        "higher": "Above 50: local currency up, stocks rally.",
-        "lower": "Below 50: local currency down, stocks fall, rate-cut hopes rise."
+        "higher": "Выше 50: местная валюта растёт, акции ралли.",
+        "lower": "Ниже 50: местная валюта падает, акции снижаются, надежды на снижение ставок возрастают."
       },
       "watchedAssets": [
         "DXY",
@@ -504,16 +504,16 @@
     },
     {
       "id": "zew-economic-sentiment",
-      "name": "ZEW Economic Sentiment",
+      "name": "Индекс экономических настроений ZEW",
       "abbreviation": "ZEW",
       "category": "sentiment",
       "country": "DE",
-      "frequency": "Monthly, mid-month",
-      "definition": "Survey of ~350 financial analysts about Germany's expected economic conditions over the next 6 months.",
-      "whyItMatters": "Germany is the Eurozone's largest economy. ZEW is a leading indicator of Eurozone GDP and a key driver of EUR.",
+      "frequency": "Ежемесячно, в середине месяца",
+      "definition": "Опрос около 350 финансовых аналитиков об ожидаемых экономических условиях в Германии на следующие 6 месяцев.",
+      "whyItMatters": "Германия — крупнейшая экономика еврозоны. ZEW является опережающим индикатором ВВП еврозоны и ключевым драйвером EUR.",
       "marketReaction": {
-        "higher": "Higher ZEW: EUR strengthens, DAX rallies.",
-        "lower": "Lower ZEW: EUR weakens, DAX falls."
+        "higher": "Повышение ZEW: EUR укрепляется, DAX растёт.",
+        "lower": "Снижение ZEW: EUR ослабляется, DAX падает."
       },
       "watchedAssets": [
         "EURUSD",
@@ -522,16 +522,16 @@
     },
     {
       "id": "ifo-business-climate",
-      "name": "Ifo Business Climate",
+      "name": "Индекс деловой активности Ifo",
       "abbreviation": "Ifo",
       "category": "sentiment",
       "country": "DE",
-      "frequency": "Monthly, last week",
-      "definition": "Survey of ~9000 German firms about current conditions and expectations for the next 6 months.",
-      "whyItMatters": "Tracks the actual business pulse of Germany — broader than ZEW which surveys analysts. Strong predictor of German GDP.",
+      "frequency": "Ежемесячно, последняя неделя",
+      "definition": "Опрос примерно 9000 немецких компаний о текущих условиях и ожиданиях на следующие 6 месяцев.",
+      "whyItMatters": "Отражает реальный пульс немецкой экономики — шире, чем индекс ZEW, который опрашивает аналитиков. Сильный предиктор ВВП Германии.",
       "marketReaction": {
-        "higher": "Stronger Ifo: EUR strengthens, DAX rallies.",
-        "lower": "Weaker Ifo: EUR weakens, DAX falls."
+        "higher": "Рост Ifo: EUR укрепляется, DAX растёт.",
+        "lower": "Падение Ifo: EUR ослабляется, DAX падает."
       },
       "watchedAssets": [
         "EURUSD",
@@ -540,16 +540,16 @@
     },
     {
       "id": "china-manufacturing-pmi",
-      "name": "China Manufacturing PMI",
+      "name": "Индекс деловой активности в производстве Китая",
       "abbreviation": "China PMI",
       "category": "manufacturing",
       "country": "CN",
-      "frequency": "Monthly, end of month (official) and start of month (Caixin)",
-      "definition": "Two versions: official NBS PMI (large state-owned firms) and Caixin PMI (smaller private firms). Both release the same metric: 50 = expansion threshold.",
-      "whyItMatters": "China is the world's factory and largest commodities consumer. Strong China PMI lifts copper, oil, iron ore, and AUD/NZD.",
+      "frequency": "Ежемесячно, конец месяца (официальный) и начало месяца (Caixin)",
+      "definition": "Два варианта: официальный ИДА NBS (крупные государственные предприятия) и Caixin ИДА (малые частные компании). Оба показателя используют одинаковую метрику: 50 = граница расширения экономики.",
+      "whyItMatters": "Китай — мировая фабрика и крупнейший потребитель сырья. Высокий ИДА Китая поднимает цены на медь, нефть, железную руду и укрепляет AUD/NZD.",
       "marketReaction": {
-        "higher": "Above 50: AUD/NZD strengthen, copper/oil rally, China-exposed stocks rally.",
-        "lower": "Below 50: AUD/NZD weaken, commodities fall, recession fears."
+        "higher": "Выше 50: AUD/NZD укрепляются, медь и нефть растут, акции компаний с экспозицией на Китай растут.",
+        "lower": "Ниже 50: AUD/NZD ослабевают, сырьевые товары падают, усиливаются опасения рецессии."
       },
       "watchedAssets": [
         "AUDUSD",
@@ -560,16 +560,16 @@
     },
     {
       "id": "rba-rate-decision",
-      "name": "RBA Interest Rate Decision",
+      "name": "Решение РБА по процентной ставке",
       "abbreviation": "RBA",
       "category": "central-bank",
       "country": "AU",
-      "frequency": "8 times per year (first Tuesday of most months)",
-      "definition": "Reserve Bank of Australia sets the cash rate. Australia is highly sensitive to commodity prices and China demand.",
-      "whyItMatters": "Drives AUD and Australian bond yields. AUD is also a proxy for risk sentiment and China exposure.",
+      "frequency": "8 раз в год (первый вторник большинства месяцев)",
+      "definition": "Резервный банк Австралии устанавливает ставку по кэшу. Австралия высоко чувствительна к ценам на сырьё и спросу из Китая.",
+      "whyItMatters": "Определяет движение AUD и доходность австралийских облигаций. AUD также служит индикатором риск-сентимента и экспозиции на Китай.",
       "marketReaction": {
-        "higher": "Hawkish: AUD up, ASX falls, AGB yields rise.",
-        "lower": "Dovish: AUD down, ASX rallies, yields fall."
+        "higher": "Ястребиная позиция: AUD растёт, ASX падает, доходность AGB повышается.",
+        "lower": "Голубиная позиция: AUD падает, ASX растёт, доходность падает."
       },
       "watchedAssets": [
         "AUDUSD",
