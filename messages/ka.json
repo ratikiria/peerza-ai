@@ -43,7 +43,13 @@
     "edit_profile": "პროფილის რედაქტირება",
     "terms_of_service": "მომსახურების პირობები",
     "privacy_policy": "კონფიდენციალურობის პოლიტიკა",
-    "financial_disclaimer": "ფინანსური გაფრთხილება"
+    "financial_disclaimer": "ფინანსური გაფრთხილება",
+    "email_verified": "დადასტურებულია",
+    "email_not_verified": "არ არის დადასტურებული",
+    "email_resend": "ბმულის ხელახლა გაგზავნა",
+    "email_sending": "იგზავნება…",
+    "email_sent": "ბმული გაიგზავნა. შეამოწმე {email} (და სპამი).",
+    "email_send_failed": "ვერ გაიგზავნა. სცადე მოგვიანებით."
   },
   "Locale": {
     "interface_language": "ინტერფეისის ენა",
@@ -160,7 +166,6 @@
     "privacy_policy_short": "კონფიდენციალურობის პოლიტიკა",
     "financial_disclaimer_short": "ფინანსური გაფრთხილება",
     "and": "და",
-
     "login_title": "კეთილი იყოს დაბრუნება",
     "login_subtitle": "შედი შენს Peerza.ai ანგარიშში",
     "login_demo_eyebrow": "უბრალოდ ათვალიერებ?",
@@ -172,7 +177,6 @@
     "login_no_account": "არ გაქვს ანგარიში?",
     "login_create_free": "შექმენი უფასოდ",
     "login_terms_prefix": "შესვლით თანხმობას აცხადებ ჩვენს",
-
     "register_title": "ანგარიშის შექმნა",
     "register_subtitle": "შემოუერთდი ფინანსურ სოციალურ ქსელს",
     "register_full_name": "სახელი და გვარი",
@@ -206,7 +210,6 @@
     "register_have_account": "უკვე გაქვს ანგარიში?",
     "register_sign_in": "შესვლა",
     "register_terms_prefix": "ანგარიშის შექმნით თანხმობას აცხადებ ჩვენს",
-
     "forgot_eyebrow": "პაროლის აღდგენა",
     "forgot_title_identify": "დაგავიწყდა პაროლი?",
     "forgot_title_verify": "დაადასტურე ვინაობა",

@@ -10,6 +10,7 @@ import CountrySelect from "@/components/settings/CountrySelect"
 import LocaleSwitcher from "@/components/settings/LocaleSwitcher"
 import ProMembershipCard from "@/components/settings/ProMembershipCard"
 import ReplayTourButton from "@/components/settings/ReplayTourButton"
+import EmailVerificationRow from "@/components/settings/EmailVerificationRow"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
@@ -22,6 +23,8 @@ export default async function SettingsPage() {
   const me = await db.user.findUnique({
     where: { id: session.user.id },
     select: {
+      email: true,
+      emailVerifiedAt: true,
       isPro: true,
       proExpiresAt: true,
       proMembership: {
@@ -120,6 +123,7 @@ export default async function SettingsPage() {
           <h2 className="text-xs font-semibold uppercase tracking-wide"
             style={{ color: "var(--text-secondary)" }}>{t("section_account")}</h2>
         </header>
+        {me?.email && <EmailVerificationRow email={me.email} verified={!!me.emailVerifiedAt} />}
         <Link href="/settings/profile"
           className="flex items-center justify-between px-4 py-3 hover:bg-[var(--bg-base)]">
           <span className="text-sm" style={{ color: "var(--text-primary)" }}>{t("edit_profile")}</span>

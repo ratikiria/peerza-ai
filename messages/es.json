@@ -43,7 +43,13 @@
     "edit_profile": "Editar perfil",
     "terms_of_service": "Términos de servicio",
     "privacy_policy": "Política de privacidad",
-    "financial_disclaimer": "Aviso legal financiero"
+    "financial_disclaimer": "Aviso legal financiero",
+    "email_verified": "Verificado",
+    "email_not_verified": "No verificado",
+    "email_resend": "Reenviar enlace",
+    "email_sending": "Enviando…",
+    "email_sent": "Enlace enviado. Revisa {email} (y spam).",
+    "email_send_failed": "No se pudo enviar. Inténtalo más tarde."
   },
   "Locale": {
     "interface_language": "Idioma de la interfaz",
@@ -160,7 +166,6 @@
     "privacy_policy_short": "Política de privacidad",
     "financial_disclaimer_short": "Aviso legal financiero",
     "and": "y",
-
     "login_title": "Bienvenido de nuevo",
     "login_subtitle": "Inicia sesión en tu cuenta de Peerza.ai",
     "login_demo_eyebrow": "¿Solo explorando?",
@@ -172,7 +177,6 @@
     "login_no_account": "¿No tienes cuenta?",
     "login_create_free": "Crea una gratis",
     "login_terms_prefix": "Al iniciar sesión aceptas nuestros",
-
     "register_title": "Crear cuenta",
     "register_subtitle": "Únete a la red social financiera",
     "register_full_name": "Nombre completo",
@@ -206,7 +210,6 @@
     "register_have_account": "¿Ya tienes una cuenta?",
     "register_sign_in": "Iniciar sesión",
     "register_terms_prefix": "Al crear una cuenta aceptas nuestros",
-
     "forgot_eyebrow": "Recuperación de contraseña",
     "forgot_title_identify": "¿Olvidaste tu contraseña?",
     "forgot_title_verify": "Verifica que eres tú",

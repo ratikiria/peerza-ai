@@ -43,7 +43,13 @@
     "edit_profile": "Edit profile",
     "terms_of_service": "Terms of Service",
     "privacy_policy": "Privacy Policy",
-    "financial_disclaimer": "Financial Disclaimer"
+    "financial_disclaimer": "Financial Disclaimer",
+    "email_verified": "Verified",
+    "email_not_verified": "Not verified",
+    "email_resend": "Resend link",
+    "email_sending": "Sending…",
+    "email_sent": "Link sent. Check {email} (and spam).",
+    "email_send_failed": "Could not send. Try again later."
   },
   "Locale": {
     "interface_language": "Interface language",
@@ -160,7 +166,6 @@
     "privacy_policy_short": "Privacy Policy",
     "financial_disclaimer_short": "Financial Disclaimer",
     "and": "and",
-
     "login_title": "Welcome back",
     "login_subtitle": "Sign in to your Peerza.ai account",
     "login_demo_eyebrow": "Just exploring?",
@@ -172,7 +177,6 @@
     "login_no_account": "No account?",
     "login_create_free": "Create one free",
     "login_terms_prefix": "By signing in you agree to our",
-
     "register_title": "Create account",
     "register_subtitle": "Join the financial social network",
     "register_full_name": "Full name",
@@ -206,7 +210,6 @@
     "register_have_account": "Already have an account?",
     "register_sign_in": "Sign in",
     "register_terms_prefix": "By creating an account you agree to our",
-
     "forgot_eyebrow": "Password recovery",
     "forgot_title_identify": "Forgot password?",
     "forgot_title_verify": "Verify it's you",

@@ -43,7 +43,13 @@
     "edit_profile": "Profili düzenle",
     "terms_of_service": "Hizmet şartları",
     "privacy_policy": "Gizlilik politikası",
-    "financial_disclaimer": "Finansal feragatname"
+    "financial_disclaimer": "Finansal feragatname",
+    "email_verified": "Doğrulandı",
+    "email_not_verified": "Doğrulanmadı",
+    "email_resend": "Bağlantıyı tekrar gönder",
+    "email_sending": "Gönderiliyor…",
+    "email_sent": "Bağlantı gönderildi. {email} adresini (ve spam klasörünü) kontrol et.",
+    "email_send_failed": "Gönderilemedi. Daha sonra tekrar dene."
   },
   "Locale": {
     "interface_language": "Arayüz dili",
@@ -160,7 +166,6 @@
     "privacy_policy_short": "Gizlilik Politikası",
     "financial_disclaimer_short": "Finansal Feragatname",
     "and": "ve",
-
     "login_title": "Tekrar hoş geldiniz",
     "login_subtitle": "Peerza.ai hesabınıza giriş yapın",
     "login_demo_eyebrow": "Sadece keşfediyor musunuz?",
@@ -172,7 +177,6 @@
     "login_no_account": "Hesabınız yok mu?",
     "login_create_free": "Ücretsiz oluşturun",
     "login_terms_prefix": "Giriş yaparak şunları kabul etmiş olursunuz:",
-
     "register_title": "Hesap oluştur",
     "register_subtitle": "Finansal sosyal ağa katılın",
     "register_full_name": "Ad soyad",
@@ -206,7 +210,6 @@
     "register_have_account": "Zaten hesabınız var mı?",
     "register_sign_in": "Giriş yap",
     "register_terms_prefix": "Hesap oluşturarak şunları kabul etmiş olursunuz:",
-
     "forgot_eyebrow": "Şifre kurtarma",
     "forgot_title_identify": "Şifrenizi mi unuttunuz?",
     "forgot_title_verify": "Sizin olduğunuzu doğrulayın",
