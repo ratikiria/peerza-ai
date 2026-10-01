@@ -146,7 +146,7 @@ export default function GuidedTour() {
   useEffect(() => {
     if (step == null) return
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") close(false)
+      if (e.key === "Escape") close()
       else if (e.key === "ArrowRight" || e.key === "Enter") next()
       else if (e.key === "ArrowLeft") prev()
     }
@@ -162,16 +162,16 @@ export default function GuidedTour() {
   const isFirst = step === 0
   const isLast = step === total - 1
 
-  function close(complete: boolean) {
-    if (complete) {
-      try { localStorage.setItem(STORAGE_KEY, "1") } catch {}
-    }
+  // Any dismissal (finish, Skip, ✕, Esc, backdrop) counts as seen — the tour is
+  // replayable from Settings, so re-showing it on every page load just nags.
+  function close() {
+    try { localStorage.setItem(STORAGE_KEY, "1") } catch {}
     setStep(null)
     setRect(null)
   }
 
   function next() {
-    if (isLast) close(true)
+    if (isLast) close()
     else setStep((s) => (s ?? 0) + 1)
   }
 
@@ -220,7 +220,7 @@ export default function GuidedTour() {
     <>
       {/* Click-blocker — when no spotlight target, this also provides the dim. */}
       <div
-        onClick={() => close(false)}
+        onClick={() => close()}
         style={{
           position: "fixed",
           inset: 0,
@@ -250,7 +250,7 @@ export default function GuidedTour() {
       >
         <button
           type="button"
-          onClick={() => close(false)}
+          onClick={() => close()}
           aria-label="Close tour"
           style={{
             position: "absolute",
@@ -307,7 +307,7 @@ export default function GuidedTour() {
         <div className="flex items-center justify-between gap-2">
           <button
             type="button"
-            onClick={() => close(false)}
+            onClick={() => close()}
             className="text-xs font-medium hover:underline"
             style={{ color: "var(--text-secondary)" }}
           >
