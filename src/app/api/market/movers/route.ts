@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { yahooDayChange } from "@/lib/market"
 
 interface Mover {
   symbol: string
@@ -14,6 +15,10 @@ interface MoversResponse {
 
 const cache = new Map<string, { data: MoversResponse; ts: number }>()
 const TTL = 2 * 60_000 // 2 minutes
+// Upstreams (CoinGecko from Railway, Yahoo under burst) fail intermittently.
+// A stale list beats an empty "No data" widget, so keep the last good result.
+const lastGood = new Map<string, MoversResponse>()
+const BASKET_CONCURRENCY = 6
 
 const FETCH_TIMEOUT_MS = 5000
 
@@ -58,6 +63,26 @@ const STOCK_BASKET: { sym: string; name: string }[] = [
   { sym: "UBER",  name: "Uber" },
 ]
 
+// Crypto fallback when CoinGecko is unavailable (it blocks some cloud IPs).
+const CRYPTO_BASKET: { sym: string; name: string }[] = [
+  { sym: "BTC-USD",  name: "Bitcoin" },
+  { sym: "ETH-USD",  name: "Ethereum" },
+  { sym: "SOL-USD",  name: "Solana" },
+  { sym: "BNB-USD",  name: "BNB" },
+  { sym: "XRP-USD",  name: "XRP" },
+  { sym: "DOGE-USD", name: "Dogecoin" },
+  { sym: "ADA-USD",  name: "Cardano" },
+  { sym: "AVAX-USD", name: "Avalanche" },
+  { sym: "LINK-USD", name: "Chainlink" },
+  { sym: "DOT-USD",  name: "Polkadot" },
+  { sym: "TRX-USD",  name: "TRON" },
+  { sym: "LTC-USD",  name: "Litecoin" },
+  { sym: "SHIB-USD", name: "Shiba Inu" },
+  { sym: "NEAR-USD", name: "NEAR Protocol" },
+  { sym: "UNI7083-USD", name: "Uniswap" },
+  { sym: "SUI20947-USD", name: "Sui" },
+]
+
 // Major forex pairs — most-traded, broad coverage
 const FOREX_BASKET: { sym: string; name: string }[] = [
   { sym: "EURUSD=X", name: "EUR / USD" },
@@ -83,11 +108,9 @@ async function yahooChange(yahooSymbol: string): Promise<number | null> {
     )
     if (!res.ok) return null
     const data = await res.json()
-    const meta = data?.chart?.result?.[0]?.meta
-    const price = meta?.regularMarketPrice
-    const prev  = meta?.chartPreviousClose ?? meta?.previousClose
-    if (price == null || prev == null || prev === 0) return null
-    return ((price - prev) / prev) * 100
+    const day = yahooDayChange(data?.chart?.result?.[0])
+    if (!day) return null
+    return ((day.price - day.prev) / day.prev) * 100
   } catch { return null }
 }
 
@@ -114,24 +137,34 @@ async function fetchCryptoMovers(): Promise<MoversResponse> {
   }
 }
 
+// "EURUSD=X" → "EURUSD", "BRK-B" → "BRK.B", "UNI7083-USD" → "UNI"
+function displaySymbol(sym: string): string {
+  if (sym.endsWith("-USD")) return sym.slice(0, -4).replace(/d+$/, "")
+  return sym.replace("=X", "").replace("-", ".")
+}
+
 async function fetchBasketMovers(basket: { sym: string; name: string }[]): Promise<MoversResponse> {
-  const results = await Promise.all(
-    basket.map(async (b) => {
-      const change = await yahooChange(b.sym)
-      return change != null ? { ...b, change } : null
-    })
-  )
+  // Small batches: 30 parallel Yahoo calls from one IP get throttled.
+  const results: ({ sym: string; name: string; change: number } | null)[] = []
+  for (let i = 0; i < basket.length; i += BASKET_CONCURRENCY) {
+    results.push(...await Promise.all(
+      basket.slice(i, i + BASKET_CONCURRENCY).map(async (b) => {
+        const change = await yahooChange(b.sym)
+        return change != null ? { ...b, change } : null
+      })
+    ))
+  }
   const valid = results.filter((r): r is { sym: string; name: string; change: number } => r !== null)
   const sorted = [...valid].sort((a, b) => b.change - a.change)
   return {
     gainers: sorted.slice(0, 5).map((r) => ({
-      symbol: r.sym.replace("=X", "").replace("-", "."),
+      symbol: displaySymbol(r.sym),
       name: r.name,
       change: parseFloat(r.change.toFixed(2)),
       up: true,
     })),
     losers: sorted.slice(-5).reverse().map((r) => ({
-      symbol: r.sym.replace("=X", "").replace("-", "."),
+      symbol: displaySymbol(r.sym),
       name: r.name,
       change: parseFloat(r.change.toFixed(2)),
       up: false,
@@ -149,17 +182,17 @@ export async function GET(req: Request) {
     return NextResponse.json(cached.data)
   }
 
+  let result: MoversResponse = { gainers: [], losers: [] }
   try {
-    let result: MoversResponse
     if (validType === "stocks")     result = await fetchBasketMovers(STOCK_BASKET)
     else if (validType === "forex") result = await fetchBasketMovers(FOREX_BASKET)
-    else                            result = await fetchCryptoMovers()
+    else                            result = await fetchCryptoMovers().catch(() => fetchBasketMovers(CRYPTO_BASKET))
+  } catch {}
 
-    if (result.gainers.length > 0 || result.losers.length > 0) {
-      cache.set(validType, { data: result, ts: Date.now() })
-    }
+  if (result.gainers.length > 0 || result.losers.length > 0) {
+    cache.set(validType, { data: result, ts: Date.now() })
+    lastGood.set(validType, result)
     return NextResponse.json(result)
-  } catch {
-    return NextResponse.json({ gainers: [], losers: [] })
   }
+  return NextResponse.json(lastGood.get(validType) ?? result)
 }

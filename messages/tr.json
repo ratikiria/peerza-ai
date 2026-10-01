@@ -80,8 +80,8 @@
     "next_calendar_text": "Bu haftaki yüksek ve orta etkili ekonomik veriler (TÜFE, istihdam, faiz kararları). Saatler yerel saat diliminde gösterilir. Tam Ekonomik Takvim'i açmak için dokun.",
     "next_calendar_empty": "Önümüzdeki 7 günde önemli bir veri yok.",
     "top_callers_label": "En iyi Ranked Call'cular",
-    "top_callers_text": "Sonuçlanan Ranked Call'larda en yüksek Peerza Score'a sahip trader'lar. Ranked Call, gerçek fiyatlarla otomatik puanlanan, son tarihli bir işlem fikridir. İsabet oranı, sonuçlanan çağrılarda ulaşılan hedeflerdir.",
-    "top_callers_empty": "Henüz sonuçlanan Ranked Call yok. Tabloya girmek için bir tane paylaş.",
+    "top_callers_text": "Sonuçlanan Ranked Call'larda en yüksek Peerza Score'a sahip trader'lar. Ranked Call, gerçek fiyatlarla otomatik puanlanan, son tarihli bir işlem fikridir. İsabet oranı, sonuçlanan çağrılarda ulaşılan hedeflerdir. Listelenmek için en az 10 sonuçlanmış çağrı gerekir.",
+    "top_callers_empty": "Henüz kimsenin 10 sonuçlanmış Ranked Call'ı yok. Trader'lar 10'dan sonra burada görünür.",
     "top_callers_hit": "isabet",
     "impact_high": "Yüksek",
     "impact_med": "Orta"

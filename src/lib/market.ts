@@ -142,3 +142,20 @@ export function stooqToYahoo(stooq: string): string {
   }
   return stooq.toUpperCase();
 }
+
+/**
+ * Last price and previous session close from a Yahoo v8 chart result
+ * (`interval=1d`). Never use `meta.chartPreviousClose` for a day change: it's
+ * the close *before the requested range* (5 days / 1 year back), not
+ * yesterday's close.
+ */
+export function yahooDayChange(result: {
+  meta?: { regularMarketPrice?: number; previousClose?: number }
+  indicators?: { quote?: { close?: (number | null)[] }[] }
+} | null | undefined): { price: number; prev: number } | null {
+  const price = result?.meta?.regularMarketPrice
+  const closes = (result?.indicators?.quote?.[0]?.close ?? []).filter((c): c is number => typeof c === "number")
+  const prev = closes.length >= 2 ? closes[closes.length - 2] : result?.meta?.previousClose
+  if (price == null || prev == null || price === 0 || prev === 0) return null
+  return { price, prev }
+}

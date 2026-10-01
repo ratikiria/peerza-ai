@@ -80,8 +80,8 @@
     "next_calendar_text": "Los próximos datos económicos de impacto alto y medio de esta semana (IPC, empleo, decisiones de tipos). Las horas se muestran en tu zona horaria. Toca para abrir el Calendario Económico completo.",
     "next_calendar_empty": "No hay publicaciones importantes en los próximos 7 días.",
     "top_callers_label": "Mejores Ranked Calls",
-    "top_callers_text": "Traders con el mejor Peerza Score en Ranked Calls resueltas: ideas de trading con fecha límite que se puntúan automáticamente con precios reales. La tasa de acierto son los objetivos alcanzados sobre las llamadas resueltas.",
-    "top_callers_empty": "Aún no hay Ranked Calls resueltas. Publica una para entrar en la tabla.",
+    "top_callers_text": "Traders con el mejor Peerza Score en Ranked Calls resueltas: ideas de trading con fecha límite que se puntúan automáticamente con precios reales. La tasa de acierto son los objetivos alcanzados sobre las llamadas resueltas. Se necesitan al menos 10 llamadas resueltas para aparecer.",
+    "top_callers_empty": "Nadie tiene aún 10 Ranked Calls resueltas. Los traders aparecen aquí a partir de 10.",
     "top_callers_hit": "acierto",
     "impact_high": "Alto",
     "impact_med": "Medio"

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { yahooDayChange } from "@/lib/market"
 
 interface Stats {
   symbol: string
@@ -89,9 +90,11 @@ async function fetchYahoo(yahooSym: string): Promise<Stats | null> {
     const r = d?.chart?.result?.[0]
     if (!r) return null
     const m = r.meta
-    const price = m?.regularMarketPrice
-    const prev  = m?.chartPreviousClose ?? m?.previousClose
-    if (price == null || prev == null || price === 0) return null
+    // Day change vs the previous session's close (range=1y, so chartPreviousClose
+    // would be a 1-year change, e.g. AAPL showed ▲30.79% "today").
+    const day = yahooDayChange(r)
+    if (!day) return null
+    const { price, prev } = day
     const changePct = parseFloat((((price - prev) / prev) * 100).toFixed(2))
     return {
       symbol:    m?.symbol ?? yahooSym,

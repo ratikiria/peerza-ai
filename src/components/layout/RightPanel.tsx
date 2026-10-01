@@ -661,14 +661,19 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
     setMoversLoading(true)
     setMovers({ gainers: [], losers: [] })
     const url = `/api/market/movers?type=${moversType}`
-    fetch(url).then(r => r.ok ? r.json() : null).then((d) => {
-      if (d) setMovers(d)
-      setMoversLoading(false)
-    }).catch(() => setMoversLoading(false))
-    const iv = setInterval(() => {
-      fetch(url).then(r => r.ok ? r.json() : null).then((d) => d && setMovers(d)).catch(() => {})
-    }, 120_000)
-    return () => clearInterval(iv)
+    // An empty answer means the upstream hiccupped; retry soon rather than
+    // showing "No data" until the next 2-minute poll.
+    let retry: ReturnType<typeof setTimeout> | undefined
+    const load = (first: boolean) =>
+      fetch(url).then(r => r.ok ? r.json() : null).then((d) => {
+        const empty = !d || (d.gainers?.length ?? 0) + (d.losers?.length ?? 0) === 0
+        if (!empty) setMovers(d)
+        else if (first) retry = setTimeout(() => load(false), 15_000)
+        setMoversLoading(false)
+      }).catch(() => setMoversLoading(false))
+    load(true)
+    const iv = setInterval(() => load(false), 120_000)
+    return () => { clearInterval(iv); if (retry) clearTimeout(retry) }
   }, [moversType])
 
   useEffect(() => {

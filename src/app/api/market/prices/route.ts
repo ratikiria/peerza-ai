@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { stooqToYahoo } from "@/lib/market"
+import { stooqToYahoo, yahooDayChange } from "@/lib/market"
 
 const cache = new Map<string, { data: unknown; ts: number }>()
 const TTL = 30_000
@@ -53,12 +53,10 @@ async function fetchYahoo(yahooSym: string): Promise<{ close: number; open: numb
     const data = await res.json()
     const result = data?.chart?.result?.[0]
     if (!result) return null
-    const meta = result.meta
-    const price = meta?.regularMarketPrice
-    const prev  = meta?.chartPreviousClose ?? meta?.previousClose
-    if (price == null || prev == null || price === 0) return null
-    // Use previous close as "open" so percent-change math reads as today's move
-    return { close: price, open: prev, currency: meta?.currency }
+    const day = yahooDayChange(result)
+    if (!day) return null
+    // Use previous session close as "open" so percent-change math reads as today's move
+    return { close: day.price, open: day.prev, currency: result.meta?.currency }
   } catch {
     return null
   }

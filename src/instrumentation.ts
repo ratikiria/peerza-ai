@@ -6,6 +6,9 @@ export async function register() {
     if (process.env.RANKED_RESOLVER !== "off" && process.env.NEXT_PHASE !== "phase-production-build") {
       const { startRankedResolver } = await import("./lib/ranked-resolver")
       startRankedResolver()
+      // Same single-instance assumption: advance challenge status by date.
+      const { startChallengeStatusSync } = await import("./lib/challenge-status")
+      startChallengeStatusSync()
     }
   }
   if (process.env.NEXT_RUNTIME === "edge") {
