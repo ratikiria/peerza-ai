@@ -837,6 +837,8 @@ model Portfolio {
   name         String             @default("My Portfolio")
   baseCurrency String             @default("USD")
   isPublic     Boolean            @default(false)   // future: share to feed
+  emoji        String             @default("💼")    // shown on the portfolio switcher card
+  color        String             @default("emerald") // theme key, see lib/portfolio-themes.ts
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
 

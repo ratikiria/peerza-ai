@@ -1,5 +1,7 @@
 import "server-only"
+import { z } from "zod"
 import { db } from "@/lib/db"
+import { isThemeKey } from "@/lib/portfolio-themes"
 import type { AssetType } from "@/lib/portfolio"
 import { lookupKnownSector } from "@/lib/sectors"
 
@@ -16,18 +18,30 @@ export function defaultSectorForType(assetType: AssetType): { sector: string | n
   return { sector: null, region: null }
 }
 
-// Get or create the caller's primary portfolio. We allow only one for v1 —
-// users rarely want multiple, and it keeps the UI simple.
-export async function getOrCreatePortfolio(userId: string) {
-  const existing = await db.portfolio.findFirst({
-    where: { userId },
-    include: { holdings: { orderBy: { addedAt: "desc" } } },
-  })
-  if (existing) return existing
-  return db.portfolio.create({
-    data: { userId },
-    include: { holdings: true },
-  })
+// Create/edit payload for a portfolio (name, emoji, theme color).
+export const portfolioInput = z.object({
+  name: z.string().trim().min(1).max(40),
+  emoji: z.string().min(1).max(8),
+  color: z.string().refine(isThemeKey, "unknown theme"),
+})
+
+// All of the caller's portfolios, oldest first (the first is the default).
+// Creates one on first visit so the page always has something to show.
+export async function listPortfolios(userId: string) {
+  const include = { holdings: { orderBy: { addedAt: "desc" as const } } }
+  const existing = await db.portfolio.findMany({ where: { userId }, orderBy: { createdAt: "asc" }, include })
+  if (existing.length > 0) return existing
+  return [await db.portfolio.create({ data: { userId }, include })]
+}
+
+// A portfolio the caller owns: the given id, or their default when id is
+// omitted (older clients). Returns null for someone else's id.
+export async function getOwnedPortfolio(userId: string, id?: string | null) {
+  if (id) {
+    const p = await db.portfolio.findUnique({ where: { id } })
+    return p && p.userId === userId ? p : null
+  }
+  return (await listPortfolios(userId))[0]
 }
 
 // Best-effort sector + region lookup for a stock ticker via Yahoo's quoteSummary.

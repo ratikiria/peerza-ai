@@ -3,25 +3,23 @@ import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { yahooToStooq } from "@/lib/market"
 import { ASSET_TYPES, type AssetType } from "@/lib/portfolio"
-import { getOrCreatePortfolio, fetchYahooMeta, lookupKnownSector, defaultSectorForType } from "@/lib/portfolio-server"
+import { getOwnedPortfolio, fetchYahooMeta, lookupKnownSector, defaultSectorForType } from "@/lib/portfolio-server"
 
-// DELETE /api/portfolio/holdings — clear ALL holdings in the caller's portfolio.
-// Use with care; the UI gates this behind a confirm dialog.
-export async function DELETE() {
+// DELETE /api/portfolio/holdings?portfolioId= — clear ALL holdings in one of
+// the caller's portfolios (default one if omitted). The UI confirms first.
+export async function DELETE(req: NextRequest) {
   const session = await auth()
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 })
 
-  const portfolio = await db.portfolio.findFirst({
-    where: { userId: session.user.id },
-    select: { id: true },
-  })
-  if (!portfolio) return NextResponse.json({ deleted: 0 })
+  const portfolio = await getOwnedPortfolio(session.user.id, req.nextUrl.searchParams.get("portfolioId"))
+  if (!portfolio) return NextResponse.json({ error: "not_found" }, { status: 404 })
 
   const { count } = await db.portfolioHolding.deleteMany({ where: { portfolioId: portfolio.id } })
   return NextResponse.json({ deleted: count })
 }
 
 interface AddBody {
+  portfolioId?: string        // which portfolio; default one if omitted
   source: "crypto" | "yahoo"  // matches /api/market/search response
   id: string                  // CoinGecko id or Yahoo symbol
   symbol: string              // display symbol
@@ -80,7 +78,8 @@ export async function POST(req: NextRequest) {
   sector ??= defaults.sector
   region ??= defaults.region
 
-  const portfolio = await getOrCreatePortfolio(session.user.id)
+  const portfolio = await getOwnedPortfolio(session.user.id, body.portfolioId)
+  if (!portfolio) return NextResponse.json({ error: "not_found" }, { status: 404 })
 
   // Upsert by (portfolioId, symbol) — re-adding the same ticker updates qty/cost
   const holding = await db.portfolioHolding.upsert({

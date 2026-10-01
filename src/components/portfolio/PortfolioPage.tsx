@@ -3,14 +3,20 @@
 import { ink } from "@/lib/ink"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslations } from "next-intl"
-import { Plus, Trash2, TrendingUp, TrendingDown, Briefcase, ShieldAlert, Sparkles, Info, RotateCcw, X, BarChart3, PieChart, ShieldCheck, RefreshCw } from "lucide-react"
+import { Plus, Pencil, Trash2, TrendingUp, TrendingDown, Briefcase, ShieldAlert, Sparkles, Info, RotateCcw, X, BarChart3, PieChart, ShieldCheck, RefreshCw } from "lucide-react"
 import AddHoldingDialog from "./AddHoldingDialog"
+import PortfolioSwitcher, { type SwitcherItem } from "./PortfolioSwitcher"
+import PortfolioDialog, { type PortfolioDraft } from "./PortfolioDialog"
+import { themeFor, MAX_PORTFOLIOS } from "@/lib/portfolio-themes"
 import { CLASS_VOL, riskBand, type AssetType } from "@/lib/portfolio"
 
 const INTRO_DISMISSED_KEY = "peerza-portfolio-intro-dismissed-v1"
+const SELECTED_KEY = "peerza-portfolio-selected-v1"
+const ALL = "all"
 
 interface Holding {
   id: string
+  portfolioId: string
   symbol: string
   name: string
   assetType: AssetType
@@ -24,6 +30,8 @@ interface Holding {
 interface Portfolio {
   id: string
   name: string
+  emoji: string
+  color: string
   baseCurrency: string
   holdings: Holding[]
 }
@@ -71,7 +79,9 @@ function fmtMoney(v: number) {
 
 export default function PortfolioPage() {
   const t = useTranslations("Portfolio")
-  const [portfolio, setPortfolio] = useState<Portfolio | null>(null)
+  const [portfolios, setPortfolios] = useState<Portfolio[]>([])
+  const [selected, setSelectedRaw] = useState<string>(ALL)
+  const [dialog, setDialog] = useState<{ mode: "create" } | { mode: "edit"; id: string } | null>(null)
   const [prices, setPrices] = useState<Record<string, Price>>({})
   const [loading, setLoading] = useState(true)
   const [adding, setAdding] = useState(false)
@@ -97,13 +107,33 @@ export default function PortfolioPage() {
       const res = await fetch("/api/portfolio")
       if (res.ok) {
         const data = await res.json()
-        setPortfolio(data.portfolio)
+        const list: Portfolio[] = data.portfolios ?? []
+        setPortfolios(list)
+        // Restore the last viewed portfolio; fall back to "All" (or the only one).
+        setSelectedRaw((cur) => {
+          let want = cur
+          try { want = localStorage.getItem(SELECTED_KEY) ?? cur } catch {}
+          if (want === ALL) return list.length > 1 ? ALL : (list[0]?.id ?? ALL)
+          return list.some((x) => x.id === want) ? want : (list.length > 1 ? ALL : (list[0]?.id ?? ALL))
+        })
       }
     } catch {}
     setLoading(false)
   }, [])
 
   useEffect(() => { loadPortfolio() }, [loadPortfolio])
+
+  function setSelected(id: string) {
+    setSelectedRaw(id)
+    try { localStorage.setItem(SELECTED_KEY, id) } catch {}
+  }
+
+  const isAll = selected === ALL
+  const portfolio = isAll ? null : (portfolios.find((x) => x.id === selected) ?? null)
+  const allHoldings = useMemo(() => portfolios.flatMap((x) => x.holdings), [portfolios])
+  const viewHoldings = isAll ? allHoldings : (portfolio?.holdings ?? [])
+  const theme = themeFor(isAll ? "emerald" : portfolio?.color)
+  const emojiOf = useMemo(() => Object.fromEntries(portfolios.map((x) => [x.id, x.emoji])), [portfolios])
 
   // Fetch live prices whenever holdings change. Reuses /api/market/prices.
   const loadPrices = useCallback(async (holdings: Holding[]) => {
@@ -130,12 +160,13 @@ export default function PortfolioPage() {
     } catch {}
   }, [])
 
+  // Prices for every portfolio, so the switcher cards can show live values.
   useEffect(() => {
-    if (!portfolio) return
-    loadPrices(portfolio.holdings)
-    const iv = setInterval(() => loadPrices(portfolio.holdings), 60_000)
+    if (allHoldings.length === 0) return
+    loadPrices(allHoldings)
+    const iv = setInterval(() => loadPrices(allHoldings), 60_000)
     return () => clearInterval(iv)
-  }, [portfolio, loadPrices])
+  }, [allHoldings, loadPrices])
 
   async function removeHolding(id: string) {
     if (!confirm(t("remove_holding"))) return
@@ -147,7 +178,8 @@ export default function PortfolioPage() {
     if (!confirm(t("reset_confirm"))) return
     setResetting(true)
     try {
-      await fetch("/api/portfolio/holdings", { method: "DELETE" })
+      if (!portfolio) return
+      await fetch(`/api/portfolio/holdings?portfolioId=${encodeURIComponent(portfolio.id)}`, { method: "DELETE" })
       await loadPortfolio()
     } finally {
       setResetting(false)
@@ -166,8 +198,7 @@ export default function PortfolioPage() {
 
   // ── Derived values ─────────────────────────────────────────────────────────
   const enriched = useMemo(() => {
-    if (!portfolio) return []
-    return portfolio.holdings.map((h) => {
+    return viewHoldings.map((h) => {
       // Cash holdings: 1 unit = 1 USD by convention (qty is the dollar amount)
       const livePrice = h.assetType === "cash" ? 1 : (prices[h.priceKey]?.price ?? prices[h.symbol]?.price ?? 0)
       const value = h.quantity * livePrice
@@ -176,7 +207,7 @@ export default function PortfolioPage() {
       const pnlPct = costBasis != null && costBasis > 0 ? (pnl! / costBasis) * 100 : null
       return { ...h, livePrice, value, costBasis, pnl, pnlPct }
     })
-  }, [portfolio, prices])
+  }, [viewHoldings, prices])
 
   const totalValue = enriched.reduce((sum, h) => sum + h.value, 0)
   const totalCost  = enriched.reduce((sum, h) => sum + (h.costBasis ?? 0), 0)
@@ -203,10 +234,17 @@ export default function PortfolioPage() {
   // 1. Concentration — top holdings
   const concentrated = useMemo(() => {
     if (totalValue === 0) return []
-    return [...enriched]
+    // Group by symbol: in the "All" view one ticker can sit in several portfolios.
+    const bySymbol = new Map<string, { symbol: string; name: string; value: number }>()
+    for (const h of enriched) {
+      const cur = bySymbol.get(h.symbol)
+      if (cur) cur.value += h.value
+      else bySymbol.set(h.symbol, { symbol: h.symbol, name: h.name, value: h.value })
+    }
+    return [...bySymbol.values()]
       .sort((a, b) => b.value - a.value)
       .slice(0, 5)
-      .map((h) => ({ symbol: h.symbol, name: h.name, value: h.value, weight: h.value / totalValue }))
+      .map((h) => ({ ...h, weight: h.value / totalValue }))
   }, [enriched, totalValue])
 
   const topWeight = concentrated[0]?.weight ?? 0
@@ -253,12 +291,69 @@ export default function PortfolioPage() {
     return v
   }, [enriched, totalValue])
 
+  // ── Switcher cards: live value, day change and asset mix per portfolio ─────
+  const switcherItems = useMemo<SwitcherItem[]>(() => {
+    const summarize = (hs: Holding[]) => {
+      let value = 0, weighted = 0, weightedBase = 0
+      const byType: Partial<Record<AssetType, number>> = {}
+      for (const h of hs) {
+        const p = prices[h.priceKey] ?? prices[h.symbol]
+        const v = h.quantity * (h.assetType === "cash" ? 1 : (p?.price ?? 0))
+        value += v
+        byType[h.assetType] = (byType[h.assetType] ?? 0) + v
+        if (p && h.assetType !== "cash") { weighted += (p.change ?? 0) * v; weightedBase += v }
+      }
+      const mix = (Object.entries(byType) as [AssetType, number][])
+        .filter(([, v]) => v > 0)
+        .sort((a, b) => b[1] - a[1])
+        .map(([type, v]) => ({ color: ASSET_COLORS[type], weight: value > 0 ? v / value : 0 }))
+      return { value, dayChangePct: weightedBase > 0 ? weighted / weightedBase : null, positions: hs.length, mix }
+    }
+    const items: SwitcherItem[] = portfolios.map((x) => ({ id: x.id, name: x.name, emoji: x.emoji, color: x.color, ...summarize(x.holdings) }))
+    if (portfolios.length > 1) {
+      items.unshift({ id: ALL, name: t("all_portfolios"), emoji: "🌐", color: "emerald", ...summarize(allHoldings) })
+    }
+    return items
+  }, [portfolios, allHoldings, prices, t])
+
+  async function savePortfolio(d: PortfolioDraft): Promise<string | null> {
+    const editing = dialog?.mode === "edit" ? dialog.id : null
+    const res = await fetch(editing ? `/api/portfolio/${editing}` : "/api/portfolio", {
+      method: editing ? "PATCH" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(d),
+    }).catch(() => null)
+    if (!res?.ok) {
+      const data = await res?.json().catch(() => ({}))
+      return data?.error === "limit_reached" ? t("limit_reached", { max: MAX_PORTFOLIOS }) : t("save_failed")
+    }
+    const { portfolio: saved } = await res.json()
+    setDialog(null)
+    await loadPortfolio()
+    if (!editing && saved?.id) setSelected(saved.id)
+    return null
+  }
+
+  async function deletePortfolio() {
+    if (dialog?.mode !== "edit") return
+    const target = portfolios.find((x) => x.id === dialog.id)
+    if (!target || !confirm(t("delete_confirm", { name: target.name, count: target.holdings.length }))) return
+    const res = await fetch(`/api/portfolio/${target.id}`, { method: "DELETE" })
+    if (res.ok) {
+      setDialog(null)
+      setSelected(ALL)
+      await loadPortfolio()
+    }
+  }
+
+  const editingPortfolio = dialog?.mode === "edit" ? portfolios.find((x) => x.id === dialog.id) ?? null : null
+
   // ─── Render ─────────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="rounded-2xl p-6 animate-pulse" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+          <div key={i} className="pz-glass rounded-2xl p-6 animate-pulse">
             <div className="h-4 w-32 rounded mb-3" style={{ background: "var(--bg-elevated)" }} />
             <div className="h-8 w-48 rounded" style={{ background: "var(--bg-elevated)" }} />
           </div>
@@ -274,19 +369,46 @@ export default function PortfolioPage() {
       {/* Onboarding intro */}
       {showIntro && <IntroCard onDismiss={dismissIntro} />}
 
-      {/* Header */}
-      <div className="rounded-2xl p-5" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-        <div className="flex items-start justify-between gap-3 flex-wrap">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Briefcase size={16} className="text-emerald-400" />
-              <h1 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>
-                {portfolio?.name ?? t("title")}
+      {/* Portfolio switcher */}
+      <PortfolioSwitcher
+        items={switcherItems}
+        selected={selected}
+        onSelect={setSelected}
+        onCreate={() => setDialog({ mode: "create" })}
+        count={portfolios.length}
+      />
+
+      {/* Hero: selected portfolio (or all combined) */}
+      <div className="pz-glass rounded-2xl p-5 overflow-hidden">
+        <span aria-hidden="true" className="pointer-events-none absolute -top-24 -left-16 w-72 h-72 rounded-full"
+          style={{ background: `radial-gradient(circle, ${theme.from}2e 0%, transparent 70%)` }} />
+        <span aria-hidden="true" className="pointer-events-none absolute -bottom-28 right-0 w-72 h-72 rounded-full"
+          style={{ background: `radial-gradient(circle, ${theme.to}24 0%, transparent 70%)` }} />
+        <div className="relative flex items-start justify-between gap-3 flex-wrap">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-base"
+                style={{ background: `linear-gradient(135deg, ${theme.from}33, ${theme.to}22)`, border: `1px solid ${theme.from}55` }}>
+                {isAll ? "🌐" : (portfolio?.emoji ?? "💼")}
+              </span>
+              <h1 className="text-[11px] font-semibold uppercase tracking-[.12em] truncate" style={{ color: "var(--text-secondary)" }}>
+                {isAll ? t("net_worth", { count: portfolios.length }) : (portfolio?.name ?? t("title"))}
               </h1>
+              {!isAll && portfolio && (
+                <button
+                  onClick={() => setDialog({ mode: "edit", id: portfolio.id })}
+                  className="w-6 h-6 inline-flex items-center justify-center rounded-md hover:bg-[var(--glass)] transition-colors"
+                  style={{ color: "var(--text-secondary)" }}
+                  title={t("edit_portfolio")}
+                  aria-label={t("edit_portfolio")}
+                >
+                  <Pencil size={12} />
+                </button>
+              )}
               {!showIntro && (
                 <button
                   onClick={() => setShowIntro(true)}
-                  className="w-6 h-6 inline-flex items-center justify-center rounded-md hover:bg-[var(--bg-base)] transition-colors"
+                  className="w-6 h-6 inline-flex items-center justify-center rounded-md hover:bg-[var(--glass)] transition-colors"
                   style={{ color: "var(--text-secondary)" }}
                   title={t("show_intro")}
                   aria-label={t("show_intro")}
@@ -296,24 +418,25 @@ export default function PortfolioPage() {
               )}
             </div>
             <div className="flex items-baseline gap-3 flex-wrap">
-              <p className="text-3xl font-black tabular-nums" style={{ color: "var(--text-primary)" }}>
+              <p className="font-mono text-[40px] leading-none font-bold tabular-nums tracking-tight"
+                style={{ backgroundImage: `linear-gradient(100deg, var(--text-primary) 35%, ${theme.from} 75%, ${theme.to})`, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
                 {fmtMoney(totalValue)}
               </p>
               {dayChangePct != null && (
                 <span
-                  className="text-sm font-bold flex items-center gap-1 tabular-nums"
-                  style={{ color: dayChangePct >= 0 ? ink("#10b981") : ink("#f43f5e") }}
+                  className="font-mono text-xs font-bold flex items-center gap-1 tabular-nums px-2 py-1 rounded-lg"
+                  style={{ color: dayChangePct >= 0 ? "var(--up)" : "var(--down)", background: dayChangePct >= 0 ? "rgba(46,230,168,0.10)" : "rgba(255,92,122,0.12)" }}
                 >
-                  {dayChangePct >= 0 ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
+                  {dayChangePct >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                   {dayChangePct >= 0 ? "+" : ""}{dayChangePct.toFixed(2)}% {t("today")}
                 </span>
               )}
             </div>
             {totalPnl != null && totalPnlPct != null && (
-              <p className="text-xs mt-1.5" style={{ color: "var(--text-secondary)" }}>
+              <p className="text-xs mt-2" style={{ color: "var(--text-secondary)" }}>
                 {t("unrealized_pnl")}:{" "}
-                <span className="font-semibold tabular-nums"
-                  style={{ color: totalPnl >= 0 ? ink("#10b981") : ink("#f43f5e") }}>
+                <span className="font-mono font-semibold tabular-nums"
+                  style={{ color: totalPnl >= 0 ? "var(--up)" : "var(--down)" }}>
                   {totalPnl >= 0 ? "+" : ""}{fmtMoney(totalPnl)} ({totalPnlPct >= 0 ? "+" : ""}{totalPnlPct.toFixed(2)}%)
                 </span>
               </p>
@@ -321,33 +444,33 @@ export default function PortfolioPage() {
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             {!isEmpty && (
-              <>
-                <button
-                  onClick={refreshSectors}
-                  disabled={refreshingSectors}
-                  className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-2 rounded-xl transition-colors disabled:opacity-50"
-                  style={{ background: "var(--bg-base)", border: "1px solid var(--border)", color: "var(--text-secondary)" }}
-                  title={t("refresh_sectors")}
-                >
-                  <RefreshCw size={11} className={refreshingSectors ? "animate-spin" : ""} />
-                  {refreshingSectors ? t("refreshing") : t("refresh_sectors")}
-                </button>
-                <button
-                  onClick={resetPortfolio}
-                  disabled={resetting}
-                  className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-2 rounded-xl transition-colors disabled:opacity-50"
-                  style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)", color: ink("#fca5a5") }}
-                  title={t("reset")}
-                >
-                  <RotateCcw size={11} />
-                  {resetting ? t("resetting") : t("reset")}
-                </button>
-              </>
+              <button
+                onClick={refreshSectors}
+                disabled={refreshingSectors}
+                className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-2 rounded-xl transition-colors disabled:opacity-50"
+                style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", color: "var(--text-secondary)" }}
+                title={t("refresh_sectors")}
+              >
+                <RefreshCw size={11} className={refreshingSectors ? "animate-spin" : ""} />
+                {refreshingSectors ? t("refreshing") : t("refresh_sectors")}
+              </button>
+            )}
+            {!isEmpty && !isAll && (
+              <button
+                onClick={resetPortfolio}
+                disabled={resetting}
+                className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-2 rounded-xl transition-colors disabled:opacity-50"
+                style={{ background: "rgba(255,92,122,0.08)", border: "1px solid rgba(255,92,122,0.3)", color: "var(--down)" }}
+                title={t("reset")}
+              >
+                <RotateCcw size={11} />
+                {resetting ? t("resetting") : t("reset")}
+              </button>
             )}
             <button
               onClick={() => setAdding(true)}
-              className="flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-xl transition-all hover:opacity-90"
-              style={{ background: "#10b981", color: "#0f1117" }}
+              className="flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-xl transition-all hover:-translate-y-px"
+              style={{ background: `linear-gradient(135deg, ${theme.from}, ${theme.to})`, color: "#04110c", boxShadow: `0 6px 20px -6px ${theme.from}` }}
             >
               <Plus size={13} /> {t("add_holding")}
             </button>
@@ -357,7 +480,7 @@ export default function PortfolioPage() {
 
       {/* Empty state */}
       {isEmpty ? (
-        <div className="rounded-2xl p-10 text-center" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+        <div className="pz-glass rounded-2xl p-10 text-center">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"
             style={{ background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)" }}>
             <Sparkles size={26} className="text-emerald-400" />
@@ -379,7 +502,7 @@ export default function PortfolioPage() {
       ) : (
         <>
           {/* Holdings table */}
-          <div className="rounded-2xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+          <div className="pz-glass rounded-2xl overflow-hidden">
             <div className="px-5 py-3 flex items-center justify-between" style={{ borderBottom: "1px solid var(--border)" }}>
               <h2 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{t("holdings")}</h2>
               <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-secondary)" }}>
@@ -411,7 +534,12 @@ export default function PortfolioPage() {
                             {h.symbol.slice(0, 4)}
                           </div>
                           <div className="min-w-0">
-                            <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{h.symbol}</p>
+                            <p className="text-sm font-semibold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
+                              {h.symbol}
+                              {isAll && portfolios.length > 1 && (
+                                <span className="text-xs" title={portfolios.find((x) => x.id === h.portfolioId)?.name}>{emojiOf[h.portfolioId]}</span>
+                              )}
+                            </p>
                             <p className="text-[10px] truncate max-w-[180px]" style={{ color: "var(--text-secondary)" }}>{h.name}</p>
                           </div>
                         </div>
@@ -586,7 +714,21 @@ export default function PortfolioPage() {
         </>
       )}
 
-      <AddHoldingDialog open={adding} onClose={() => setAdding(false)} onAdded={loadPortfolio} />
+      <AddHoldingDialog
+        open={adding}
+        onClose={() => setAdding(false)}
+        onAdded={loadPortfolio}
+        portfolios={portfolios.map((x) => ({ id: x.id, name: x.name, emoji: x.emoji }))}
+        portfolioId={portfolio?.id ?? portfolios[0]?.id ?? ""}
+      />
+      <PortfolioDialog
+        open={dialog !== null}
+        initial={editingPortfolio ? { name: editingPortfolio.name, emoji: editingPortfolio.emoji, color: editingPortfolio.color } : null}
+        onClose={() => setDialog(null)}
+        onSave={savePortfolio}
+        onDelete={deletePortfolio}
+        canDelete={portfolios.length > 1}
+      />
     </div>
   )
 }
@@ -595,7 +737,7 @@ export default function PortfolioPage() {
 
 function AnalysisCard({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl p-5" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+    <div className="pz-glass rounded-2xl p-5">
       <div className="flex items-baseline justify-between mb-3">
         <h3 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{title}</h3>
         {subtitle && (

@@ -12,14 +12,11 @@ export async function POST() {
   const session = await auth()
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 })
 
-  const portfolio = await db.portfolio.findFirst({
-    where: { userId: session.user.id },
-    include: { holdings: true },
-  })
-  if (!portfolio) return NextResponse.json({ updated: 0 })
+  // Every portfolio the caller owns.
+  const holdings = await db.portfolioHolding.findMany({ where: { portfolio: { userId: session.user.id } } })
 
   let updated = 0
-  for (const h of portfolio.holdings) {
+  for (const h of holdings) {
     const known = lookupKnownSector(h.symbol)
     let sector = known.sector
     let region = known.region
@@ -43,5 +40,5 @@ export async function POST() {
     }
   }
 
-  return NextResponse.json({ updated, total: portfolio.holdings.length })
+  return NextResponse.json({ updated, total: holdings.length })
 }

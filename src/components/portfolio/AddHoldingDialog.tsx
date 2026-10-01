@@ -18,6 +18,8 @@ interface Props {
   open: boolean
   onClose: () => void
   onAdded: () => void
+  portfolios: { id: string; name: string; emoji: string }[]
+  portfolioId: string           // preselected target portfolio
 }
 
 const TYPE_FROM_SOURCE: Record<string, AssetType> = {
@@ -29,8 +31,10 @@ const TYPE_FROM_SOURCE: Record<string, AssetType> = {
   FUTURE:   "stock",
 }
 
-export default function AddHoldingDialog({ open, onClose, onAdded }: Props) {
+export default function AddHoldingDialog({ open, onClose, onAdded, portfolios, portfolioId }: Props) {
   const t = useTranslations("Portfolio")
+  const [target, setTarget]     = useState(portfolioId)
+  useEffect(() => { if (open) setTarget(portfolioId) }, [open, portfolioId])
   const [query, setQuery]       = useState("")
   const [results, setResults]   = useState<SearchResult[]>([])
   const [searching, setSearching] = useState(false)
@@ -87,6 +91,7 @@ export default function AddHoldingDialog({ open, onClose, onAdded }: Props) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          portfolioId: target,
           source: picked.source,
           id: picked.id,
           symbol: picked.symbol,
@@ -211,6 +216,27 @@ export default function AddHoldingDialog({ open, onClose, onAdded }: Props) {
                   {t("dlg_change")}
                 </button>
               </div>
+
+              {/* Target portfolio (only when there is a choice) */}
+              {portfolios.length > 1 && (
+                <div>
+                  <label className="text-[11px] font-semibold uppercase tracking-wide mb-1.5 block"
+                    style={{ color: "var(--text-secondary)" }}>
+                    {t("dlg_portfolio")}
+                  </label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {portfolios.map((pf) => (
+                      <button key={pf.id} type="button" onClick={() => setTarget(pf.id)} aria-pressed={target === pf.id}
+                        className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                        style={target === pf.id
+                          ? { background: "rgba(46,230,168,0.12)", color: "var(--text-primary)", border: "1px solid rgba(46,230,168,0.45)" }
+                          : { background: "var(--bg-base)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
+                        <span>{pf.emoji}</span>{pf.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Asset type selector */}
               <div>
