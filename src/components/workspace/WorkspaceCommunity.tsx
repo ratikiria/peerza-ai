@@ -127,9 +127,9 @@ export default function WorkspaceCommunity({ ticker }: Props) {
         <div className="px-3 pt-2.5 pb-1.5">
           <div className="flex items-center gap-1.5 h-1.5 rounded-full overflow-hidden"
             style={{ background: "var(--bg-base)" }}>
-            {bull > 0 && <div style={{ width: `${(bull/total)*100}%`, background: "#10b981" }} />}
-            {neu  > 0 && <div style={{ width: `${(neu/total)*100}%`,  background: "#eab308" }} />}
-            {bear > 0 && <div style={{ width: `${(bear/total)*100}%`, background: "#ef4444" }} />}
+            {bull > 0 && <div className="h-full" style={{ width: `${(bull/total)*100}%`, background: "#10b981" }} />}
+            {neu  > 0 && <div className="h-full" style={{ width: `${(neu/total)*100}%`,  background: "#eab308" }} />}
+            {bear > 0 && <div className="h-full" style={{ width: `${(bear/total)*100}%`, background: "#ef4444" }} />}
           </div>
           <div className="flex justify-between text-[9px] mt-1 tabular-nums"
             style={{ color: "var(--text-secondary)" }}>
