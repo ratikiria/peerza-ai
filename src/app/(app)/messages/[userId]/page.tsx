@@ -19,7 +19,7 @@ export default async function ChatPage({ params }: { params: Promise<{ userId: s
   if (!partner) notFound()
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-4rem)]">
+    <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-var(--chrome-h))]">
       {/* Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-gray-800 flex-shrink-0">
         <Link href="/messages" className="text-gray-500 hover:text-gray-300 transition-colors">

@@ -140,7 +140,7 @@ export default function FxWidget() {
   const baseMeta = CURRENCY_BY_CODE[base]
 
   return (
-    <div className="rounded-2xl p-4" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+    <div className="pz-glass rounded-2xl p-4">
       <div className="flex items-center justify-between mb-3 gap-2">
         <h3 className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
           <Coins size={14} className="text-emerald-400 flex-shrink-0" />

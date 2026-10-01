@@ -27,7 +27,10 @@
     "get_pro_cta": "PRO al · $10/ay",
     "footer": "Peerza.ai © 2026 · Gizlilik · Şartlar",
     "mobile_apps_title": "Mobil uygulamalar yakında",
-    "mobile_apps_soon_on": "Yakında"
+    "mobile_apps_soon_on": "Yakında",
+    "pro_card_title": "Peerza Pro",
+    "pro_card_text": "Sınırsız Aria dersi ve gelişmiş portföy analizi.",
+    "pro_card_cta": "Yükselt · $10/ay"
   },
   "Settings": {
     "title": "Ayarlar",
@@ -72,7 +75,16 @@
     "market_hours_label": "Piyasa Saatleri",
     "market_hours_text": "Her büyük borsanın (Hisseler) veya forex seansının şu anda açık mı kapalı mı olduğunu gösterir, bir sonraki açılış veya kapanışa geri sayım ile birlikte. Saatler her bölgenin yerel piyasa saatlerini ve yaz saati uygulamasını takip eder.",
     "sponsored_label": "Sponsorlu",
-    "sponsored_text": "Doğrulanmış markaların — aracı kurumlar, kurslar, araçlar ve diğer ortakların — tanıtım teklifleri. Yalnızca uyumluluk ve şeffaflık incelememizi geçen reklamları gösteriyoruz. Bir daha görmek istemediğin reklamı gizlemek için X'e dokun."
+    "sponsored_text": "Doğrulanmış markaların — aracı kurumlar, kurslar, araçlar ve diğer ortakların — tanıtım teklifleri. Yalnızca uyumluluk ve şeffaflık incelememizi geçen reklamları gösteriyoruz. Bir daha görmek istemediğin reklamı gizlemek için X'e dokun.",
+    "next_calendar_label": "Takvimde sıradaki",
+    "next_calendar_text": "Bu haftaki yüksek ve orta etkili ekonomik veriler (TÜFE, istihdam, faiz kararları). Saatler yerel saat diliminde gösterilir. Tam Ekonomik Takvim'i açmak için dokun.",
+    "next_calendar_empty": "Önümüzdeki 7 günde önemli bir veri yok.",
+    "top_callers_label": "En iyi Ranked Call'cular",
+    "top_callers_text": "Sonuçlanan Ranked Call'larda en yüksek Peerza Score'a sahip trader'lar. Ranked Call, gerçek fiyatlarla otomatik puanlanan, son tarihli bir işlem fikridir. İsabet oranı, sonuçlanan çağrılarda ulaşılan hedeflerdir.",
+    "top_callers_empty": "Henüz sonuçlanan Ranked Call yok. Tabloya girmek için bir tane paylaş.",
+    "top_callers_hit": "isabet",
+    "impact_high": "Yüksek",
+    "impact_med": "Orta"
   },
   "Portfolio": {
     "title": "Portföyüm",

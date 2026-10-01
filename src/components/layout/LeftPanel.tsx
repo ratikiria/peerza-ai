@@ -22,6 +22,8 @@ const shortcuts = [
 ] as const
 
 interface LeftPanelProps {
+  /** Highlights the matching shortcut (e.g. "/feed"). */
+  active?: string
   user: {
     id: string
     name: string
@@ -33,18 +35,17 @@ interface LeftPanelProps {
   }
 }
 
-export default async function LeftPanel({ user }: LeftPanelProps) {
+export default async function LeftPanel({ user, active }: LeftPanelProps) {
   const t = await getTranslations("Nav")
   return (
     <aside
       className="w-64 flex-shrink-0 hidden lg:block sticky overflow-y-auto"
-      style={{ top: "64px", height: "calc(100vh - 64px)", scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
+      style={{ top: "var(--chrome-h)", height: "calc(100vh - var(--chrome-h))", scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
     >
       <div className="space-y-3 py-4 pb-8">
         {/* Profile mini card */}
         <div
-          className="rounded-2xl overflow-hidden"
-          style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}
+          className="pz-glass rounded-2xl overflow-hidden"
         >
           {/* Banner links to profile — uses cover photo if set */}
           <Link href={`/profile/${user.username}`} className="block h-16 hover:opacity-90 transition-opacity overflow-hidden"
@@ -87,22 +88,31 @@ export default async function LeftPanel({ user }: LeftPanelProps) {
           </div>
         </div>
 
-        {/* Navigation shortcuts */}
-        <div
-          className="rounded-2xl p-2"
-          style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}
-        >
+        {/* Navigation shortcuts — Glass Terminal: floating list with icon tiles,
+            active item gets a filled emerald tile + glow (no card around it). */}
+        <nav className="flex flex-col gap-0.5">
           {shortcuts.map((item) => {
             const Icon = item.icon
             const badge = "badge" in item ? item.badge : undefined
+            const on = item.href === active
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors hover:bg-[var(--bg-base)]"
-                style={{ color: "var(--text-secondary)" }}
+                aria-current={on ? "page" : undefined}
+                className="flex items-center gap-3 px-2.5 py-2 rounded-xl text-sm font-semibold transition-colors hover:bg-[var(--glass)]"
+                style={on
+                  ? { color: "var(--text-primary)", background: "rgba(46,230,168,0.10)" }
+                  : { color: "var(--text-secondary)" }}
               >
-                <Icon size={17} className="flex-shrink-0" />
+                <span
+                  className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={on
+                    ? { background: "linear-gradient(135deg, #2ee6a8, #22c3ee)", color: "#04110c", boxShadow: "0 0 14px var(--glow)" }
+                    : { background: "var(--glass)", border: "1px solid var(--glass-border)" }}
+                >
+                  <Icon size={15} />
+                </span>
                 <span>{t(item.tKey)}</span>
                 {badge && (
                   <span className="ml-auto text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
@@ -112,7 +122,22 @@ export default async function LeftPanel({ user }: LeftPanelProps) {
               </Link>
             )
           })}
-        </div>
+        </nav>
+
+        {/* Pro upsell */}
+        {!user.isPro && (
+          <div className="pz-glass rounded-2xl p-4">
+            <p className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>{t("pro_card_title")}</p>
+            <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>{t("pro_card_text")}</p>
+            <Link
+              href="/pro"
+              className="mt-3 inline-flex items-center justify-center rounded-lg px-3.5 py-2 text-xs font-bold transition-transform hover:-translate-y-px"
+              style={{ background: "linear-gradient(135deg, #2ee6a8, #22c3ee)", color: "#04110c", boxShadow: "0 4px 18px var(--glow)" }}
+            >
+              {t("pro_card_cta")}
+            </Link>
+          </div>
+        )}
 
         {/* Mobile apps — coming soon */}
         <div

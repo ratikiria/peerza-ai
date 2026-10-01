@@ -110,7 +110,7 @@ export default function Navbar({ user }: NavbarProps) {
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-3 sm:px-4 gap-2 sm:gap-3"
-      style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border)" }}
+      style={{ background: "var(--nav-bg)", borderBottom: "1px solid var(--glass-border)", WebkitBackdropFilter: "blur(14px) saturate(140%)", backdropFilter: "blur(14px) saturate(140%)" }}
     >
       {/* Logo */}
       <div className="flex items-center gap-2 flex-shrink-0">

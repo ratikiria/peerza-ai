@@ -187,7 +187,7 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
     return (
       <div className="space-y-4">
         {/* Stories bar skeleton — row of circular bubbles */}
-        <div className="rounded-2xl p-4 animate-pulse" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+        <div className="pz-glass rounded-2xl p-4 animate-pulse">
           <div className="flex gap-4">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="flex flex-col items-center gap-1.5 flex-shrink-0">
@@ -199,7 +199,7 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
         </div>
 
         {/* Composer skeleton — avatar + input row */}
-        <div className="rounded-2xl p-4 animate-pulse" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+        <div className="pz-glass rounded-2xl p-4 animate-pulse">
           <div className="flex gap-3 items-center">
             <div className="w-10 h-10 rounded-full" style={{ background: "var(--bg-elevated)" }} />
             <div className="flex-1 h-9 rounded-xl" style={{ background: "var(--bg-elevated)" }} />
@@ -215,7 +215,7 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
 
         {/* Post card skeletons — header + body + actions */}
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="rounded-2xl p-4 animate-pulse" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+          <div key={i} className="pz-glass rounded-2xl p-4 animate-pulse">
             {/* Header: avatar + name + time */}
             <div className="flex gap-3 mb-4">
               <div className="w-10 h-10 rounded-full flex-shrink-0" style={{ background: "var(--bg-elevated)" }} />
@@ -271,8 +271,8 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
             onClick={() => setSelected([])}
             className="flex-shrink-0 text-xs font-semibold px-4 py-2 rounded-xl transition-all"
             style={selected.length === 0
-              ? { background: "#10b981", color: "#0f1117" }
-              : { background: "var(--bg-card)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+              ? { background: "linear-gradient(135deg, #2ee6a8, #22c3ee)", color: "#04110c", boxShadow: "0 4px 18px var(--glow)" }
+              : { background: "var(--glass)", color: "var(--text-secondary)", border: "1px solid var(--glass-border)" }}
           >
             All
           </button>
@@ -287,7 +287,7 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
                 className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl transition-all"
                 style={active
                   ? { background: tint + "22", color: ink(tint), border: `1px solid ${tint}66` }
-                  : { background: "var(--bg-card)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+                  : { background: "var(--glass)", color: "var(--text-secondary)", border: "1px solid var(--glass-border)" }}
               >
                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: active ? tint : "var(--text-secondary)" }} />
                 {label}
@@ -378,8 +378,7 @@ function EmptyFeedState({ variant, tickerFilter, selectedCount, userName, onClea
   if (variant === "ticker") {
     return (
       <div
-        className="rounded-2xl p-10 text-center"
-        style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}
+        className="pz-glass rounded-2xl p-10 text-center"
       >
         <div
           className="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center"
@@ -408,8 +407,7 @@ function EmptyFeedState({ variant, tickerFilter, selectedCount, userName, onClea
   if (variant === "topic") {
     return (
       <div
-        className="rounded-2xl p-10 text-center"
-        style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}
+        className="pz-glass rounded-2xl p-10 text-center"
       >
         <div
           className="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center"
@@ -449,8 +447,7 @@ function EmptyFeedState({ variant, tickerFilter, selectedCount, userName, onClea
   const firstName = userName.split(" ")[0] || "there"
   return (
     <div
-      className="rounded-2xl p-10 text-center relative overflow-hidden"
-      style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}
+      className="pz-glass rounded-2xl p-10 text-center relative overflow-hidden"
     >
       {/* Subtle gradient orb behind the icon */}
       <div

@@ -27,7 +27,10 @@
     "get_pro_cta": "Obtén PRO · $10/mes",
     "footer": "Peerza.ai © 2026 · Privacidad · Términos",
     "mobile_apps_title": "Apps móviles próximamente",
-    "mobile_apps_soon_on": "Pronto en"
+    "mobile_apps_soon_on": "Pronto en",
+    "pro_card_title": "Peerza Pro",
+    "pro_card_text": "Lecciones ilimitadas con Aria y análisis avanzado de cartera.",
+    "pro_card_cta": "Mejorar · $10/mes"
   },
   "Settings": {
     "title": "Configuración",
@@ -72,7 +75,16 @@
     "market_hours_label": "Horarios de mercado",
     "market_hours_text": "Muestra si cada bolsa principal (Acciones) o sesión de forex está actualmente abierta o cerrada, con cuenta regresiva hasta la próxima apertura o cierre. Los horarios siguen las horas de mercado locales de cada región y el horario de verano.",
     "sponsored_label": "Patrocinado",
-    "sponsored_text": "Ofertas promocionadas de marcas verificadas — brókers, cursos, herramientas y otros socios. Solo mostramos anuncios que pasan nuestra revisión de cumplimiento y transparencia. Toca la X para ocultar un anuncio que no quieras volver a ver."
+    "sponsored_text": "Ofertas promocionadas de marcas verificadas — brókers, cursos, herramientas y otros socios. Solo mostramos anuncios que pasan nuestra revisión de cumplimiento y transparencia. Toca la X para ocultar un anuncio que no quieras volver a ver.",
+    "next_calendar_label": "Próximo en el calendario",
+    "next_calendar_text": "Los próximos datos económicos de impacto alto y medio de esta semana (IPC, empleo, decisiones de tipos). Las horas se muestran en tu zona horaria. Toca para abrir el Calendario Económico completo.",
+    "next_calendar_empty": "No hay publicaciones importantes en los próximos 7 días.",
+    "top_callers_label": "Mejores Ranked Calls",
+    "top_callers_text": "Traders con el mejor Peerza Score en Ranked Calls resueltas: ideas de trading con fecha límite que se puntúan automáticamente con precios reales. La tasa de acierto son los objetivos alcanzados sobre las llamadas resueltas.",
+    "top_callers_empty": "Aún no hay Ranked Calls resueltas. Publica una para entrar en la tabla.",
+    "top_callers_hit": "acierto",
+    "impact_high": "Alto",
+    "impact_med": "Medio"
   },
   "Portfolio": {
     "title": "Mi portafolio",

@@ -2,6 +2,7 @@
 
 import { ink } from "@/lib/ink"
 import { useState, useEffect, useRef } from "react"
+import { createPortal } from "react-dom"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Send, User, Smile, ImageIcon, Film, X, Heart, MessageCircle, Pencil, Check, Trash2 } from "lucide-react"
@@ -355,8 +356,9 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
       })()}
     </div>
 
-    {/* ── Fixed-position pickers (escape overflow:hidden containers) ── */}
-    {showEmoji && emojiData && pickerPos && (
+    {/* ── Fixed-position pickers, portaled: PostCard is a glass card (backdrop-filter),
+         which would otherwise become the containing block for position:fixed ── */}
+    {showEmoji && emojiData && pickerPos && createPortal(
       <div
         ref={emojiRef}
         style={{ position: "fixed", top: pickerPos.top, left: pickerPos.left, zIndex: 9999 }}
@@ -379,10 +381,11 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
             style={{ width: "100%", height: "100%", border: "none" } as any}
           />
         </div>
-      </div>
+      </div>,
+      document.body,
     )}
 
-    {showGif && pickerPos && (
+    {showGif && pickerPos && createPortal(
       <div
         ref={gifRef}
         style={{ position: "fixed", top: pickerPos.top, left: pickerPos.left, zIndex: 9999 }}
@@ -391,7 +394,8 @@ export default function InlineComments({ postId, currentUser, onCommentAdded }: 
           onSelect={(url) => { setImageUrl(url); setShowGif(false) }}
           onClose={() => setShowGif(false)}
         />
-      </div>
+      </div>,
+      document.body,
     )}
     </>
   )

@@ -329,7 +329,7 @@ export default function ToastHost() {
       <div
         aria-live="polite"
         aria-relevant="additions"
-        className="fixed top-20 right-4 z-[80] flex flex-col gap-2 pointer-events-none"
+        className="fixed top-[calc(var(--chrome-h)+16px)] right-4 z-[80] flex flex-col gap-2 pointer-events-none"
         style={{ maxWidth: 360 }}
       >
         {permission === "default" && !hideBanner && (

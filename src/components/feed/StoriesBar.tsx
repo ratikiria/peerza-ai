@@ -120,34 +120,32 @@ export default function StoriesBar({ currentUser }: StoriesBarProps) {
 
   return (
     <>
-      <div
-        className="rounded-2xl p-4"
-        style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}
-      >
-        <div className="flex gap-4 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+      {/* Glass Terminal: stories float on the backdrop as rounded tiles, no card */}
+      <div className="px-0.5 py-1">
+        <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
 
           {/* ── Your story bubble ── */}
           <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
             <div className="relative">
               {/* Avatar ring — green if has any active stories, dashed if not */}
               <div
-                className="w-14 h-14 rounded-full flex items-center justify-center overflow-hidden cursor-pointer"
+                className="w-16 h-16 rounded-[20px] flex items-center justify-center overflow-hidden cursor-pointer"
                 style={{
-                  padding: "2px",
+                  padding: "2.5px",
                   background: ownPreview
-                    ? "linear-gradient(135deg, #10b981, #3b82f6)"
+                    ? "conic-gradient(from 200deg, #2ee6a8, #22c3ee, #2ee6a8)"
                     : "var(--border)",
                 }}
                 onClick={handleYourStoryClick}
               >
                 <div
-                  className="w-full h-full rounded-full flex items-center justify-center overflow-hidden"
+                  className="w-full h-full rounded-[18px] flex items-center justify-center overflow-hidden"
                   style={{ background: "var(--bg-base)" }}
                 >
                   {ownPreview ? (
-                    <img src={ownPreview.mediaUrl} alt="Your story" className="w-full h-full object-cover rounded-full" />
+                    <img src={ownPreview.mediaUrl} alt="Your story" className="w-full h-full object-cover rounded-[18px]" />
                   ) : avatarUrl ? (
-                    <img src={avatarUrl} alt={currentUser.name} className="w-full h-full object-cover rounded-full" />
+                    <img src={avatarUrl} alt={currentUser.name} className="w-full h-full object-cover rounded-[18px]" />
                   ) : (
                     <User size={20} className="text-emerald-400" />
                   )}
@@ -159,7 +157,7 @@ export default function StoriesBar({ currentUser }: StoriesBarProps) {
                   click handler (which opens the viewer when stories exist) doesn't fire. */}
               <div
                 className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center cursor-pointer transition-all hover:scale-110"
-                style={{ background: "#10b981", border: "2px solid var(--bg-card)" }}
+                style={{ background: "#10b981", border: "2px solid var(--bg-base)" }}
                 onClick={(e) => { e.stopPropagation(); handleAddStory() }}
                 title="Add to your story"
               >
@@ -167,7 +165,7 @@ export default function StoriesBar({ currentUser }: StoriesBarProps) {
               </div>
             </div>
             <span
-              className="text-[10px] font-medium truncate w-14 text-center cursor-pointer"
+              className="text-[10px] font-medium truncate w-16 text-center cursor-pointer"
               style={{ color: "var(--text-secondary)" }}
               onClick={handleYourStoryClick}
             >
@@ -188,26 +186,26 @@ export default function StoriesBar({ currentUser }: StoriesBarProps) {
                 onClick={() => handleAuthorClick(group)}
               >
                 <div
-                  className="w-14 h-14 rounded-full"
+                  className="w-16 h-16 rounded-[20px]"
                   style={{
-                    padding: "2px",
+                    padding: "2.5px",
                     background: !group.hasUnviewed
                       ? "var(--border)"
-                      : "linear-gradient(135deg, #10b981 0%, #6366f1 100%)",
+                      : "conic-gradient(from 200deg, #2ee6a8, #22c3ee, #2ee6a8)",
                   }}
                 >
                   <div
-                    className="w-full h-full rounded-full flex items-center justify-center overflow-hidden"
+                    className="w-full h-full rounded-[18px] flex items-center justify-center overflow-hidden"
                     style={{ background: "var(--bg-base)" }}
                   >
                     <img
                       src={preview.mediaUrl}
                       alt={`${group.author.name}'s story`}
-                      className="w-full h-full object-cover rounded-full"
+                      className="w-full h-full object-cover rounded-[18px]"
                     />
                   </div>
                 </div>
-                <span className="text-[10px] font-medium truncate w-14 text-center" style={{ color: "var(--text-secondary)" }}>
+                <span className="text-[10px] font-medium truncate w-16 text-center" style={{ color: "var(--text-secondary)" }}>
                   {group.author.name.split(" ")[0]}
                   {group.stories.length > 1 && (
                     <span style={{ color: ink("#10b981") }}> · {group.stories.length}</span>

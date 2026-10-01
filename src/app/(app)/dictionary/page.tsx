@@ -30,7 +30,7 @@ export default async function DictionaryPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="flex gap-5">
-        <LeftPanel user={freshUser} />
+        <LeftPanel user={freshUser} active="/dictionary" />
         <div className="flex-1 min-w-0">
           <DictionaryClient />
         </div>

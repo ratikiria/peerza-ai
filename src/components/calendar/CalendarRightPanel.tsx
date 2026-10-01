@@ -65,7 +65,7 @@ export default function CalendarRightPanel() {
   return (
     <aside
       className="w-72 flex-shrink-0 hidden xl:block sticky overflow-y-auto"
-      style={{ top: "64px", height: "calc(100vh - 64px)", scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
+      style={{ top: "var(--chrome-h)", height: "calc(100vh - var(--chrome-h))", scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
     >
       <div className="space-y-3 py-4 pb-8">
 

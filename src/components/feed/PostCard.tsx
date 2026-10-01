@@ -26,7 +26,7 @@ const POSITION_META: Record<string, { label: string; emoji: string; color: strin
   exited:   { label: "Just exited",  emoji: "⬅️", color: "#fb923c" },
   paper:    { label: "Paper",        emoji: "📝", color: "#9ca3af" },
 }
-import { formatRelativeTime } from "@/lib/utils"
+import { cn, formatRelativeTime } from "@/lib/utils"
 import InlineComments from "@/components/posts/InlineComments"
 
 const REACTIONS = [
@@ -269,8 +269,10 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
 
   return (
     <article
-      className="rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/30 hover:border-emerald-500/20"
-      style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}
+      className={cn(
+        "pz-glass rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/30 hover:border-emerald-500/25",
+        post.rankedDeadline && post.analysis && "pz-featured",
+      )}
     >
 
       {/* Header */}
@@ -509,7 +511,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
         const outcomePct = post.outcomeReturnPct ?? null
         return (
           <div className="px-4 pb-3">
-            <div className="rounded-xl p-3" style={{ background: "var(--bg-base)", border: `1px solid ${accentColor}33` }}>
+            <div className="rounded-xl p-3" style={{ background: "var(--idea-bg)", border: `1px solid ${accentColor}33` }}>
               {/* Header row */}
               <div className="flex items-center justify-between mb-2 gap-2">
                 <div className="flex items-center gap-2 min-w-0">
@@ -522,7 +524,7 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
                       onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }}
                     />
                   )}
-                  <span className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>
+                  <span className="font-mono text-sm font-bold tracking-wide" style={{ color: "var(--text-primary)" }}>
                     ${a.ticker}
                   </span>
                   <span className="text-[10px] px-1.5 py-0.5 rounded font-medium"
@@ -562,13 +564,13 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
                   {a.entry && (
                     <div>
                       <p className="text-[10px] mb-0.5" style={{ color: "var(--text-secondary)" }}>Entry</p>
-                      <p className="text-xs font-semibold" style={{ color: "var(--text-primary)" }}>{a.entry}</p>
+                      <p className="font-mono text-xs font-semibold tabular-nums" style={{ color: "var(--text-primary)" }}>{a.entry}</p>
                     </div>
                   )}
                   {a.target && (
                     <div>
                       <p className="text-[10px] mb-0.5 text-emerald-400">Target 🎯</p>
-                      <p className="text-xs font-semibold text-emerald-400">{a.target}</p>
+                      <p className="font-mono text-xs font-semibold tabular-nums text-emerald-400">{a.target}</p>
                     </div>
                   )}
                 </div>
@@ -580,16 +582,28 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
               {(a.conviction || a.catalyst || a.position) && (
                 <div className="flex items-center flex-wrap gap-2 mt-2 pt-2" style={{ borderTop: `1px solid ${accentColor}22` }}>
                   {a.conviction != null && (
-                    <div className="flex items-center gap-0.5" title={`Conviction ${a.conviction}/5`}>
-                      {[1, 2, 3, 4, 5].map((n) => {
-                        const filled = n <= (a.conviction ?? 0)
-                        return (
-                          <Star key={n} size={11}
-                            fill={filled ? "#eab308" : "transparent"}
-                            stroke={filled ? "#eab308" : "var(--text-secondary)"}
-                            strokeWidth={2} />
-                        )
-                      })}
+                    <div
+                      className="flex items-center gap-1.5"
+                      title={`Conviction ${a.conviction}/5: how confident the author is in this idea (self-rated)`}
+                      aria-label={`Conviction ${a.conviction} out of 5`}
+                    >
+                      <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-secondary)" }}>
+                        Conviction
+                      </span>
+                      <span className="flex items-center gap-0.5" aria-hidden="true">
+                        {[1, 2, 3, 4, 5].map((n) => {
+                          const filled = n <= (a.conviction ?? 0)
+                          return (
+                            <Star key={n} size={11}
+                              fill={filled ? "#eab308" : "transparent"}
+                              stroke={filled ? "#eab308" : "var(--text-secondary)"}
+                              strokeWidth={2} />
+                          )
+                        })}
+                      </span>
+                      <span className="text-[10px] font-mono tabular-nums" style={{ color: "var(--text-secondary)" }} aria-hidden="true">
+                        {a.conviction}/5
+                      </span>
                     </div>
                   )}
                   {a.catalyst && CATALYST_META[a.catalyst] && (

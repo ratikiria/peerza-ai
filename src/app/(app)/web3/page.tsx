@@ -31,7 +31,7 @@ export default async function Page() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="flex gap-5">
-        <LeftPanel user={freshUser} />
+        <LeftPanel user={freshUser} active="/web3" />
         <div className="flex-1 min-w-0">
           <Web3Page />
         </div>

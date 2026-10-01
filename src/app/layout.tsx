@@ -1,13 +1,26 @@
 import type { Metadata } from "next"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale, getMessages } from "next-intl/server"
-import { Noto_Sans_Georgian } from "next/font/google"
+import { JetBrains_Mono, Noto_Sans_Georgian, Sora } from "next/font/google"
 import "./globals.css"
 import Providers from "@/components/Providers"
 
 const notoGeorgian = Noto_Sans_Georgian({
   subsets: ["georgian"],
   variable: "--font-georgian",
+  display: "swap",
+})
+
+// Glass Terminal type pair: Sora for UI, JetBrains Mono for prices and tickers.
+const sora = Sora({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-sora",
+  display: "swap",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
   display: "swap",
 })
 
@@ -35,7 +48,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport = {
-  themeColor: "#0f1117",
+  themeColor: "#070b12",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -66,7 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={`h-full ${notoGeorgian.variable}`} suppressHydrationWarning>
+    <html lang={locale} className={`h-full ${notoGeorgian.variable} ${sora.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>

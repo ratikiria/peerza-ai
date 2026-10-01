@@ -147,7 +147,7 @@ export default function Workspace() {
     <div
       className="flex flex-col"
       style={{
-        height: "calc(100vh - 64px)",
+        height: "calc(100vh - var(--chrome-h))",
         background: "var(--bg-base)",
       }}
     >

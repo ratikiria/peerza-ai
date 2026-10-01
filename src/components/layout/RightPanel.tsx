@@ -8,6 +8,8 @@ import { useTranslations } from "next-intl"
 import { TrendingUp, TrendingDown, User, Zap, Pencil, X, Plus, Check, Search, Loader2, GripVertical, Flame, ArrowUp, ArrowDown, Minus, Star, LayoutGrid, RotateCcw, EyeOff } from "lucide-react"
 import FollowButton from "@/components/users/FollowButton"
 import MarketHoursWidget from "@/components/market/MarketHoursWidget"
+import NextOnCalendarWidget from "@/components/layout/NextOnCalendarWidget"
+import TopCallersWidget from "@/components/layout/TopCallersWidget"
 import FxWidget from "@/components/layout/FxWidget"
 import WidgetHelp from "@/components/ui/WidgetHelp"
 import SidebarAdCard from "@/components/ads/SidebarAdCard"
@@ -427,20 +429,23 @@ const TRENDING_WINDOWS: { key: TrendingWindow; label: string }[] = [
 
 // ─── Widget layout (drag-to-reorder + persisted order) ────────────────────────
 
-type WidgetId = "fear-greed" | "prices" | "movers" | "market-hours" | "most-analyzed" | "people" | "fx" | "sponsored"
+type WidgetId = "fear-greed" | "prices" | "movers" | "calendar" | "callers" | "market-hours" | "most-analyzed" | "people" | "fx" | "sponsored"
 
-const DEFAULT_LAYOUT: WidgetId[] = ["fear-greed", "prices", "fx", "sponsored", "movers", "market-hours", "most-analyzed", "people"]
+const DEFAULT_LAYOUT: WidgetId[] = ["movers", "calendar", "callers", "fear-greed", "prices", "fx", "sponsored", "market-hours", "most-analyzed", "people"]
 const WIDGET_LABELS: Record<WidgetId, string> = {
   "fear-greed":   "Fear & Greed",
   "prices":       "Market Prices",
   "fx":           "Currencies",
   "movers":       "Top Movers",
+  "calendar":     "Next on Calendar",
+  "callers":      "Top Ranked Callers",
   "market-hours": "Market Hours",
   "most-analyzed": "Most Analyzed",
   "people":       "People to Follow",
   "sponsored":    "Sponsored",
 }
-const LAYOUT_KEY = "peerza-rightpanel-layout-v1"
+// v2: Glass Terminal redesign reordered the defaults (movers, calendar, callers first).
+const LAYOUT_KEY = "peerza-rightpanel-layout-v2"
 const HIDDEN_KEY = "peerza-rightpanel-hidden-v1"
 
 function loadLayout(): WidgetId[] {
@@ -690,6 +695,8 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
     "prices":       () => renderPrices(),
     "fx":           () => <FxWidget />,
     "movers":       () => renderMovers(),
+    "calendar":     () => <NextOnCalendarWidget />,
+    "callers":      () => <TopCallersWidget />,
     "market-hours": () => <MarketHoursWidget />,
     "most-analyzed": () => renderMostAnalyzed(),
     "people":       () => renderPeople(),
@@ -719,7 +726,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   }
 
   function renderFearGreed() { return (
-        <div className="rounded-2xl p-4" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+        <div className="pz-glass rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3 gap-2">
             <h3 className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
               <span className="flex-shrink-0">😱</span>
@@ -773,7 +780,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   ) }
 
   function renderPrices() { return (
-        <div className="rounded-2xl p-4" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+        <div className="pz-glass rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3 gap-2">
             <h3 className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
               <Zap size={14} className="text-emerald-400 flex-shrink-0" />
@@ -874,7 +881,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   ) }
 
   function renderMovers() { return (
-        <div className="rounded-2xl p-4" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+        <div className="pz-glass rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3 gap-2">
             <h3 className="text-sm font-semibold flex items-baseline gap-1 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
               <span className="flex-shrink-0">🚀</span>
@@ -928,7 +935,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
                         <p className="text-xs font-semibold truncate" style={{ color: "var(--text-primary)" }}>{m.symbol}</p>
                         <p className="text-[9px] truncate" style={{ color: "var(--text-secondary)" }}>{m.name}</p>
                       </div>
-                      <span className="text-[10px] font-bold text-emerald-400 tabular-nums flex-shrink-0">+{m.change}%</span>
+                      <span className={`text-[10px] font-bold tabular-nums flex-shrink-0 ${m.change >= 0 ? "text-emerald-400" : "text-rose-400"}`}>{m.change > 0 ? "+" : ""}{m.change}%</span>
                     </div>
                   ))}
                 </div>
@@ -942,7 +949,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
                         <p className="text-xs font-semibold truncate" style={{ color: "var(--text-primary)" }}>{m.symbol}</p>
                         <p className="text-[9px] truncate" style={{ color: "var(--text-secondary)" }}>{m.name}</p>
                       </div>
-                      <span className="text-[10px] font-bold text-rose-400 tabular-nums flex-shrink-0">{m.change}%</span>
+                      <span className={`text-[10px] font-bold tabular-nums flex-shrink-0 ${m.change >= 0 ? "text-emerald-400" : "text-rose-400"}`}>{m.change > 0 ? "+" : ""}{m.change}%</span>
                     </div>
                   ))}
                 </div>
@@ -953,7 +960,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   ) }
 
   function renderMostAnalyzed() { return (
-        <div className="rounded-2xl p-4" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+        <div className="pz-glass rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3 gap-2">
             <h3 className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
               <Flame size={14} className="text-orange-400 flex-shrink-0" />
@@ -1053,7 +1060,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   function renderPeople() {
     if (suggested.length === 0) return null
     return (
-          <div className="rounded-2xl p-4" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+          <div className="pz-glass rounded-2xl p-4">
             <div className="flex items-center justify-between mb-3 gap-2">
               <h3 className="text-sm font-semibold min-w-0 flex-1 truncate" style={{ color: "var(--text-primary)" }}>{t("people_to_follow_label")}</h3>
               <div className="flex-shrink-0">
@@ -1089,7 +1096,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   return (
     <aside
       className="w-72 flex-shrink-0 hidden xl:block sticky overflow-y-auto"
-      style={{ top: "64px", height: "calc(100vh - 64px)", scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
+      style={{ top: "var(--chrome-h)", height: "calc(100vh - var(--chrome-h))", scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
     >
       <div className="space-y-4 py-4 pb-8">
         {/* Layout customization toolbar */}

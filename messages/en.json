@@ -27,7 +27,10 @@
     "get_pro_cta": "Get Pro · $10/mo",
     "footer": "Peerza.ai © 2026 · Privacy · Terms",
     "mobile_apps_title": "Mobile apps coming soon",
-    "mobile_apps_soon_on": "Coming to"
+    "mobile_apps_soon_on": "Coming to",
+    "pro_card_title": "Peerza Pro",
+    "pro_card_text": "Unlimited Aria lessons and advanced portfolio analysis.",
+    "pro_card_cta": "Upgrade · $10/mo"
   },
   "Settings": {
     "title": "Settings",
@@ -72,7 +75,16 @@
     "market_hours_label": "Market Hours",
     "market_hours_text": "Shows whether each major exchange (Stocks) or forex session is currently open or closed, with countdowns to the next open or close. Times follow each region's local market hours and DST.",
     "sponsored_label": "Sponsored",
-    "sponsored_text": "Promoted offers from verified brands — brokers, courses, tools and other partners. We only show ads that pass our review for compliance and disclosure. Tap the X to hide an ad you don't want to see again."
+    "sponsored_text": "Promoted offers from verified brands — brokers, courses, tools and other partners. We only show ads that pass our review for compliance and disclosure. Tap the X to hide an ad you don't want to see again.",
+    "next_calendar_label": "Next on calendar",
+    "next_calendar_text": "The next high- and medium-impact economic releases this week (CPI, jobs, rate decisions). Times are shown in your local time zone. Tap to open the full Economic Calendar.",
+    "next_calendar_empty": "No major releases in the next 7 days.",
+    "top_callers_label": "Top ranked callers",
+    "top_callers_text": "Traders with the best Peerza Score from resolved Ranked Calls, which are trade ideas with a deadline that are scored automatically against real prices. Hit rate is targets hit out of resolved calls.",
+    "top_callers_empty": "No ranked calls resolved yet. Post one to get on the board.",
+    "top_callers_hit": "hit",
+    "impact_high": "High",
+    "impact_med": "Med"
   },
   "Portfolio": {
     "title": "My Portfolio",

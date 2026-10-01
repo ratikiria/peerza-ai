@@ -138,7 +138,7 @@ export default function TradeDrawer({ open, onClose, tv }: Props) {
       <div
         className="fixed inset-0 z-40 transition-opacity duration-300"
         style={{
-          top: 64,
+          top: "var(--chrome-h)",
           background: "rgba(0,0,0,0.35)",
           backdropFilter: "blur(2px)",
           opacity: open ? 1 : 0,
@@ -154,8 +154,8 @@ export default function TradeDrawer({ open, onClose, tv }: Props) {
         aria-hidden={!open}
         className="fixed right-0 z-50 flex flex-col transition-transform duration-300 ease-out"
         style={{
-          top: 64,
-          height: "calc(100vh - 64px)",
+          top: "var(--chrome-h)",
+          height: "calc(100vh - var(--chrome-h))",
           width: "min(400px, 100vw)",
           background: "var(--bg-card)",
           borderLeft: "1px solid var(--border)",

@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import Navbar from "@/components/layout/Navbar"
+import TickerTape from "@/components/layout/TickerTape"
 import IncomingCallOverlay from "@/components/calls/IncomingCallOverlay"
 import ChatDock from "@/components/chat/ChatDock"
 import CommandPalette from "@/components/search/CommandPalette"
@@ -31,9 +32,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const needsVerification = !fresh?.emailVerifiedAt
 
   return (
-    <div className="min-h-screen" style={{ background: "var(--bg-base)" }}>
+    <div className="min-h-screen isolate" style={{ background: "var(--bg-base)" }}>
+      <div className="pz-backdrop" aria-hidden="true" />
       <Navbar user={navUser} />
-      <main className="pt-16">
+      <TickerTape />
+      <main style={{ paddingTop: "var(--chrome-h)" }}>
         {needsVerification && fresh?.email && <VerifyEmailBanner email={fresh.email} />}
         {children}
       </main>

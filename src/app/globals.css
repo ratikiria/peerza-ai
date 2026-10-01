@@ -2,27 +2,66 @@
 
 :root,
 [data-theme="dark"] {
-  --bg-base: #0f1117;
-  --bg-card: #16181f;
-  --bg-elevated: #1e2130;
-  --border: #2a2d3a;
-  --text-primary: #f0f2f5;
-  --text-secondary: #8a8d9a;
+  --bg-base: #070b12;
+  --bg-card: #101722;
+  --bg-elevated: #172131;
+  --border: #1d2837;
+  --text-primary: #e8f1f8;
+  --text-secondary: #7f8ea3;
   --accent: #10b981;
-  --scrollbar: #2a2d3a;
+  --accent-hi: #2ee6a8;
+  --accent-2: #22c3ee;
+  --scrollbar: #243142;
+
+  /* Glass Terminal surfaces (feed redesign, Option D) */
+  --glass: rgba(26, 37, 54, 0.5);
+  --glass-border: rgba(148, 190, 220, 0.14);
+  --glass-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+  --glow: rgba(46, 230, 168, 0.22);
+  --glow-2: rgba(34, 195, 238, 0.13);
+  --grid-line: rgba(148, 190, 220, 0.075);
+  --nav-bg: rgba(7, 11, 18, 0.72);
+  --tape-bg: rgba(7, 11, 18, 0.7);
+  --idea-bg: rgba(0, 0, 0, 0.25);
+  --up: #2ee6a8;
+  --down: #ff5c7a;
   color-scheme: dark;
 }
 
 [data-theme="light"] {
-  --bg-base: #f7f8fb;
+  --bg-base: #eef4f7;
   --bg-card: #ffffff;
-  --bg-elevated: #f0f2f7;
-  --border: #e2e5ec;
-  --text-primary: #15171c;
-  --text-secondary: #5b6171;
+  --bg-elevated: #e8eff4;
+  --border: #d7e1e9;
+  --text-primary: #0c1a24;
+  --text-secondary: #5a6b7a;
   --accent: #059669;
-  --scrollbar: #c8cdd6;
+  --accent-hi: #059b72;
+  --accent-2: #0891b2;
+  --scrollbar: #c3cfd9;
+
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(10, 50, 80, 0.10);
+  --glass-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 18px 40px -24px rgba(12, 40, 60, 0.35);
+  --glow: rgba(5, 155, 114, 0.22);
+  --glow-2: rgba(8, 145, 178, 0.12);
+  --grid-line: rgba(10, 50, 80, 0.06);
+  --nav-bg: rgba(255, 255, 255, 0.72);
+  --tape-bg: rgba(255, 255, 255, 0.7);
+  --idea-bg: rgba(255, 255, 255, 0.6);
+  --up: #04875f;
+  --down: #d6284b;
   color-scheme: light;
+}
+
+:root {
+  --nav-h: 64px;
+  --tape-h: 32px;
+  --chrome-h: calc(var(--nav-h) + var(--tape-h));
+}
+
+@theme inline {
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 html, body {
@@ -32,7 +71,79 @@ html, body {
 body {
   background: var(--bg-base);
   color: var(--text-primary);
-  font-family: var(--font-georgian), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Sora has no Georgian glyphs; Noto Sans Georgian picks those up per-glyph. */
+  font-family: var(--font-sora), var(--font-georgian), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ── Glass Terminal (feed redesign, Option D) ───────────────────────────────
+   In the components layer so Tailwind utilities on the same element
+   (padding, hover borders, …) still win. */
+@layer components {
+  .pz-glass {
+    position: relative;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+  /* backdrop-filter makes every card its own stacking context, so a dropdown
+     inside one would open *under* the next card. Lift the active card. */
+  .pz-glass:hover,
+  .pz-glass:focus-within {
+    z-index: 5;
+  }
+  /* Gradient edge for featured cards (ranked calls). */
+  .pz-featured::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(140deg, var(--accent-hi), transparent 40%, transparent 60%, var(--accent-2));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  /* Blur on long scrolling lists costs frames on cheaper phones: go solid. */
+  @media (max-width: 680px) {
+    .pz-glass {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: var(--bg-card);
+    }
+  }
+}
+
+/* Faint chart grid + emerald/cyan glow behind the app. Fixed so it doesn't
+   scroll away on long feeds. Needs an `isolate` parent to sit above its bg. */
+.pz-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 620px at 16% 12%, var(--glow), transparent 68%),
+    radial-gradient(900px 620px at 90% 34%, var(--glow-2), transparent 68%),
+    radial-gradient(900px 500px at 45% 105%, var(--glow-2), transparent 70%),
+    linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 100% 32px,
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 32px 100%;
+  -webkit-mask-image: linear-gradient(#000 55%, rgba(0, 0, 0, 0.55));
+  mask-image: linear-gradient(#000 55%, rgba(0, 0, 0, 0.55));
+}
+
+@keyframes pz-tape {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.pz-tape-track {
+  animation: pz-tape 60s linear infinite;
+  will-change: transform;
+}
+.pz-tape:hover .pz-tape-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .pz-tape-track { animation: none; }
 }
 
 * {

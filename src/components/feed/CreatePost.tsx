@@ -3,7 +3,7 @@
 import { ink } from "@/lib/ink"
 import { useState, useRef, useEffect, useCallback } from "react"
 import dynamic from "next/dynamic"
-import { ImageIcon, Film, Smile, BarChart2, BarChart3, Send, User, X, TrendingUp, TrendingDown, Minus, Loader2, Star } from "lucide-react"
+import { ImageIcon, Film, Smile, BarChart2, BarChart3, Send, User, X, TrendingUp, TrendingDown, Minus, Loader2, Star, Trophy } from "lucide-react"
 import GifPicker, { PICKER_W, PICKER_H } from "@/components/posts/GifPicker"
 import PollComposerDialog from "@/components/polls/PollComposerDialog"
 import { yahooToStooq, flagForYahoo } from "@/lib/market"
@@ -386,25 +386,25 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
   return (
     <>
       <div
-        className="rounded-2xl p-4 transition-all"
-        style={{
-          background: "var(--bg-card)",
-          border: "1px solid var(--border)",
-          boxShadow: focused ? "0 0 0 2px rgba(16,185,129,0.15)" : "none",
-        }}
+        className="pz-glass rounded-2xl p-4 transition-all"
+        style={focused ? { boxShadow: "0 0 0 2px rgba(46,230,168,0.18), var(--glass-shadow)" } : undefined}
       >
         <form onSubmit={handleSubmit}>
-          <div className="flex gap-3">
+          {/* Glass Terminal composer: avatar · pill input · Post, then quick chips */}
+          <div className="flex gap-2.5 items-start">
             {/* Avatar */}
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden"
+            <div className="w-9 h-9 mt-0.5 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden"
               style={{ background: "rgba(16,185,129,0.15)" }}>
               {user.image
                 ? <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
-                : <User size={18} className="text-emerald-400" />}
+                : <User size={17} className="text-emerald-400" />}
             </div>
 
-            {/* Text input */}
-            <div className="flex-1 min-w-0">
+            {/* Text input — a pill when idle, grows into a box while writing */}
+            <div
+              className={`flex-1 min-w-0 transition-all ${focused || content ? "rounded-2xl px-3.5 py-2.5" : "rounded-full px-4 py-2"}`}
+              style={{ background: "var(--bg-elevated)", border: "1px solid var(--glass-border)" }}
+            >
               <textarea
                 ref={textareaRef}
                 value={content}
@@ -413,11 +413,72 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
                 placeholder={placeholder}
                 rows={focused || content ? 3 : 1}
                 maxLength={1000}
-                className="w-full bg-transparent resize-none outline-none text-sm leading-relaxed"
+                className="block w-full bg-transparent resize-none outline-none text-sm leading-relaxed"
                 style={{ color: "var(--text-primary)" }}
               />
             </div>
+
+            <button type="submit" disabled={!canSubmit}
+              aria-label={loading ? "Posting" : "Post"}
+              title={loading ? "Posting" : "Post"}
+              className="mt-0.5 flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-xl text-xs font-bold transition-all disabled:opacity-45 disabled:cursor-not-allowed flex-shrink-0"
+              style={{ background: "linear-gradient(135deg, #2ee6a8, #22c3ee)", color: "#04110c", boxShadow: canSubmit ? "0 4px 18px var(--glow)" : "none" }}>
+              {loading ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
+              <span className="hidden sm:inline">{loading ? "Posting…" : isRanked ? "Post ranked call" : "Post"}</span>
+            </button>
           </div>
+
+          {/* Quick chips */}
+          {(() => {
+            const chip = (on: boolean) => ({
+              className: "flex items-center gap-1.5 text-[11.5px] font-semibold px-2.5 py-1 rounded-lg transition-colors",
+              style: on
+                ? { background: "rgba(46,230,168,0.10)", color: ink("#2ee6a8"), border: "1px solid rgba(46,230,168,0.35)" }
+                : { background: "var(--glass)", color: "var(--text-secondary)", border: "1px solid var(--glass-border)" },
+            })
+            return (
+              <div className="flex items-center gap-1.5 flex-wrap mt-3 sm:pl-[46px]">
+                <button type="button" {...chip(showAnalysis && !rankedOn)} title="Share a trade idea"
+                  onClick={() => { setFocused(true); if (showAnalysis && !rankedOn) setShowAnalysis(false); else { setShowAnalysis(true); setRankedOn(false) } }}>
+                  <BarChart2 size={13} /> ＋ Trade idea
+                </button>
+                <button type="button" {...chip(rankedOn)} title="Deadline trade idea scored against real prices"
+                  onClick={() => { setFocused(true); if (rankedOn) setRankedOn(false); else { setShowAnalysis(true); setRankedOn(true) } }}>
+                  <Trophy size={13} /> Ranked call
+                </button>
+                <button type="button" {...chip(!!poll)} title="Add a poll" onClick={() => setShowPollDialog(true)}>
+                  <BarChart3 size={13} /> Poll
+                </button>
+                <button type="button" {...chip(!!imageData)} title="Upload photo" onClick={() => fileRef.current?.click()}>
+                  <ImageIcon size={13} /> Photo
+                </button>
+                <button type="button" {...chip(!!videoData)} title="Upload video (≤20 MB, ~30 sec)" onClick={() => videoRef.current?.click()}>
+                  <Film size={13} /> Video
+                </button>
+                <div ref={gifRef}>
+                  <button ref={gifBtnRef} type="button" {...chip(showGif)} title="Add GIF"
+                    onClick={() => { const next = !showGif; if (next) setPickerPos(calcPos(gifBtnRef)); setShowGif(next); setShowEmoji(false) }}>
+                    GIF
+                  </button>
+                </div>
+                <div ref={emojiRef}>
+                  <button ref={emojiBtnRef} type="button" {...chip(showEmoji)} title="Emoji" aria-label="Emoji"
+                    onClick={() => { const next = !showEmoji; if (next) setPickerPos(calcPos(emojiBtnRef)); setShowEmoji(next); setShowGif(false) }}>
+                    <Smile size={13} />
+                  </button>
+                </div>
+                {content.length > 0 && (
+                  <span
+                    className="ml-auto text-[11px] font-mono tabular-nums"
+                    style={{ color: 1000 - content.length < 100 ? ink("#f59e0b") : "var(--text-secondary)" }}
+                    title={`${1000 - content.length} characters remaining`}
+                  >
+                    {1000 - content.length}
+                  </span>
+                )}
+              </div>
+            )
+          })()}
 
           {/* Image preview */}
           {imageData && (
@@ -444,7 +505,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
 
           {/* ── Analysis form ── */}
           {showAnalysis && (
-            <div className="mt-3 rounded-xl p-3 space-y-3" style={{ background: "var(--bg-base)", border: "1px solid var(--border)" }}>
+            <div className="mt-3 rounded-xl p-3 space-y-3" style={{ background: "var(--idea-bg)", border: "1px solid var(--glass-border)" }}>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs font-semibold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
                   <BarChart2 size={13} className="text-emerald-400" /> Trade Idea
@@ -795,87 +856,6 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
             </div>
           )}
 
-          {/* Actions bar */}
-          {(focused || content || imageData || videoData || poll || showAnalysis) && (
-            <div className="flex items-center justify-between flex-wrap gap-y-2 mt-3 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
-              <div className="flex items-center gap-0.5 min-w-0 flex-wrap">
-
-                {/* Photo */}
-                <button type="button" onClick={() => fileRef.current?.click()}
-                  className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                  style={{ color: imageData ? ink("#10b981") : "var(--text-secondary)" }}
-                  title="Upload photo">
-                  <ImageIcon size={15} /> <span className="hidden sm:inline">Photo</span>
-                </button>
-
-                {/* Video */}
-                <button type="button" onClick={() => videoRef.current?.click()}
-                  className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                  style={{ color: videoData ? ink("#10b981") : "var(--text-secondary)" }}
-                  title="Upload video (≤20 MB, ~30 sec)">
-                  <Film size={15} /> <span className="hidden sm:inline">Video</span>
-                </button>
-
-                {/* GIF */}
-                <div ref={gifRef}>
-                  <button ref={gifBtnRef} type="button"
-                    onClick={() => { const next = !showGif; if (next) setPickerPos(calcPos(gifBtnRef)); setShowGif(next); setShowEmoji(false) }}
-                    className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                    style={{ color: showGif ? ink("#10b981") : "var(--text-secondary)" }}
-                    title="Add GIF">
-                    <Film size={15} /> <span className="hidden sm:inline">GIF</span>
-                  </button>
-                </div>
-
-                {/* Emoji */}
-                <div ref={emojiRef}>
-                  <button ref={emojiBtnRef} type="button"
-                    onClick={() => { const next = !showEmoji; if (next) setPickerPos(calcPos(emojiBtnRef)); setShowEmoji(next); setShowGif(false) }}
-                    className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                    style={{ color: showEmoji ? ink("#10b981") : "var(--text-secondary)" }}
-                    title="Emoji">
-                    <Smile size={15} /> <span className="hidden sm:inline">Emoji</span>
-                  </button>
-                </div>
-
-                {/* Analysis */}
-                <button type="button"
-                  onClick={() => setShowAnalysis((v) => !v)}
-                  className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                  style={{ color: showAnalysis ? ink("#10b981") : "var(--text-secondary)" }}
-                  title="Share a trade idea">
-                  <BarChart2 size={15} /> <span className="hidden sm:inline">Trade idea</span>
-                </button>
-
-                {/* Poll */}
-                <button type="button"
-                  onClick={() => setShowPollDialog(true)}
-                  className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--bg-base)]"
-                  style={{ color: poll ? ink("#10b981") : "var(--text-secondary)" }}
-                  title="Add a poll">
-                  <BarChart3 size={15} /> <span className="hidden sm:inline">Poll</span>
-                </button>
-
-                {/* Remaining-character countdown */}
-                <span
-                  className="text-xs font-medium tabular-nums px-2"
-                  style={{ color: 1000 - content.length < 100 ? ink("#f59e0b") : "var(--text-secondary)" }}
-                  title={`${1000 - content.length} characters remaining`}
-                >
-                  {1000 - content.length}
-                </span>
-              </div>
-
-              <button type="submit" disabled={!canSubmit}
-                aria-label={loading ? "Posting" : "Post"}
-                title={loading ? "Posting" : "Post"}
-                className="flex items-center justify-center gap-2 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 w-9 h-9 rounded-full sm:w-auto sm:h-auto sm:rounded-xl sm:px-4 sm:py-1.5"
-                style={{ background: "#10b981", color: "#0f1117" }}>
-                <Send size={14} />
-                <span className="hidden sm:inline">{loading ? "Posting…" : isRanked ? "Post ranked call" : "Post"}</span>
-              </button>
-            </div>
-          )}
         </form>
 
         <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />

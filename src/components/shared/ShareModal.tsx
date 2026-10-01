@@ -2,6 +2,7 @@
 
 import { ink } from "@/lib/ink"
 import { useEffect, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import {
   X, Repeat2, Send, Copy, Search, User, Check, Loader2,
   TrendingUp, TrendingDown, Minus, Briefcase, Zap, Shuffle,
@@ -182,7 +183,9 @@ export default function ShareModal({ open, onClose, payload, onShared }: ShareMo
   const repostLabel = payload.kind === "post" ? "Repost" : "Share to feed"
   const repostCta   = payload.kind === "post" ? "Repost" : "Post"
 
-  return (
+  // Portaled: callers like PostCard are glass cards (backdrop-filter), which
+  // would otherwise trap this position:fixed overlay inside the card.
+  return createPortal(
     <div
       ref={overlayRef}
       onClick={(e) => { if (e.target === overlayRef.current) onClose() }}
@@ -357,7 +360,8 @@ export default function ShareModal({ open, onClose, payload, onShared }: ShareMo
           {error && <p className="text-xs text-rose-400 text-center">{error}</p>}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 
