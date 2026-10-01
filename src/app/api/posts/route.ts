@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { Prisma } from "@/generated/prisma"
 import { checkOutcomesForPosts } from "@/lib/outcomes"
 import { RANKED_TFS, formatPrice, isIntraday, rankedWindow, difficultyRatio, MIN_RANKED_RATIO, type RankedTf } from "@/lib/ranked"
 import { assetKindFor, getRankQuote, yahooSymbolFor } from "@/lib/ranked-market"
@@ -53,6 +54,8 @@ export async function GET(req: Request) {
   const topics = topicsParam
     ? topicsParam.split(",").map((t) => t.trim().toLowerCase()).filter((t) => TOPIC_VALUES.includes(t as any))
     : []
+  // Feed mode: "ranked" = Ranked Calls only, "ideas" = any trade idea.
+  const mode = searchParams.get("mode")
   const limit = 20
 
   // Ticker mode: show all posts about that ticker (community-wide).
@@ -76,6 +79,8 @@ export async function GET(req: Request) {
   if (topics.length > 0 && topics.length < TOPIC_VALUES.length) {
     where = { ...where, topics: { hasSome: topics } }
   }
+  if (mode === "ranked") where = { ...where, rankedDeadline: { not: null } }
+  else if (mode === "ideas") where = { ...where, analysis: { not: Prisma.DbNull } }
 
   const posts = await db.post.findMany({
     where,

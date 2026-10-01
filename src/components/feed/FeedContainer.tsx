@@ -45,6 +45,23 @@ const TOPICS = [
 type TopicKey = typeof TOPICS[number]["key"]
 
 const TOPIC_STORAGE = "peerza-feed-topics-v1"
+const MODE_STORAGE = "peerza-feed-mode-v1"
+
+const MODES = [
+  { key: "all",    label: "For you" },
+  { key: "ranked", label: "Ranked calls" },
+  { key: "ideas",  label: "Trade ideas" },
+] as const
+type ModeKey = typeof MODES[number]["key"]
+
+// Each asset chip shows today's move of a reference market: the filter
+// doubles as a glance at the market. ids match /api/market/prices.
+const MOOD: Record<TopicKey, { id: string; ref: string }> = {
+  crypto:  { id: "bitcoin", ref: "BTC" },
+  stocks:  { id: "^spx",    ref: "S&P" },
+  forex:   { id: "eurusd",  ref: "EUR/USD" },
+  options: { id: "^vix",    ref: "VIX" },
+}
 
 const KEYWORDS: Record<TopicKey, string[]> = {
   crypto:  ["btc", "eth", "bitcoin", "ethereum", "crypto", "defi", "nft", "sol", "solana", "bnb", "xrp"],
@@ -83,6 +100,8 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
   const [loading, setLoading]     = useState(true)
   const [loadingMore, setLM]      = useState(false)
   const [selected, setSelected]   = useState<TopicKey[]>([])
+  const [mode, setMode]           = useState<ModeKey>("all")
+  const [mood, setMood]           = useState<Partial<Record<TopicKey, number>>>({})
   const [hydrated, setHydrated]   = useState(false)
   const [ads, setAds]             = useState<AdCardData[]>([])
   const sentinelRef               = useRef<HTMLDivElement>(null)
@@ -102,7 +121,36 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
         }
       }
     } catch {}
+    try {
+      const m = localStorage.getItem(MODE_STORAGE)
+      if (MODES.some((x) => x.key === m)) setMode(m as ModeKey)
+    } catch {}
     setHydrated(true)
+  }, [])
+
+  useEffect(() => {
+    if (!hydrated) return
+    try { localStorage.setItem(MODE_STORAGE, mode) } catch {}
+  }, [mode, hydrated])
+
+  // Live market mood for the asset chips, refreshed every 2 minutes.
+  useEffect(() => {
+    let cancelled = false
+    const load = () => fetch("/api/market/prices?crypto=bitcoin&stooq=%5Espx,eurusd,%5Evix")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d: { id: string; change: number }[]) => {
+        if (cancelled || !Array.isArray(d)) return
+        const next: Partial<Record<TopicKey, number>> = {}
+        for (const t of TOPICS) {
+          const row = d.find((x) => x.id === MOOD[t.key].id)
+          if (row && Number.isFinite(row.change)) next[t.key] = row.change
+        }
+        setMood(next)
+      })
+      .catch(() => {})
+    load()
+    const iv = setInterval(load, 120_000)
+    return () => { cancelled = true; clearInterval(iv) }
   }, [])
 
   // Persist whenever selection changes
@@ -122,6 +170,7 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
     if (cursor) params.set("cursor", cursor)
     if (tickerFilter) params.set("ticker", tickerFilter)
     if (topicsParam) params.set("topics", topicsParam)
+    if (mode !== "all" && !tickerFilter) params.set("mode", mode)
     const qs = params.toString()
     const url = qs ? `/api/posts?${qs}` : "/api/posts"
     const res = await fetch(url)
@@ -133,7 +182,7 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
     setLoading(false)
     setLM(false)
     isFetching.current = false
-  }, [tickerFilter, topicsParam])
+  }, [tickerFilter, topicsParam, mode])
 
   useEffect(() => {
     if (!hydrated) return
@@ -266,43 +315,88 @@ function FeedContainerInner({ user, currentUserId }: FeedContainerProps) {
           </button>
         </div>
       ) : (
-        <div className="flex gap-2 overflow-x-auto pb-1 items-center" style={{ scrollbarWidth: "none" }}>
-          <button
-            onClick={() => setSelected([])}
-            className="flex-shrink-0 text-xs font-semibold px-4 py-2 rounded-xl transition-all"
-            style={selected.length === 0
-              ? { background: "linear-gradient(135deg, #2ee6a8, #22c3ee)", color: "#04110c", boxShadow: "0 4px 18px var(--glow)" }
-              : { background: "var(--glass)", color: "var(--text-secondary)", border: "1px solid var(--glass-border)" }}
+        <div className="space-y-2.5">
+          {/* Feed mode: sliding glass switch */}
+          <div
+            role="tablist"
+            aria-label="Feed"
+            className="pz-glass relative grid grid-cols-3 p-1 rounded-xl"
           >
-            All
-          </button>
-          {TOPICS.map(({ key, label, tint }) => {
-            const active = selected.includes(key)
-            return (
+            <span
+              aria-hidden="true"
+              className="absolute top-1 bottom-1 left-1 rounded-lg transition-transform duration-300 ease-out"
+              style={{
+                width: "calc((100% - 0.5rem) / 3)",
+                transform: `translateX(${MODES.findIndex((m) => m.key === mode) * 100}%)`,
+                background: "linear-gradient(135deg, rgba(46,230,168,0.18), rgba(34,195,238,0.14))",
+                border: "1px solid rgba(46,230,168,0.35)",
+                boxShadow: "0 0 18px var(--glow)",
+              }}
+            />
+            {MODES.map((m) => (
               <button
-                key={key}
-                onClick={() => setSelected((prev) =>
-                  prev.includes(key) ? prev.filter((x) => x !== key) : [...prev, key]
-                )}
-                className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl transition-all"
-                style={active
-                  ? { background: tint + "22", color: ink(tint), border: `1px solid ${tint}66` }
-                  : { background: "var(--glass)", color: "var(--text-secondary)", border: "1px solid var(--glass-border)" }}
+                key={m.key}
+                role="tab"
+                aria-selected={mode === m.key}
+                onClick={() => setMode(m.key)}
+                className="relative z-10 text-xs font-semibold py-2 rounded-lg transition-colors"
+                style={{ color: mode === m.key ? "var(--text-primary)" : "var(--text-secondary)" }}
               >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ background: active ? tint : "var(--text-secondary)" }} />
-                {label}
+                {m.label}
               </button>
-            )
-          })}
-          {selected.length > 0 && (
+            ))}
+          </div>
+
+          {/* Asset chips with live market mood */}
+          <div className="flex gap-2 overflow-x-auto pb-1 items-center" style={{ scrollbarWidth: "none" }}>
             <button
               onClick={() => setSelected([])}
-              className="flex-shrink-0 text-[11px] font-semibold px-2 py-1 rounded-md transition-colors"
-              style={{ color: "var(--text-secondary)" }}
+              className="flex-shrink-0 text-xs font-semibold px-4 py-2 rounded-xl transition-all"
+              style={selected.length === 0
+                ? { background: "linear-gradient(135deg, #2ee6a8, #22c3ee)", color: "#04110c", boxShadow: "0 4px 18px var(--glow)" }
+                : { background: "var(--glass)", color: "var(--text-secondary)", border: "1px solid var(--glass-border)" }}
             >
-              Clear
+              All
             </button>
-          )}
+            {TOPICS.map(({ key, label, tint }) => {
+              const active = selected.includes(key)
+              const chg = mood[key]
+              const up = chg != null && chg >= 0
+              const moodColor = chg == null ? "var(--text-secondary)" : up ? "var(--up)" : "var(--down)"
+              return (
+                <button
+                  key={key}
+                  onClick={() => setSelected((prev) =>
+                    prev.includes(key) ? prev.filter((x) => x !== key) : [...prev, key]
+                  )}
+                  aria-pressed={active}
+                  title={chg != null ? `${label} · ${MOOD[key].ref} ${up ? "+" : "−"}${Math.abs(chg).toFixed(2)}% today` : label}
+                  className="flex-shrink-0 flex items-center gap-2 text-xs font-semibold pl-3 pr-3.5 py-2 rounded-xl transition-all"
+                  style={active
+                    ? { background: tint + "22", color: ink(tint), border: `1px solid ${tint}66` }
+                    : { background: "var(--glass)", color: "var(--text-secondary)", border: "1px solid var(--glass-border)" }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full"
+                    style={{ background: moodColor, boxShadow: chg != null ? `0 0 8px ${moodColor}` : "none" }} />
+                  {label}
+                  {chg != null && (
+                    <span className="font-mono text-[10.5px] tabular-nums" style={{ color: moodColor }}>
+                      {MOOD[key].ref} {up ? "▲" : "▼"}{Math.abs(chg).toFixed(1)}%
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+            {selected.length > 0 && (
+              <button
+                onClick={() => setSelected([])}
+                className="flex-shrink-0 text-[11px] font-semibold px-2 py-1 rounded-md transition-colors"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
         </div>
       )}
 
