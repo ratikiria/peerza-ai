@@ -139,7 +139,7 @@ async function fetchCryptoMovers(): Promise<MoversResponse> {
 
 // "EURUSD=X" → "EURUSD", "BRK-B" → "BRK.B", "UNI7083-USD" → "UNI"
 function displaySymbol(sym: string): string {
-  if (sym.endsWith("-USD")) return sym.slice(0, -4).replace(/d+$/, "")
+  if (sym.endsWith("-USD")) return sym.slice(0, -4).replace(/[0-9]+$/, "")
   return sym.replace("=X", "").replace("-", ".")
 }
 
