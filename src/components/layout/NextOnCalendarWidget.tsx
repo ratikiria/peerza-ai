@@ -35,7 +35,7 @@ export default function NextOnCalendarWidget() {
   return (
     <div className="pz-glass rounded-2xl p-4">
       <div className="flex items-center justify-between mb-3 gap-2">
-        <h3 className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
+        <h3 className="text-[11px] font-semibold uppercase tracking-[.1em] flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-secondary)" }}>
           <CalendarDays size={14} className="text-emerald-400 flex-shrink-0" />
           <span className="truncate">{t("next_calendar_label")}</span>
         </h3>

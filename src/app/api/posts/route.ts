@@ -87,7 +87,8 @@ export async function GET(req: Request) {
         select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, repTier: true, repStyle: true },
       },
       likes: { select: { userId: true, reaction: true } },
-      _count: { select: { comments: true, likes: true } },
+      ideaVotes: { select: { userId: true, bullish: true } },
+      _count: { select: { comments: true, likes: true, reposts: true } },
       originalPost: {
         include: {
           author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true } },
@@ -173,7 +174,7 @@ export async function POST(req: Request) {
       author: {
         select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, repTier: true, repStyle: true },
       },
-      _count: { select: { comments: true, likes: true } },
+      _count: { select: { comments: true, likes: true, reposts: true } },
       originalPost: {
         include: {
           author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true } },

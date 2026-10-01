@@ -79,7 +79,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
       include: {
         author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, proExpiresAt: true, repTier: true, repStyle: true } },
         likes: { select: { userId: true, reaction: true } },
-        _count: { select: { comments: true, likes: true } },
+        ideaVotes: { select: { userId: true, bullish: true } },
+        _count: { select: { comments: true, likes: true, reposts: true } },
         poll: { select: { id: true, question: true, options: true, authorId: true, votes: { select: { userId: true, optionIndex: true } } } },
       },
     }),
@@ -90,7 +91,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
       include: {
         author: { select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, proExpiresAt: true, repTier: true, repStyle: true } },
         likes: { select: { userId: true, reaction: true } },
-        _count: { select: { comments: true, likes: true } },
+        ideaVotes: { select: { userId: true, bullish: true } },
+        _count: { select: { comments: true, likes: true, reposts: true } },
         poll: { select: { id: true, question: true, options: true, authorId: true, votes: { select: { userId: true, optionIndex: true } } } },
       },
     }),

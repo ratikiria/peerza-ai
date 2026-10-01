@@ -728,7 +728,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   function renderFearGreed() { return (
         <div className="pz-glass rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3 gap-2">
-            <h3 className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[.1em] flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-secondary)" }}>
               <span className="flex-shrink-0">😱</span>
               <span className="truncate">{t("fear_greed_label")}</span>
             </h3>
@@ -782,7 +782,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   function renderPrices() { return (
         <div className="pz-glass rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3 gap-2">
-            <h3 className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[.1em] flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-secondary)" }}>
               <Zap size={14} className="text-emerald-400 flex-shrink-0" />
               <span className="truncate">{t("market_prices_label")}</span>
             </h3>
@@ -883,7 +883,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   function renderMovers() { return (
         <div className="pz-glass rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3 gap-2">
-            <h3 className="text-sm font-semibold flex items-baseline gap-1 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[.1em] flex items-baseline gap-1 min-w-0 flex-1" style={{ color: "var(--text-secondary)" }}>
               <span className="flex-shrink-0">🚀</span>
               <span className="truncate">{t("top_movers_label")}</span>
               <span className="text-[10px] font-normal flex-shrink-0" style={{ color: "var(--text-secondary)" }}>24h</span>
@@ -962,7 +962,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
   function renderMostAnalyzed() { return (
         <div className="pz-glass rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3 gap-2">
-            <h3 className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-primary)" }}>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[.1em] flex items-center gap-1.5 min-w-0 flex-1" style={{ color: "var(--text-secondary)" }}>
               <Flame size={14} className="text-orange-400 flex-shrink-0" />
               <span className="truncate">{t("most_analyzed_label")}</span>
             </h3>
@@ -1062,7 +1062,7 @@ export default function RightPanel({ currentUserId }: { currentUserId: string })
     return (
           <div className="pz-glass rounded-2xl p-4">
             <div className="flex items-center justify-between mb-3 gap-2">
-              <h3 className="text-sm font-semibold min-w-0 flex-1 truncate" style={{ color: "var(--text-primary)" }}>{t("people_to_follow_label")}</h3>
+              <h3 className="text-[11px] font-semibold uppercase tracking-[.1em] min-w-0 flex-1 truncate" style={{ color: "var(--text-secondary)" }}>{t("people_to_follow_label")}</h3>
               <div className="flex-shrink-0">
                 <WidgetHelp
                   label={t("people_to_follow_label")}

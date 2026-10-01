@@ -50,6 +50,7 @@ model User {
   sessions               Session[]
   posts                  Post[]
   likes                  Like[]
+  ideaVotes              IdeaVote[]
   comments               Comment[]
   commentLikes           CommentLike[]
   sentMessages           Message[]      @relation("SentMessages")
@@ -165,6 +166,7 @@ model Post {
 
   author       User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   likes        Like[]
+  ideaVotes    IdeaVote[]
   comments     Comment[]
   originalPost Post?     @relation("PostReposts", fields: [originalPostId], references: [id], onDelete: SetNull)
   reposts      Post[]    @relation("PostReposts")
@@ -862,4 +864,20 @@ model PortfolioHolding {
 
   @@unique([portfolioId, symbol])
   @@index([portfolioId])
+}
+
+// Community sentiment on a trade idea: each user sides bullish or bearish once
+// (changeable). Shown as the agree/disagree bar under trade-idea cards.
+model IdeaVote {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  bullish   Boolean
+  createdAt DateTime @default(now())
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
 }

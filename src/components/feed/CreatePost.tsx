@@ -6,7 +6,7 @@ import dynamic from "next/dynamic"
 import { ImageIcon, Film, Smile, BarChart2, BarChart3, Send, User, X, TrendingUp, TrendingDown, Minus, Loader2, Star, Trophy } from "lucide-react"
 import GifPicker, { PICKER_W, PICKER_H } from "@/components/posts/GifPicker"
 import PollComposerDialog from "@/components/polls/PollComposerDialog"
-import { yahooToStooq, flagForYahoo } from "@/lib/market"
+import { yahooToStooq, stooqToYahoo, flagForYahoo } from "@/lib/market"
 import RankedCallPicker, { type RankedAsset } from "@/components/feed/RankedCallPicker"
 import type { RankedTf } from "@/lib/ranked"
 
@@ -185,6 +185,8 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
   useEffect(() => {
     const q = tickerQuery.trim()
     if (q.length < 1) { setTickerResults([]); setShowTickerDrop(false); return }
+    // Text just set by picking an asset (or Copy idea): nothing to search.
+    if (selectedAsset && q === selectedAsset.symbol) { setShowTickerDrop(false); return }
     setTickerLoading(true)
     const timer = setTimeout(async () => {
       try {
@@ -194,7 +196,7 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
       setTickerLoading(false)
     }, 300)
     return () => clearTimeout(timer)
-  }, [tickerQuery])
+  }, [tickerQuery, selectedAsset])
 
   // Close ticker dropdown on outside click
   useEffect(() => {
@@ -255,6 +257,34 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
     }
     setPriceLoading(false)
   }, [fetchLivePrice])
+
+  // "Copy idea" on a post card: prefill a new trade idea with the same asset,
+  // direction and target, then bring the composer into view.
+  useEffect(() => {
+    function onCopy(e: Event) {
+      const d = (e as CustomEvent<{ ticker: string; direction: AnalysisData["direction"]; target?: string; priceSource?: "crypto" | "stooq"; priceKey?: string; from?: string }>).detail
+      if (!d?.ticker) return
+      setFocused(true)
+      setShowAnalysis(true)
+      setRankedOn(false)
+      if (d.priceSource && d.priceKey) {
+        const yahoo = d.priceSource === "stooq" ? stooqToYahoo(d.priceKey) : undefined
+        selectAsset(d.priceSource === "crypto"
+          ? { id: d.priceKey, cgId: d.priceKey, symbol: d.ticker, name: d.ticker, source: "crypto" }
+          : { id: yahoo!, yahooSymbol: yahoo, symbol: d.ticker, name: d.ticker, source: "yahoo", type: /^[a-z]{6}$/.test(d.priceKey) ? "currency" : undefined })
+      } else {
+        setTickerQuery(d.ticker)
+      }
+      setAnalysis((a) => ({ ...a, ticker: d.ticker, direction: d.direction, target: d.target ?? "", entry: "" }))
+      setContent((c) => c || (d.from ? `Building on @${d.from}'s ${d.ticker} idea: ` : ""))
+      requestAnimationFrame(() => {
+        textareaRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+        textareaRef.current?.focus()
+      })
+    }
+    window.addEventListener("peerza:copy-idea", onCopy)
+    return () => window.removeEventListener("peerza:copy-idea", onCopy)
+  }, [selectAsset])
 
   // Refresh live price every 15s while an asset is selected
   useEffect(() => {

@@ -3,11 +3,14 @@
 import { ink } from "@/lib/ink"
 import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
-import { MessageCircle, Share2, Trash2, User, TrendingUp, TrendingDown, Minus, Star, Repeat2, Briefcase, Zap, Shuffle, Send, Pin, PinOff, Pencil, X, Check } from "lucide-react"
+import { MessageCircle, Share2, Trash2, User, TrendingUp, TrendingDown, Minus, Star, Repeat2, Briefcase, Zap, Shuffle, Send, Pin, PinOff, Pencil, X, Check, Heart, Copy } from "lucide-react"
 import ShareModal, { type SharePayload } from "@/components/shared/ShareModal"
 import ProBadge from "@/components/shared/ProBadge"
 import PollCard from "@/components/polls/PollCard"
-import RankedCallStatus, { type RankedFields } from "@/components/feed/RankedCallStatus"
+import { type RankedFields } from "@/components/feed/RankedCallStatus"
+import TradeIdeaCard from "@/components/feed/TradeIdeaCard"
+import { formatCountdownShort } from "@/lib/ranked"
+import { useNow } from "@/hooks/useNow"
 import RepChips from "@/components/shared/RepChips"
 import { Trophy } from "lucide-react"
 
@@ -49,6 +52,8 @@ interface PostAnalysis {
   catalyst?: string
   position?: string
   logoUrl?: string | null
+  priceSource?: "crypto" | "stooq"
+  priceKey?: string
 }
 
 interface OriginalPost {
@@ -71,7 +76,8 @@ interface PostCardProps {
     createdAt: string
     author: { id: string; name: string; username: string; image?: string | null; isPremium: boolean; isPro?: boolean; repTier?: string | null; repStyle?: string | null }
     likes: { userId: string; reaction: string }[]
-    _count: { comments: number; likes: number }
+    _count: { comments: number; likes: number; reposts?: number }
+    ideaVotes?: { userId: string; bullish: boolean }[]
     originalPost?: OriginalPost | null
     outcomeAt?: string | null
     outcomeReturnPct?: number | null
@@ -102,6 +108,7 @@ interface ChallengeMeta {
 
 export default function PostCard({ post, currentUserId, currentUser, onDeleted, showPinControl }: PostCardProps) {
   const myLike      = post.likes.find((l) => l.userId === currentUserId)
+  const now = useNow() // ticks the ranked-call countdown badge
   const [liked, setLiked]           = useState(!!myLike)
   const [reaction, setReaction]     = useState<string | null>(myLike?.reaction ?? null)
   const [likeCount, setLikeCount]   = useState(post._count.likes)
@@ -192,6 +199,29 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
   }
 
   function handleShare() { setShareOpen(true) }
+
+  // Header badge for ranked calls: "RANKED CALL · 12d left" / "· HIT" / "· MISSED".
+  const rankedBadge = (() => {
+    if (!post.rankedDeadline || !post.analysis) return null
+    const s = post.outcomeStatus ?? "OPEN"
+    if (s === "TARGET_HIT") return { text: "RANKED CALL · HIT", bg: "rgba(46,230,168,0.14)", fg: "var(--up)" }
+    if (s === "EXPIRED") return { text: "RANKED CALL · MISSED", bg: "rgba(255,92,122,0.12)", fg: "var(--down)" }
+    if (s === "VOID") return { text: "RANKED CALL · VOID", bg: "var(--glass)", fg: "var(--text-secondary)" }
+    const left = new Date(post.rankedDeadline).getTime() - (now || Date.now())
+    return {
+      text: left > 0 ? `RANKED CALL · ${formatCountdownShort(left)} left` : "RANKED CALL · SETTLING",
+      bg: "rgba(34,195,238,0.12)", fg: "var(--accent-2)",
+    }
+  })()
+
+  // Prefills the composer with this idea's asset, direction and target.
+  function handleCopyIdea() {
+    const a = post.analysis
+    if (!a) return
+    window.dispatchEvent(new CustomEvent("peerza:copy-idea", {
+      detail: { ticker: a.ticker, direction: a.direction, target: a.target, priceSource: a.priceSource, priceKey: a.priceKey, from: post.author.username },
+    }))
+  }
 
   function handleReplyPrivately() {
     if (post.author.id === currentUserId) return
@@ -294,6 +324,13 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
             </Link>
             {post.author.isPro && <ProBadge size="sm" />}
             <RepChips tier={post.author.repTier} style={post.author.repStyle} />
+            {rankedBadge && (
+              <span className="text-[10.5px] font-bold tracking-[.02em] px-2 py-0.5 rounded-lg whitespace-nowrap"
+                style={{ background: rankedBadge.bg, color: rankedBadge.fg }}
+                title="Ranked call: scored against real prices, counts toward public reputation">
+                {rankedBadge.text}
+              </span>
+            )}
             <span className="text-xs" style={{ color: "var(--text-secondary)" }}>@{post.author.username}</span>
             <span style={{ color: "var(--border)" }}>·</span>
             <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
@@ -499,137 +536,42 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
         </div>
       )}
 
-      {/* Analysis card */}
-      {post.analysis && (() => {
-        const a = post.analysis!
-        const isBull = a.direction === "bullish"
-        const isBear = a.direction === "bearish"
-        const accentColor = isBull ? "#10b981" : isBear ? "#ef4444" : "#eab308"
-        const DirIcon = isBull ? TrendingUp : isBear ? TrendingDown : Minus
-        const isRanked = !!post.rankedDeadline
-        const targetHit = !isRanked && post.outcomeStatus === "TARGET_HIT"
-        const outcomePct = post.outcomeReturnPct ?? null
-        return (
-          <div className="px-4 pb-3">
-            <div className="rounded-xl p-3" style={{ background: "var(--idea-bg)", border: `1px solid ${accentColor}33` }}>
-              {/* Header row */}
-              <div className="flex items-center justify-between mb-2 gap-2">
-                <div className="flex items-center gap-2 min-w-0">
-                  {a.logoUrl && (
-                    <img
-                      src={a.logoUrl}
-                      alt=""
-                      className="w-7 h-7 rounded-lg object-contain flex-shrink-0"
-                      style={{ background: "white", padding: 2 }}
-                      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }}
-                    />
-                  )}
-                  <span className="font-mono text-sm font-bold tracking-wide" style={{ color: "var(--text-primary)" }}>
-                    ${a.ticker}
-                  </span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded font-medium"
-                    style={{ background: "var(--bg-card)", color: "var(--text-secondary)" }}>
-                    {a.timeframe}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 flex-shrink-0">
-                  {isRanked && (
-                    <span className="flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded-lg"
-                      style={{ background: "rgba(16,185,129,0.1)", color: ink("#34d399") }}
-                      title="Ranked call — counts toward public reputation">
-                      <Trophy size={11} /> Ranked
-                    </span>
-                  )}
-                  {targetHit && outcomePct != null && (
-                    <span
-                      className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg"
-                      style={{ background: "rgba(16,185,129,0.18)", color: ink("#10b981"), border: "1px solid rgba(16,185,129,0.4)" }}
-                      title={post.outcomeAt ? `Hit on ${new Date(post.outcomeAt).toLocaleString()}` : "Target reached"}
-                    >
-                      <span aria-hidden="true">✓</span>
-                      Target hit +{outcomePct}%
-                    </span>
-                  )}
-                  <span className="flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg"
-                    style={{ background: accentColor + "22", color: ink(accentColor) }}>
-                    <DirIcon size={11} />
-                    {isBull ? "Bullish" : isBear ? "Bearish" : "Neutral"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Price levels */}
-              {!isRanked && (a.entry || a.target) && (
-                <div className="grid grid-cols-2 gap-3 pt-2" style={{ borderTop: `1px solid ${accentColor}22` }}>
-                  {a.entry && (
-                    <div>
-                      <p className="text-[10px] mb-0.5" style={{ color: "var(--text-secondary)" }}>Entry</p>
-                      <p className="font-mono text-xs font-semibold tabular-nums" style={{ color: "var(--text-primary)" }}>{a.entry}</p>
-                    </div>
-                  )}
-                  {a.target && (
-                    <div>
-                      <p className="text-[10px] mb-0.5 text-emerald-400">Target 🎯</p>
-                      <p className="font-mono text-xs font-semibold tabular-nums text-emerald-400">{a.target}</p>
-                    </div>
-                  )}
-                </div>
+      {/* Trade idea (Glass Terminal): ticker row, sparkline, stats, ranked status, sentiment */}
+      {post.analysis && (
+        <div className="px-4 pb-3 space-y-2">
+          <TradeIdeaCard
+            postId={post.id}
+            createdAt={post.createdAt}
+            analysis={post.analysis}
+            ranked={post.rankedDeadline ? post : null}
+            outcomeReturnPct={post.outcomeStatus === "TARGET_HIT" ? post.outcomeReturnPct : null}
+            votes={post.ideaVotes ?? []}
+            currentUserId={currentUserId}
+          />
+          {(post.analysis.catalyst || post.analysis.position) && (
+            <div className="flex items-center flex-wrap gap-1.5">
+              {post.analysis.catalyst && CATALYST_META[post.analysis.catalyst] && (
+                <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md"
+                  style={{ background: "var(--glass)", color: "var(--text-secondary)", border: "1px solid var(--glass-border)" }}>
+                  <span>{CATALYST_META[post.analysis.catalyst].emoji}</span>
+                  {CATALYST_META[post.analysis.catalyst].label}
+                </span>
               )}
-
-              {isRanked && <RankedCallStatus call={post} />}
-
-              {/* Conviction + Catalyst + Position */}
-              {(a.conviction || a.catalyst || a.position) && (
-                <div className="flex items-center flex-wrap gap-2 mt-2 pt-2" style={{ borderTop: `1px solid ${accentColor}22` }}>
-                  {a.conviction != null && (
-                    <div
-                      className="flex items-center gap-1.5"
-                      title={`Conviction ${a.conviction}/5: how confident the author is in this idea (self-rated)`}
-                      aria-label={`Conviction ${a.conviction} out of 5`}
-                    >
-                      <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-secondary)" }}>
-                        Conviction
-                      </span>
-                      <span className="flex items-center gap-0.5" aria-hidden="true">
-                        {[1, 2, 3, 4, 5].map((n) => {
-                          const filled = n <= (a.conviction ?? 0)
-                          return (
-                            <Star key={n} size={11}
-                              fill={filled ? "#eab308" : "transparent"}
-                              stroke={filled ? "#eab308" : "var(--text-secondary)"}
-                              strokeWidth={2} />
-                          )
-                        })}
-                      </span>
-                      <span className="text-[10px] font-mono tabular-nums" style={{ color: "var(--text-secondary)" }} aria-hidden="true">
-                        {a.conviction}/5
-                      </span>
-                    </div>
-                  )}
-                  {a.catalyst && CATALYST_META[a.catalyst] && (
-                    <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md"
-                      style={{ background: "var(--bg-card)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
-                      <span>{CATALYST_META[a.catalyst].emoji}</span>
-                      {CATALYST_META[a.catalyst].label}
-                    </span>
-                  )}
-                  {a.position && POSITION_META[a.position] && (
-                    <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md"
-                      style={{
-                        background: POSITION_META[a.position].color + "22",
-                        color: ink(POSITION_META[a.position].color),
-                        border: `1px solid ${POSITION_META[a.position].color}44`,
-                      }}>
-                      <span>{POSITION_META[a.position].emoji}</span>
-                      {POSITION_META[a.position].label}
-                    </span>
-                  )}
-                </div>
+              {post.analysis.position && POSITION_META[post.analysis.position] && (
+                <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md"
+                  style={{
+                    background: POSITION_META[post.analysis.position].color + "22",
+                    color: ink(POSITION_META[post.analysis.position].color),
+                    border: `1px solid ${POSITION_META[post.analysis.position].color}44`,
+                  }}>
+                  <span>{POSITION_META[post.analysis.position].emoji}</span>
+                  {POSITION_META[post.analysis.position].label}
+                </span>
               )}
             </div>
-          </div>
-        )
-      })()}
+          )}
+        </div>
+      )}
 
       {/* Reaction summary */}
       {likeCount > 0 && topReactions.length > 0 && (
@@ -643,8 +585,8 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
         </div>
       )}
 
-      {/* Actions */}
-      <div className="flex items-center gap-1 px-4 py-2" style={{ borderTop: "1px solid var(--border)" }}>
+      {/* Actions — Glass Terminal: count pills, Copy idea on the right */}
+      <div className="flex items-center gap-1 px-3 pb-2.5 pt-1">
 
         {/* Like + hover reactions */}
         <div
@@ -681,48 +623,65 @@ export default function PostCard({ post, currentUserId, currentUser, onDeleted, 
 
           <button
             onClick={() => doReaction(reaction ?? "👍")}
-            className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl transition-all hover:bg-rose-500/10 select-none"
-            style={{ color: liked ? ink("#f43f5e") : "var(--text-secondary)" }}
+            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--glass)] select-none"
+            style={liked
+              ? { color: "var(--accent-hi)", background: "rgba(46,230,168,0.10)" }
+              : { color: "var(--text-secondary)" }}
+            title={liked && reaction ? REACTIONS.find(r => r.emoji === reaction)?.label ?? "Like" : "Like"}
           >
-            <span className="text-base leading-none">{liked && reaction ? reaction : "👍"}</span>
-            {likeCount > 0 && <span>{likeCount}</span>}
-            <span className="hidden sm:inline">{liked && reaction ? REACTIONS.find(r => r.emoji === reaction)?.label ?? "Like" : "Like"}</span>
+            {liked && reaction ? <span className="text-sm leading-none">{reaction}</span> : <Heart size={14} />}
+            <span className="tabular-nums">{likeCount}</span>
           </button>
         </div>
 
         {/* Comment */}
         <button
           onClick={() => setShowComments((v) => !v)}
-          className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl transition-all hover:bg-[var(--bg-base)]"
-          style={{ color: showComments ? ink("#10b981") : "var(--text-secondary)" }}
+          className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--glass)]"
+          style={{ color: showComments ? "var(--accent-hi)" : "var(--text-secondary)" }}
+          title="Comments"
         >
-          <MessageCircle size={15} fill={showComments ? "currentColor" : "none"} />
-          {commentCount > 0 && <span>{commentCount}</span>}
-          <span className="hidden sm:inline">Comment</span>
+          <MessageCircle size={14} fill={showComments ? "currentColor" : "none"} />
+          <span className="tabular-nums">{commentCount}</span>
+        </button>
+
+        {/* Repost / share */}
+        <button
+          onClick={handleShare}
+          className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--glass)]"
+          style={{ color: "var(--text-secondary)" }}
+          title="Repost or share"
+        >
+          <Repeat2 size={14} />
+          <span className="tabular-nums">{post._count.reposts ?? 0}</span>
         </button>
 
         {/* Reply privately (only when author is not me) */}
         {post.author.id !== currentUserId && (
           <button
             onClick={handleReplyPrivately}
-            className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl transition-all hover:bg-[var(--bg-base)]"
+            className="flex items-center text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--glass)]"
             style={{ color: "var(--text-secondary)" }}
             title="Reply privately"
+            aria-label="Reply privately"
           >
-            <Send size={15} />
-            <span className="hidden sm:inline">Reply</span>
+            <Send size={14} />
           </button>
         )}
 
-        {/* Share */}
-        <button
-          onClick={handleShare}
-          className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl transition-all hover:bg-[var(--bg-base)]"
-          style={{ color: "var(--text-secondary)" }}
-        >
-          <Share2 size={15} />
-          <span className="hidden sm:inline">Share</span>
-        </button>
+        <div className="flex-1" />
+
+        {/* Copy idea: start your own trade idea from this one */}
+        {post.analysis && post.analysis.direction !== "neutral" && (
+          <button
+            onClick={handleCopyIdea}
+            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--glass)]"
+            style={{ color: "var(--text-secondary)" }}
+            title="Start your own trade idea from this one"
+          >
+            <Copy size={13} /> Copy idea
+          </button>
+        )}
       </div>
 
       {/* Inline comments */}

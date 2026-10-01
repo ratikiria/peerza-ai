@@ -23,7 +23,8 @@ export default async function PostDetailPage({ params }: { params: Promise<{ pos
         select: { id: true, name: true, username: true, image: true, isPremium: true, isPro: true, repTier: true, repStyle: true },
       },
       likes: { select: { userId: true } },
-      _count: { select: { comments: true, likes: true } },
+      ideaVotes: { select: { userId: true, bullish: true } },
+      _count: { select: { comments: true, likes: true, reposts: true } },
     },
   })
 
