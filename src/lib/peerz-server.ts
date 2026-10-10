@@ -209,55 +209,99 @@ export type RedeemResult =
   | { ok: true; balance: number }
   | { ok: false; error: string; status: number }
 
+// The Pro week is a trial that leads to a paid plan, not a way to replace one:
+// once per season, and only for people who don't already have Pro. Its ledger
+// refId is "pro-week:<season>", so the unique key enforces the limit even if
+// two redemptions race.
+function proTrialRef(seasonId: string) {
+  return `pro-week:${seasonId}`
+}
+
+export interface ProTrialState {
+  usedThisSeason: boolean
+  /** The latest trial's end, once it has passed — the moment to offer paid Pro. */
+  endedAt: Date | null
+  ref: string | null
+}
+
+export async function getProTrialState(userId: string, now = new Date()): Promise<ProTrialState> {
+  const last = await db.peerzLedger.findFirst({
+    where: { userId, reason: "REDEEM", refId: { startsWith: "pro-week:" } },
+    orderBy: { createdAt: "desc" },
+    select: { refId: true, meta: true },
+  })
+  const until = (last?.meta as { until?: string } | null)?.until
+  const end = until ? new Date(until) : null
+  return {
+    usedThisSeason: last?.refId === proTrialRef(seasonAt(now).id),
+    endedAt: end && end <= now ? end : null,
+    ref: last?.refId ?? null,
+  }
+}
+
 export async function redeem(userId: string, itemId: StoreItemId): Promise<RedeemResult> {
   const item = STORE_ITEMS.find((i) => i.id === itemId)
   if (!item) return { ok: false, error: "Unknown item", status: 400 }
 
   const user = await db.user.findUnique({
     where: { id: userId },
-    select: {
-      emailVerifiedAt: true, proExpiresAt: true,
-      proMembership: { select: { status: true, stripeSubscriptionId: true, currentPeriodEnd: true } },
-    },
+    select: { emailVerifiedAt: true, isPro: true },
   })
   if (!user) return { ok: false, error: "User not found", status: 404 }
   if (!user.emailVerifiedAt) return { ok: false, error: "Verify your email to spend Peerz", status: 403 }
 
   const now = new Date()
+  const season = seasonAt(now)
+  const trialEnd = new Date(now.getTime() + 7 * DAY_MS)
   if (item.id === "pro-week") {
-    const m = user.proMembership
-    if (m?.stripeSubscriptionId && m.status === "ACTIVE" && m.currentPeriodEnd > now) {
-      return { ok: false, error: "You already have Pro through your subscription", status: 409 }
+    if (user.isPro) return { ok: false, error: "You already have Pro", status: 409 }
+    if ((await getProTrialState(userId, now)).usedThisSeason) {
+      return { ok: false, error: "You've used this season's Pro week", status: 409 }
     }
   }
 
-  const redemptionId = randomUUID()
-  const ok = await db.$transaction(async (tx) => {
-    // Conditional decrement: the balance can never go below zero.
-    const res = await tx.user.updateMany({
-      where: { id: userId, peerzBalance: { gte: item.cost } },
-      data: { peerzBalance: { decrement: item.cost } },
-    })
-    if (res.count === 0) return false
-    await tx.peerzLedger.create({
-      data: {
-        userId, amount: -item.cost, reason: "REDEEM", refId: redemptionId,
-        season: seasonAt(now).id, meta: { itemId: item.id, name: item.name },
-      },
-    })
-    if (item.id === "pro-week") {
-      const from = user.proExpiresAt && user.proExpiresAt > now ? user.proExpiresAt : now
-      await tx.user.update({
-        where: { id: userId },
-        data: { isPro: true, proExpiresAt: new Date(from.getTime() + 7 * DAY_MS) },
+  const refId = item.id === "pro-week" ? proTrialRef(season.id) : randomUUID()
+  let ok: boolean
+  try {
+    ok = await db.$transaction(async (tx) => {
+      // Conditional decrement: the balance can never go below zero.
+      const res = await tx.user.updateMany({
+        where: { id: userId, peerzBalance: { gte: item.cost } },
+        data: { peerzBalance: { decrement: item.cost } },
       })
-    } else if (item.id === "aria-5") {
-      await tx.user.update({ where: { id: userId }, data: { aiBonusQuestions: { increment: 5 } } })
-    }
-    return true
-  })
+      if (res.count === 0) return false
+      await tx.peerzLedger.create({
+        data: {
+          userId, amount: -item.cost, reason: "REDEEM", refId, season: season.id,
+          meta: item.id === "pro-week"
+            ? { itemId: item.id, name: item.name, until: trialEnd.toISOString() }
+            : { itemId: item.id, name: item.name },
+        },
+      })
+      if (item.id === "pro-week") {
+        await tx.user.update({ where: { id: userId }, data: { isPro: true, proExpiresAt: trialEnd } })
+      } else if (item.id === "aria-5") {
+        await tx.user.update({ where: { id: userId }, data: { aiBonusQuestions: { increment: 5 } } })
+      }
+      return true
+    })
+  } catch (err) {
+    // A parallel request redeemed this season's Pro week first; nothing was charged.
+    if (isUniqueViolation(err)) return { ok: false, error: "You've used this season's Pro week", status: 409 }
+    throw err
+  }
   if (!ok) return { ok: false, error: "Not enough Peerz", status: 409 }
 
   const after = await db.user.findUnique({ where: { id: userId }, select: { peerzBalance: true } })
   return { ok: true, balance: after?.peerzBalance ?? 0 }
+}
+
+// How long after a Peerz Pro week ends we keep offering paid Pro.
+const TRIAL_OFFER_MS = 14 * DAY_MS
+
+/** The ended trial to follow up with a paid-Pro offer, or null. */
+export async function endedProTrialToOffer(userId: string, now = new Date()): Promise<string | null> {
+  const t = await getProTrialState(userId, now)
+  if (!t.endedAt || !t.ref) return null
+  return now.getTime() - t.endedAt.getTime() < TRIAL_OFFER_MS ? t.ref : null
 }

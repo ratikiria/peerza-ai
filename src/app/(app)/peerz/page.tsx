@@ -3,7 +3,7 @@ import Link from "next/link"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { ink } from "@/lib/ink"
-import { ensureGenesis } from "@/lib/peerz-server"
+import { ensureGenesis, getProTrialState } from "@/lib/peerz-server"
 import {
   CHECKIN_REWARDS, DUEL_WIN_PEERZ, GENESIS_LIMIT, GENESIS_MULT, HOT_HAND_MIN_STREAK, HOT_HAND_MULT,
   LEDGER_LABELS, RESOLVED_DAILY_CAP, RESOLVED_PEERZ, STORE_ITEMS, TIER_MULT, formatPeerz, hitBasePeerz,
@@ -47,7 +47,7 @@ export default async function PeerzPage() {
 
   const genesisNo = await ensureGenesis(userId)
   const season = seasonAt()
-  const [me, lifetime, thisSeason, ledger] = await Promise.all([
+  const [me, lifetime, thisSeason, ledger, proTrial] = await Promise.all([
     db.user.findUnique({
       where: { id: userId },
       select: {
@@ -58,6 +58,7 @@ export default async function PeerzPage() {
     db.peerzLedger.aggregate({ where: { userId, amount: { gt: 0 } }, _sum: { amount: true } }),
     db.peerzLedger.aggregate({ where: { userId, amount: { gt: 0 }, season: season.id }, _sum: { amount: true } }),
     db.peerzLedger.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 40 }),
+    getProTrialState(userId),
   ])
   if (!me) redirect("/login")
 
@@ -157,6 +158,7 @@ export default async function PeerzPage() {
             balance={me.peerzBalance}
             verified={!!me.emailVerifiedAt}
             proUntil={me.isPro && me.proExpiresAt ? me.proExpiresAt.toISOString() : null}
+            proTrialUsed={proTrial.usedThisSeason}
             bonusQuestions={me.aiBonusQuestions}
           />
 

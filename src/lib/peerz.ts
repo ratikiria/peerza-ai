@@ -93,7 +93,7 @@ export type StoreItemId = "pro-week" | "aria-5"
 export interface StoreItem { id: StoreItemId; name: string; desc: string; cost: number }
 
 export const STORE_ITEMS: StoreItem[] = [
-  { id: "pro-week", name: "1 week of Pro", desc: "Pro badge and every Pro perk for 7 days", cost: 5000 },
+  { id: "pro-week", name: "1 week of Pro", desc: "Try every Pro perk for 7 days · once per season", cost: 5000 },
   { id: "aria-5",   name: "+5 Aria questions", desc: "Extra AI tutor questions, used after your daily limit", cost: 500 },
 ]
 

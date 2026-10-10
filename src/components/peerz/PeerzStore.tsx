@@ -10,12 +10,13 @@ import PeerzCoin from "@/components/peerz/PeerzCoin"
 const ICONS = { "pro-week": Gem, "aria-5": MessageCircleQuestion } as const
 
 export default function PeerzStore({
-  items, balance: initialBalance, verified, proUntil, bonusQuestions,
+  items, balance: initialBalance, verified, proUntil, proTrialUsed, bonusQuestions,
 }: {
   items: StoreItem[]
   balance: number
   verified: boolean
   proUntil: string | null
+  proTrialUsed: boolean
   bonusQuestions: number
 }) {
   const router = useRouter()
@@ -61,9 +62,14 @@ export default function PeerzStore({
         {items.map((item) => {
           const Icon = ICONS[item.id]
           const short = balance < item.cost
+          // Pro week is a once-a-season trial for people without Pro.
+          const locked = item.id === "pro-week" && (proUntil != null || proTrialUsed)
+          const off = !verified || short || locked
           const status =
             item.id === "pro-week" && proUntil
               ? `Pro until ${new Date(proUntil).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`
+              : item.id === "pro-week" && proTrialUsed
+              ? "Used this season · back next season"
               : item.id === "aria-5" && bonusQuestions > 0
               ? `${bonusQuestions} bonus left`
               : null
@@ -83,11 +89,11 @@ export default function PeerzStore({
               <button
                 type="button"
                 onClick={() => buy(item)}
-                disabled={!verified || short || busy !== null}
+                disabled={off || busy !== null}
                 aria-label={`Redeem ${item.name} for ${formatPeerz(item.cost)} Peerz`}
                 className="h-10 rounded-lg flex items-center justify-center gap-2 font-mono font-bold text-sm transition-colors disabled:cursor-not-allowed"
                 style={
-                  !verified || short
+                  off
                     ? { background: "var(--bg-elevated)", color: "var(--text-secondary)" }
                     : { background: "#fbbf24", color: "#1c1203" }
                 }

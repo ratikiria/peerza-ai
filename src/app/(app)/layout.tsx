@@ -9,6 +9,8 @@ import CommandPalette from "@/components/search/CommandPalette"
 import ToastHost from "@/components/notifications/ToastHost"
 import GuidedTour from "@/components/onboarding/GuidedTour"
 import VerifyEmailBanner from "@/components/auth/VerifyEmailBanner"
+import ProTrialEndedBanner from "@/components/peerz/ProTrialEndedBanner"
+import { endedProTrialToOffer } from "@/lib/peerz-server"
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -31,6 +33,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const needsVerification = !fresh?.emailVerifiedAt
 
+  const trialRef = fresh && !fresh.isPro ? await endedProTrialToOffer(session.user.id) : null
+
   return (
     <div className="min-h-screen isolate" style={{ background: "var(--bg-base)" }}>
       <div className="pz-backdrop" aria-hidden="true" />
@@ -38,6 +42,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <TickerTape />
       <main style={{ paddingTop: "var(--chrome-h)" }}>
         {needsVerification && fresh?.email && <VerifyEmailBanner email={fresh.email} />}
+        {trialRef && <ProTrialEndedBanner trialRef={trialRef} />}
         {children}
       </main>
       <IncomingCallOverlay />
