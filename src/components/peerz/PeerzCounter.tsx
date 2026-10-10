@@ -83,10 +83,13 @@ export default function PeerzCounter() {
     const iv = setInterval(refresh, POLL_MS)
     const onFocus = () => { refresh() }
     window.addEventListener("focus", onFocus)
+    // The store fires this after a redemption so the chip updates at once.
+    window.addEventListener("peerz:refresh", onFocus)
     return () => {
       cancelled = true
       clearInterval(iv)
       window.removeEventListener("focus", onFocus)
+      window.removeEventListener("peerz:refresh", onFocus)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
       if (toastTimer.current) clearTimeout(toastTimer.current)
     }

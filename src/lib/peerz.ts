@@ -103,6 +103,7 @@ export const LEDGER_LABELS: Record<string, string> = {
   DUEL_WIN: "Duel win",
   CHECKIN: "Daily check-in",
   REDEEM: "Redeemed",
+  GRANT: "Bonus from Peerza",
 }
 
 export function formatPeerz(n: number): string {

@@ -38,6 +38,7 @@ export default function PeerzStore({
         return
       }
       setBalance(data.balance)
+      window.dispatchEvent(new Event("peerz:refresh"))
       setMessage({ ok: true, text: `Redeemed: ${item.name}` })
       router.refresh()
     } catch {
