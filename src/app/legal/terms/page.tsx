@@ -9,7 +9,7 @@ export default function TermsPage() {
   return (
     <>
       <h1>Terms of Service</h1>
-      <p className="meta">Last updated: May 8, 2026</p>
+      <p className="meta">Last updated: October 11, 2026</p>
 
       <p>
         These Terms of Service (the &quot;Terms&quot;) form a binding agreement between you and
@@ -83,6 +83,14 @@ export default function TermsPage() {
         All trading on Peerza.ai is simulated. Balances, positions, P&amp;L, leaderboards, prizes
         within the platform, and game outcomes have no real-world monetary value and cannot be
         redeemed for cash. Treat them as practice and entertainment.
+      </p>
+      <p id="peerz">
+        <strong>Peerz.</strong> Peerz are loyalty points you earn by using Peerza.ai (for example,
+        when a Ranked Call resolves or you win a game duel). Peerz have no cash value, are not
+        property, and cannot be bought, sold, transferred between accounts, or exchanged for money
+        or crypto. You can only redeem them for in-app rewards listed in the Peerz store. We may
+        change how Peerz are earned or redeemed, cap or reverse Peerz earned through abuse, bugs or
+        multiple accounts, and end the program; Peerz are forfeited if your account is closed.
       </p>
 
       <h2>8. AI features (Aria, the AI tutor)</h2>

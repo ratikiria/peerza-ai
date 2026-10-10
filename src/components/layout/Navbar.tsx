@@ -18,6 +18,7 @@ import NotificationsFlyout from "@/components/layout/NotificationsFlyout"
 import ProBadge from "@/components/shared/ProBadge"
 import LocaleSwitcher from "@/components/settings/LocaleSwitcher"
 import ThemeQuickToggle from "@/components/layout/ThemeQuickToggle"
+import PeerzCounter from "@/components/peerz/PeerzCounter"
 
 // `mobile: true` keeps the icon visible on phones; secondary destinations are
 // hidden on small screens and reachable via the cmd-K search palette.
@@ -176,6 +177,9 @@ export default function Navbar({ user }: NavbarProps) {
           )
         })}
       </div>
+
+      {/* Peerz balance */}
+      <PeerzCounter />
 
       {/* Connection requests */}
       <div className="relative flex-shrink-0" ref={requestsRef}>

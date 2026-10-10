@@ -85,6 +85,12 @@ interface QuotaStatus {
   limit: number | null
   remaining: number | null
   resetAt: string
+  bonus?: number
+}
+
+// Out of daily questions AND out of Peerz bonus questions.
+function quotaBlocked(q: QuotaStatus | null): boolean {
+  return q?.remaining === 0 && !(q.bonus ?? 0)
 }
 
 const cardStyle = { background: "var(--bg-card)", border: "1px solid var(--border)" }
@@ -456,6 +462,7 @@ export default function AriaChat() {
               </span>
               <span style={{ color: "var(--text-secondary)" }}>
                 {quota.limit == null ? "Unlimited" : `${quota.used}/${quota.limit} today`}
+                {!!quota.bonus && ` · +${quota.bonus} bonus`}
               </span>
             </div>
             {quota.limit != null && (
@@ -555,19 +562,19 @@ export default function AriaChat() {
               onKeyDown={onKeyDown}
               rows={1}
               placeholder={
-                quota?.remaining === 0
+                quotaBlocked(quota)
                   ? "Daily quota reached — upgrade to keep asking"
                   : "Ask Aria anything about finance, investing, or markets…"
               }
               maxLength={4000}
-              disabled={streaming || quota?.remaining === 0}
+              disabled={streaming || quotaBlocked(quota)}
               className="flex-1 bg-transparent outline-none resize-none px-2 py-1.5 text-sm"
               style={{ color: "var(--text-primary)", maxHeight: 200 }}
             />
             <button
               type="button"
               onClick={send}
-              disabled={!input.trim() || streaming || quota?.remaining === 0}
+              disabled={!input.trim() || streaming || quotaBlocked(quota)}
               className="flex items-center justify-center w-9 h-9 rounded-xl transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
               style={{ background: "#10b981", color: "#0f1117" }}
             >

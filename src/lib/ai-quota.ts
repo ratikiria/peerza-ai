@@ -13,6 +13,7 @@ export interface QuotaStatus {
   limit: number | null   // null = unlimited
   remaining: number | null
   resetAt: Date          // when the daily counter rolls over
+  bonus: number          // extra questions bought with Peerz, used after the daily limit
 }
 
 function nextReset(from: Date = new Date()): Date {
@@ -29,6 +30,7 @@ async function readUserAndPlan(userId: string) {
       isPro: true,
       aiQuestionsToday: true,
       aiQuotaResetAt: true,
+      aiBonusQuestions: true,
       subscription: {
         select: { status: true, endDate: true },
       },
@@ -66,6 +68,7 @@ export async function getQuotaStatus(userId: string): Promise<QuotaStatus> {
     limit,
     remaining: limit == null ? null : Math.max(0, limit - used),
     resetAt: expired ? nextReset(now) : reset,
+    bonus: user.aiBonusQuestions,
   }
 }
 
@@ -90,6 +93,17 @@ export async function checkAndIncrementQuota(
   }
 
   if (limit != null && used >= limit) {
+    // Daily limit spent — fall back to bonus questions bought with Peerz.
+    const spent = await db.user.updateMany({
+      where: { id: userId, aiBonusQuestions: { gte: 1 } },
+      data: { aiBonusQuestions: { decrement: 1 }, aiQuotaResetAt: resetAt },
+    })
+    if (spent.count > 0) {
+      return {
+        ok: true,
+        status: { tier, used, limit, remaining: 0, resetAt, bonus: user.aiBonusQuestions - 1 },
+      }
+    }
     return {
       ok: false,
       reason: tier === "free"
@@ -97,7 +111,7 @@ export async function checkAndIncrementQuota(
         : tier === "pro"
         ? "Pro plan: 15 questions per day. Upgrade to AI Tutor Premium for unlimited."
         : "Daily quota reached.",
-      status: { tier, used, limit, remaining: 0, resetAt },
+      status: { tier, used, limit, remaining: 0, resetAt, bonus: 0 },
     }
   }
 
@@ -115,6 +129,7 @@ export async function checkAndIncrementQuota(
       limit,
       remaining: limit == null ? null : Math.max(0, limit - next),
       resetAt,
+      bonus: user.aiBonusQuestions,
     },
   }
 }

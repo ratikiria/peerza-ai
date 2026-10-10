@@ -7,6 +7,7 @@ import { getCandles } from "@/lib/ranked-market"
 import { pointsIfHit, pointsIfMissed, progressToward } from "@/lib/ranked"
 import { recomputeReputation } from "@/lib/reputation"
 import { shouldNotify } from "@/lib/notification-prefs"
+import { awardRankedCall } from "@/lib/peerz-server"
 
 const BATCH = 40
 // Wait this long past the deadline before calling a miss, so late-arriving
@@ -61,6 +62,8 @@ async function finalize(call: OpenCall, status: Status, data: {
   if (res.count === 0) return
 
   await recomputeReputation(call.authorId)
+  // After the rep refresh, so the rank multiplier reflects this result too.
+  await awardRankedCall(call.id).catch((err) => console.error("[peerz] call award failed", call.id, err))
   if (status !== "VOID" && await shouldNotify(call.authorId, "RANKED_CALL_RESULT")) {
     await db.notification.create({
       data: { type: "RANKED_CALL_RESULT", receiverId: call.authorId, triggeredBy: call.authorId, entityId: call.id },

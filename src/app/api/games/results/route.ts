@@ -3,6 +3,7 @@ import { z } from "zod"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { shouldNotify } from "@/lib/notification-prefs"
+import { awardDuelWin } from "@/lib/peerz-server"
 
 const GAME_IDS = ["guess-direction", "build-portfolio", "read-tape"] as const
 
@@ -88,6 +89,8 @@ export async function POST(req: Request) {
           challengeeAt: new Date(),
         },
       })
+
+      await awardDuelWin(duel.id).catch((err) => console.error("[peerz] duel award failed", duel.id, err))
 
       if (await shouldNotify(duel.challengerId, "GAME_DUEL_RESULT")) {
         await db.notification.create({

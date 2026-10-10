@@ -433,3 +433,68 @@ body {
     transform: none !important;
   }
 }
+
+/* ── Peerz coin (the Moon) ───────────────────────────────────────────────────
+   Gold moon with craters; sizes come from the element's width/height, the
+   craters are percentages so one look works from 14px to hero size. */
+.pz-coin {
+  position: relative;
+  flex: none;
+  border-radius: 9999px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 12% 12% at 30% 31%, rgba(146, 64, 14, 0.34) 0 92%, transparent 100%),
+    radial-gradient(ellipse 7% 7% at 67% 35%, rgba(146, 64, 14, 0.3) 0 90%, transparent 100%),
+    radial-gradient(ellipse 9% 9% at 55% 71%, rgba(146, 64, 14, 0.3) 0 90%, transparent 100%),
+    radial-gradient(ellipse 4.5% 4.5% at 29% 68%, rgba(146, 64, 14, 0.28) 0 85%, transparent 100%),
+    radial-gradient(ellipse 4% 4% at 78% 63%, rgba(146, 64, 14, 0.26) 0 85%, transparent 100%),
+    radial-gradient(circle at 34% 28%, #fff4c4 0%, #fcd34d 24%, #f59e0b 62%, #a8540c 100%);
+  box-shadow: 0 0 0 1.5px rgba(120, 53, 15, 0.6), inset 0 -2px 4px rgba(120, 53, 15, 0.4);
+}
+.pz-coin-lg {
+  box-shadow: 0 0 0 3px rgba(120, 53, 15, 0.55), 0 0 0 5px rgba(252, 211, 77, 0.35),
+    0 24px 60px -14px rgba(251, 191, 36, 0.45), inset 0 -8px 18px rgba(120, 53, 15, 0.45);
+}
+.pz-coin-lg::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -60%;
+  width: 40%;
+  height: 140%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: rotate(20deg);
+  animation: pz-coin-shine 3.6s ease-in-out infinite;
+}
+.pz-coin-orbit {
+  position: absolute;
+  inset: -18%;
+  pointer-events: none;
+  animation: pz-coin-spin 7s linear infinite;
+}
+.pz-coin-float { animation: pz-coin-bob 4s ease-in-out infinite; }
+.pz-coin-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  animation: pz-coin-burst 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.pz-peerz-bump { animation: pz-peerz-bump 0.5s ease; }
+.pz-peerz-toast { animation: pz-peerz-toast 0.25s ease-out both; }
+@keyframes pz-peerz-toast { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes pz-coin-shine { 0%, 55% { left: -60%; } 85%, 100% { left: 130%; } }
+@keyframes pz-coin-spin { to { transform: rotate(360deg); } }
+@keyframes pz-coin-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes pz-coin-burst {
+  0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1); opacity: 0; }
+}
+@keyframes pz-peerz-bump {
+  0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.6); }
+  100% { box-shadow: 0 0 0 12px rgba(251, 191, 36, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pz-coin-lg::after, .pz-coin-orbit, .pz-coin-float, .pz-coin-burst, .pz-peerz-bump, .pz-peerz-toast { animation: none; }
+  .pz-coin-burst { display: none; }
+}

@@ -9,6 +9,9 @@ export async function register() {
       // Same single-instance assumption: advance challenge status by date.
       const { startChallengeStatusSync } = await import("./lib/challenge-status")
       startChallengeStatusSync()
+      // And end Pro memberships whose time has run out.
+      const { startProExpirySync } = await import("./lib/pro-expiry")
+      startProExpirySync()
     }
   }
   if (process.env.NEXT_RUNTIME === "edge") {
