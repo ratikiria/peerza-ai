@@ -484,6 +484,11 @@ export default function AriaChat() {
                 Upgrade →
               </a>
             )}
+            {quotaBlocked(quota) && (
+              <a href="/peerz" className="mt-1 block text-[10px] font-bold hover:underline" style={{ color: ink("#fbbf24") }}>
+                +5 questions for 500 Peerz →
+              </a>
+            )}
           </div>
         )}
       </aside>
@@ -563,7 +568,7 @@ export default function AriaChat() {
               rows={1}
               placeholder={
                 quotaBlocked(quota)
-                  ? "Daily quota reached — upgrade to keep asking"
+                  ? "Daily limit reached — get 5 more with Peerz, or upgrade"
                   : "Ask Aria anything about finance, investing, or markets…"
               }
               maxLength={4000}

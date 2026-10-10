@@ -7,7 +7,7 @@ import { useEffect, useState, useRef } from "react"
 import { useTranslations } from "next-intl"
 import {
   Home, MessageCircle, Bell, Search, TrendingUp, Brain, Gamepad2, User, LogOut,
-  Settings, ChevronDown, UserPlus, Check, X, CalendarDays, CandlestickChart,
+  Settings, ChevronDown, UserPlus, Check, X, CalendarDays, CandlestickChart, Moon,
 } from "lucide-react"
 import { signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
@@ -311,6 +311,14 @@ export default function Navbar({ user }: NavbarProps) {
               style={{ color: "var(--text-secondary)" }}
             >
               <User size={15} /> {t("view_profile")}
+            </Link>
+            <Link
+              href="/peerz"
+              onClick={() => setShowDropdown(false)}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-[var(--bg-base)]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              <Moon size={15} /> {t("peerz")}
             </Link>
             <Link
               href="/settings"

@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 import { ink } from "@/lib/ink"
 import Link from "next/link"
 import { getTranslations } from "next-intl/server"
-import { Home, Bell, MessageCircle, TrendingUp, Brain, Gamepad2, Settings, Building2, CalendarDays, BookOpen, Briefcase, Sparkles, Smartphone } from "lucide-react"
+import { Home, Bell, MessageCircle, TrendingUp, Brain, Gamepad2, Settings, Building2, CalendarDays, BookOpen, Briefcase, Sparkles, Smartphone, Moon } from "lucide-react"
 import ProfilePhotoButton from "@/components/shared/ProfilePhotoButton"
 import ProBadge from "@/components/shared/ProBadge"
 
@@ -16,6 +16,7 @@ const shortcuts = [
   { href: "/dictionary",    icon: BookOpen,     tKey: "dictionary" },
   { href: "/ai-tutor",      icon: Brain,        tKey: "ai_tutor" },
   { href: "/games",         icon: Gamepad2,     tKey: "games" },
+  { href: "/peerz",         icon: Moon,         tKey: "peerz" },
   { href: "/web3",          icon: Sparkles,     tKey: "web3", badge: "NEW" as const },
   { href: "/brands",        icon: Building2,    tKey: "brands" },
   { href: "/settings",      icon: Settings,     tKey: "settings" },

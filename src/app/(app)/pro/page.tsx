@@ -97,6 +97,8 @@ export default async function ProPage() {
           <h2 className="text-2xl font-bold text-center" style={{ color: "var(--text-primary)" }}>FAQ</h2>
           <Faq q="Is Pro the same as &quot;Verified&quot;?"
             a="No. Pro is a supporter membership — anyone who pays gets it. True identity verification (gold check) will be a separate, free KYC flow we ship later. We deliberately don&apos;t use a checkmark for the Pro badge so the difference stays clear, especially in a finance context where misleading verification could hurt users." />
+          <Faq q="Can I try Pro first?"
+            a="Yes. Once per season you can trade 5,000 Peerz (points you earn when your Ranked Calls hit, in duels, and from daily check-ins) for a free week of Pro. Find it in the Peerz store at /peerz." />
           <Faq q="Can I cancel anytime?"
             a="Yes. Cancel from /settings — you keep Pro until the end of your current billing period." />
           <Faq q="How do crypto payments work?"
