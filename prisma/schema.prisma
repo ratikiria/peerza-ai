@@ -911,3 +911,30 @@ model PeerzLedger {
   @@unique([userId, reason, refId])
   @@index([userId, createdAt])
 }
+
+// ─── GENESIS WAITLIST ───────────────────────────────────────────────────────
+
+// Pre-launch signups. A number (Genesis 1–1000, Pioneer 1001–5000) is taken
+// from the shared genesis_number_seq only when the email is confirmed, and
+// carries over to User.genesisNo when this email registers.
+model WaitlistEntry {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  requestedUsername String?
+  username          String?   @unique // reservation, set on confirm if still free
+  number            Int?      @unique
+  refCode           String    @unique // public, used in invite links
+  confirmToken      String    @unique
+  manageToken       String    @unique // secret, opens the status page
+  referredById      String?
+  confirmedAt       DateTime?
+  userId            String?   @unique // set once this email has an account
+  locale            String?
+  ip                String?
+  createdAt         DateTime  @default(now())
+
+  referredBy WaitlistEntry?  @relation("WaitlistReferrals", fields: [referredById], references: [id], onDelete: SetNull)
+  referrals  WaitlistEntry[] @relation("WaitlistReferrals")
+
+  @@index([referredById])
+}

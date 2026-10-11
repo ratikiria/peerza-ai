@@ -3,9 +3,11 @@ import Link from "next/link"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { ink } from "@/lib/ink"
-import { ensureGenesis, getProTrialState } from "@/lib/peerz-server"
+import { getProTrialState } from "@/lib/peerz-server"
+import { ensureGenesis, RECRUITER_MIN } from "@/lib/genesis"
 import {
-  CHECKIN_REWARDS, DUEL_WIN_PEERZ, GENESIS_LIMIT, GENESIS_MULT, HOT_HAND_MIN_STREAK, HOT_HAND_MULT,
+  CHECKIN_REWARDS, DUEL_WIN_PEERZ, GENESIS_LIMIT, GENESIS_MULT, PIONEER_LIMIT, PIONEER_MULT,
+  HOT_HAND_MIN_STREAK, HOT_HAND_MULT, formatMemberNo, numberTier, tierLabel,
   LEDGER_LABELS, RESOLVED_DAILY_CAP, RESOLVED_PEERZ, STORE_ITEMS, TIER_MULT, formatPeerz, hitBasePeerz,
   seasonAt, type RewardPart,
 } from "@/lib/peerz"
@@ -31,6 +33,8 @@ function detailOf(reason: string, meta: unknown): string {
       return m.streak ? `Day ${m.streak} of 7` : ""
     case "REDEEM":
       return m.name ?? ""
+    case "REFERRAL":
+      return "+250 for inviting a friend"
     default:
       return ""
   }
@@ -47,7 +51,7 @@ export default async function PeerzPage() {
 
   const genesisNo = await ensureGenesis(userId)
   const season = seasonAt()
-  const [me, lifetime, thisSeason, ledger, proTrial] = await Promise.all([
+  const [me, lifetime, thisSeason, ledger, proTrial, waitlist] = await Promise.all([
     db.user.findUnique({
       where: { id: userId },
       select: {
@@ -59,9 +63,15 @@ export default async function PeerzPage() {
     db.peerzLedger.aggregate({ where: { userId, amount: { gt: 0 }, season: season.id }, _sum: { amount: true } }),
     db.peerzLedger.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 40 }),
     getProTrialState(userId),
+    db.waitlistEntry.findUnique({
+      where: { userId },
+      select: { _count: { select: { referrals: { where: { confirmedAt: { not: null } } } } } },
+    }),
   ])
   if (!me) redirect("/login")
 
+  const memberTier = numberTier(genesisNo)
+  const recruiter = (waitlist?._count.referrals ?? 0) >= RECRUITER_MIN
   const today = new Date().toISOString().slice(0, 10)
   const checkedToday = me.lastCheckinAt?.toISOString().slice(0, 10) === today
 
@@ -95,7 +105,7 @@ export default async function PeerzPage() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="space-y-6 min-w-0">
           {/* Genesis */}
-          {genesisNo != null && (
+          {genesisNo != null && memberTier && (
             <section
               className="rounded-2xl p-4 flex items-center gap-4"
               style={{ background: "rgba(251,191,36,0.07)", border: "1px solid rgba(251,191,36,0.35)" }}
@@ -107,15 +117,23 @@ export default async function PeerzPage() {
               >
                 <div className="w-full h-full rounded-full flex items-center justify-center font-mono text-xs font-bold"
                   style={{ background: "var(--bg-card)", color: "var(--text-primary)" }}>
-                  G
+                  {memberTier === "genesis" ? "G" : "P"}
                 </div>
               </div>
               <div className="min-w-0">
                 <p className="font-bold" style={{ color: ink("#fde68a") }}>
-                  Genesis #{String(genesisNo).padStart(4, "0")}
+                  {tierLabel(memberTier)} {formatMemberNo(genesisNo)}
+                  {recruiter && (
+                    <span className="ml-2 align-middle text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded"
+                      style={{ background: "rgba(46,230,168,0.12)", color: ink("#2ee6a8") }}>
+                      Founding Recruiter
+                    </span>
+                  )}
                 </p>
                 <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
-                  One of the first {formatPeerz(GENESIS_LIMIT)} on Peerza · ×{GENESIS_MULT} Peerz on call hits through Season 1
+                  {memberTier === "genesis"
+                    ? `One of the first ${formatPeerz(GENESIS_LIMIT)} on Peerza · ×${GENESIS_MULT} Peerz on call hits through Season 1`
+                    : `One of the first ${formatPeerz(PIONEER_LIMIT)} on Peerza · ×${PIONEER_MULT} Peerz on call hits through Season 1`}
                 </p>
               </div>
             </section>

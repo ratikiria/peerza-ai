@@ -6,6 +6,7 @@ import { db } from "@/lib/db"
 import { isValidSecurityQuestion } from "@/lib/security-questions"
 import { consume, getClientIp, tooManyRequests } from "@/lib/rate-limit"
 import { sendEmail, welcomeEmail, verifyEmailEmail } from "@/lib/email"
+import { claimForUser, isUsernameReserved } from "@/lib/genesis"
 
 const MIN_AGE_YEARS = 13
 const REGISTER_MAX = 5
@@ -80,6 +81,14 @@ export async function POST(req: Request) {
       )
     }
 
+    // An @username reserved on the Genesis waitlist belongs to that email.
+    if (await isUsernameReserved(username, email)) {
+      return NextResponse.json(
+        { error: "This username is already taken" },
+        { status: 409 }
+      )
+    }
+
     const passwordHash = await bcrypt.hash(password, 12)
     const securityAnswerHash = await bcrypt.hash(securityAnswer.trim().toLowerCase(), 12)
 
@@ -98,6 +107,11 @@ export async function POST(req: Request) {
       select: { id: true, email: true, username: true, name: true },
     })
 
+    // A confirmed waitlist email brings its Genesis number, verified status
+    // and referral Peerz with it. Never block registration on this.
+    await claimForUser(user.id).catch((e) => console.error("[register] genesis claim failed:", e))
+    const alreadyVerified = !!(await db.user.findUnique({ where: { id: user.id }, select: { emailVerifiedAt: true } }))?.emailVerifiedAt
+
     // Fire-and-forget welcome + verification emails — don't block the response
     // and don't fail registration if Resend has a hiccup.
     const baseUrl = process.env.NEXTAUTH_URL || `https://${req.headers.get("host") || "peerza.ai"}`
@@ -114,7 +128,8 @@ export async function POST(req: Request) {
         const verifyUrl = `${baseUrl}/api/auth/verify-email/${verifyToken}`
         return Promise.all([
           sendEmail({ to: email, ...welcomeEmail(name, baseUrl) }),
-          sendEmail({ to: email, ...verifyEmailEmail(name, verifyUrl) }),
+          // Skip when the waitlist already confirmed this email.
+          alreadyVerified ? null : sendEmail({ to: email, ...verifyEmailEmail(name, verifyUrl) }),
         ])
       })
       .catch((e) => console.error("[register] email pipeline failed:", e))

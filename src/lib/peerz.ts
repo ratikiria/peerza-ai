@@ -44,10 +44,30 @@ export const TIER_MULT: Record<RankTier, number> = {
   rookie: 1, analyst: 1.1, sharp: 1.25, elite: 1.5, legend: 2,
 }
 
+// Early-member numbers: Genesis #1–1000 earn ×2, Pioneer #1001–5000 ×1.5,
+// on call hits until Season 1 ends.
 export const GENESIS_LIMIT = 1000
+export const PIONEER_LIMIT = 5000
 export const GENESIS_MULT = 2
-/** Genesis members earn double until Season 1 ends. */
+export const PIONEER_MULT = 1.5
 export const GENESIS_BOOST_UNTIL = SEASONS.find((s) => s.id === "S1")!.end
+
+export type NumberTier = "genesis" | "pioneer"
+
+export function numberTier(n: number | null | undefined): NumberTier | null {
+  if (n == null) return null
+  if (n <= GENESIS_LIMIT) return "genesis"
+  if (n <= PIONEER_LIMIT) return "pioneer"
+  return null
+}
+
+export function tierLabel(t: NumberTier | null): string | null {
+  return t === "genesis" ? "Genesis" : t === "pioneer" ? "Pioneer" : null
+}
+
+export function formatMemberNo(n: number): string {
+  return `#${String(n).padStart(4, "0")}`
+}
 
 export const DUEL_WIN_PEERZ = 40
 export const DUEL_DAILY_CAP_PER_OPPONENT = 3
@@ -64,7 +84,7 @@ export function hitReward(opts: {
   ratio: number
   streak: number            // consecutive hits including this one
   tier: RankTier | null
-  genesis: boolean
+  genesisNo: number | null  // Genesis/Pioneer number, if any
   at: Date
 }): HitReward {
   const base = hitBasePeerz(opts.ratio)
@@ -79,9 +99,11 @@ export function hitReward(opts: {
     mult *= tierMult
     parts.push({ label: `${opts.tier![0].toUpperCase()}${opts.tier!.slice(1)} rank`, value: `×${tierMult}` })
   }
-  if (opts.genesis && opts.at.getTime() < Date.parse(GENESIS_BOOST_UNTIL)) {
-    mult *= GENESIS_MULT
-    parts.push({ label: "Genesis", value: `×${GENESIS_MULT}` })
+  const memberTier = numberTier(opts.genesisNo)
+  if (memberTier && opts.at.getTime() < Date.parse(GENESIS_BOOST_UNTIL)) {
+    const m = memberTier === "genesis" ? GENESIS_MULT : PIONEER_MULT
+    mult *= m
+    parts.push({ label: tierLabel(memberTier)!, value: `×${m}` })
   }
   return { total: Math.round(base * mult), parts }
 }
@@ -104,6 +126,7 @@ export const LEDGER_LABELS: Record<string, string> = {
   CHECKIN: "Daily check-in",
   REDEEM: "Redeemed",
   GRANT: "Bonus from Peerza",
+  REFERRAL: "Friend joined",
 }
 
 export function formatPeerz(n: number): string {

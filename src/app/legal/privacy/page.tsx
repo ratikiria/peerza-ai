@@ -9,7 +9,7 @@ export default function PrivacyPage() {
   return (
     <>
       <h1>Privacy Policy</h1>
-      <p className="meta">Last updated: May 8, 2026</p>
+      <p className="meta">Last updated: October 11, 2026</p>
 
       <p>
         This Privacy Policy explains what personal data Peerza.ai collects, why we collect it,
@@ -25,6 +25,11 @@ export default function PrivacyPage() {
         <li>Name, username, email, hashed password, date of birth, profile photo (optional).</li>
         <li>Security question and (hashed) answer used for password recovery.</li>
         <li>Interests selected during signup.</li>
+      </ul>
+
+      <h3>Genesis waitlist</h3>
+      <ul>
+        <li>If you join the waitlist before launch: your email, an optional reserved @username, who invited you, your language, and the IP address used to sign up (for abuse prevention). We use it to confirm your email, hold your Genesis number, credit invite rewards, and tell you when Peerza opens. Ask us to delete it any time.</li>
       </ul>
 
       <h3>Content you create</h3>

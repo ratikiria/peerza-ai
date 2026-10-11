@@ -6,18 +6,12 @@ import { randomUUID } from "crypto"
 import { db } from "@/lib/db"
 import type { RankTier } from "@/lib/ranked"
 import {
-  seasonAt, hitReward, RESOLVED_PEERZ, RESOLVED_DAILY_CAP, GENESIS_LIMIT,
+  seasonAt, hitReward, RESOLVED_PEERZ, RESOLVED_DAILY_CAP,
   DUEL_WIN_PEERZ, DUEL_DAILY_CAP, DUEL_DAILY_CAP_PER_OPPONENT, CHECKIN_REWARDS,
   STORE_ITEMS, type StoreItemId,
 } from "@/lib/peerz"
 
 const DAY_MS = 86_400_000
-
-// The seeded demo accounts never take a Genesis number — those go to real people.
-const DEMO_EMAILS = new Set([
-  "human@peerza.ai", "david@peerza.ai", "emma@peerza.ai", "james@peerza.ai", "marcus@peerza.ai",
-  "olivia@peerza.ai", "priya@peerza.ai", "ryan@peerza.ai", "sarah@peerza.ai", "sofia@peerza.ai",
-])
 
 function isUniqueViolation(err: unknown): boolean {
   return (err as { code?: string } | null)?.code === "P2002"
@@ -92,7 +86,7 @@ export async function awardRankedCall(postId: string): Promise<void> {
       ratio: call.rankedDifficulty ?? 1,
       streak: Math.max(1, streak),
       tier: (call.author.repTier as RankTier | null) ?? null,
-      genesis: call.author.genesisNo != null,
+      genesisNo: call.author.genesisNo,
       at,
     })
     await credit({
@@ -176,31 +170,6 @@ export async function checkIn(userId: string, now = new Date()): Promise<Checkin
     throw err
   }
   return { awarded, streak }
-}
-
-// ─── Genesis ────────────────────────────────────────────────────────────────
-
-/** Give a real (non-demo) user the next Genesis number while any are left. */
-export async function ensureGenesis(userId: string): Promise<number | null> {
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const user = await db.user.findUnique({ where: { id: userId }, select: { genesisNo: true, email: true } })
-    if (!user) return null
-    if (user.genesisNo != null) return user.genesisNo
-    if (DEMO_EMAILS.has(user.email.toLowerCase())) return null
-
-    const top = await db.user.aggregate({ _max: { genesisNo: true } })
-    const next = (top._max.genesisNo ?? 0) + 1
-    if (next > GENESIS_LIMIT) return null
-    try {
-      // count 0 = this user got a number in a parallel request; loop re-reads it.
-      const res = await db.user.updateMany({ where: { id: userId, genesisNo: null }, data: { genesisNo: next } })
-      if (res.count > 0) return next
-    } catch (err) {
-      // Someone else took that number at the same moment — try the next one.
-      if (!isUniqueViolation(err)) throw err
-    }
-  }
-  return null
 }
 
 // ─── Store ──────────────────────────────────────────────────────────────────

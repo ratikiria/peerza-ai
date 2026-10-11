@@ -94,11 +94,11 @@ function Nav() {
             Sign in
           </Link>
           <Link
-            href="/register"
+            href="/genesis"
             className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl text-white transition-all hover:opacity-90 shadow-lg shadow-emerald-500/20"
             style={{ background: "linear-gradient(135deg, #10b981 0%, #047857 100%)" }}
           >
-            Get started <ArrowRight size={14} />
+            Claim your number <ArrowRight size={14} />
           </Link>
         </div>
       </div>
@@ -153,11 +153,11 @@ function Hero() {
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
         <Link
-          href="/register"
+          href="/genesis"
           className="inline-flex items-center gap-2 text-sm font-semibold px-6 py-3.5 rounded-xl text-white transition-all hover:opacity-90 hover:scale-[1.02] shadow-xl shadow-emerald-500/30 w-full sm:w-auto justify-center"
           style={{ background: "linear-gradient(135deg, #10b981 0%, #047857 100%)" }}
         >
-          Start free <ArrowRight size={15} />
+          Claim your Genesis number <ArrowRight size={15} />
         </Link>
         <Link
           href="/login"
@@ -367,14 +367,14 @@ function FinalCTA() {
         Markets are better with company.
       </h2>
       <p className="text-base sm:text-lg max-w-2xl mx-auto mb-9" style={{ color: "var(--text-secondary)" }}>
-        Join the open beta. Free forever. Pro unlocks deeper tools at $10/month — cancel anytime.
+        Doors open at launch in Q1 2027. The first 1,000 get a permanent Genesis number. Free forever; Pro unlocks deeper tools at $10/month.
       </p>
       <Link
-        href="/register"
+        href="/genesis"
         className="inline-flex items-center gap-2 text-base font-semibold px-8 py-4 rounded-xl text-white transition-all hover:opacity-90 hover:scale-[1.02] shadow-2xl shadow-emerald-500/30"
         style={{ background: "linear-gradient(135deg, #10b981 0%, #047857 100%)" }}
       >
-        Join free <ArrowRight size={16} />
+        Join the waitlist <ArrowRight size={16} />
       </Link>
       <p className="text-xs mt-5" style={{ color: "var(--text-secondary)" }}>
         Already have an account? <Link href="/login" className="font-semibold underline-offset-2 hover:underline" style={{ color: ink("#34d399") }}>Sign in</Link>

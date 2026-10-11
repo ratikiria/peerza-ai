@@ -244,3 +244,46 @@ function escape(s: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
 }
+
+// ─── Genesis waitlist ────────────────────────────────────────────────────────
+
+export function genesisConfirmEmail(confirmUrl: string) {
+  return {
+    subject: "Confirm to lock your Peerza Genesis number",
+    html: layout({
+      preheader: "One tap and your number is yours for good.",
+      eyebrow: "Genesis waitlist",
+      heading: "Your number is one tap away.",
+      body: "Confirm your email and we'll lock in your Genesis number (and your @username, if you reserved one). Numbers go to people in the order they confirm.",
+      cta: { label: "Confirm and claim my number", url: confirmUrl },
+      meta: ["🎟 First come, first served", "🔒 Takes 2 seconds"],
+      footnote: "Didn't sign up for the Peerza waitlist? Ignore this email and nothing happens.",
+    }),
+    text: `Confirm your email to claim your Peerza Genesis number: ${confirmUrl}`,
+  }
+}
+
+export function genesisClaimedEmail(p: {
+  number: number | null
+  tierName: string | null
+  inviteUrl: string
+  manageUrl: string
+}) {
+  const label = p.number != null ? `#${String(p.number).padStart(4, "0")}` : null
+  return {
+    subject: label ? `You're ${p.tierName} ${label} on Peerza` : "You're on the Peerza launch list",
+    html: layout({
+      preheader: label ? `${p.tierName} ${label} is yours. Invite friends for +250 Peerz each.` : "We'll email you the day doors open.",
+      eyebrow: label ? `${p.tierName} ${label}` : "Launch list",
+      heading: label ? `${label} is yours.` : "You're on the list.",
+      body: (label
+        ? "Your number is locked and goes on your profile at launch. "
+        : "All Genesis and Pioneer numbers are taken, but you're on the launch list. ")
+        + "Every friend who joins with your link and confirms earns you +250 Peerz (up to 10 friends), credited when you activate. Three friends unlocks the Founding Recruiter badge.",
+      cta: { label: "See my invite link", url: p.manageUrl },
+      meta: ["🚀 Doors open Q1 2027", "👥 Your link: " + escape(p.inviteUrl)],
+      footnote: "Keep this email: the button above is your personal link to your waitlist page.",
+    }),
+    text: `${label ? `You're ${p.tierName} ${label} on Peerza.` : "You're on the Peerza launch list."} Invite friends: ${p.inviteUrl} — your page: ${p.manageUrl}`,
+  }
+}
