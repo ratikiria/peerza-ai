@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Swords, Inbox, Send, Trophy, Clock, ArrowRight } from "lucide-react"
+import { Swords, Inbox, Send, Trophy, Clock, ArrowRight, ArrowLeft } from "lucide-react"
 
 type GameId = "guess-direction" | "build-portfolio" | "read-tape"
 
@@ -62,9 +62,16 @@ export default function DuelsInbox() {
   }, [tab])
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-4 sm:py-8">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center">
+        <Link
+          href="/games"
+          aria-label="Back to Games"
+          className="sm:hidden w-11 h-11 -ml-2 -mr-1 flex items-center justify-center rounded-full text-gray-400"
+        >
+          <ArrowLeft size={20} />
+        </Link>
+        <div className="w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center flex-shrink-0">
           <Swords size={22} className="text-indigo-400" />
         </div>
         <div className="flex-1">
@@ -73,7 +80,7 @@ export default function DuelsInbox() {
         </div>
         <Link
           href="/games"
-          className="text-sm text-gray-400 hover:text-gray-200 inline-flex items-center gap-1"
+          className="hidden sm:inline-flex text-sm text-gray-400 hover:text-gray-200 items-center gap-1"
         >
           Back to Games
         </Link>

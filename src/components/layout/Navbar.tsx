@@ -20,11 +20,11 @@ import LocaleSwitcher from "@/components/settings/LocaleSwitcher"
 import ThemeQuickToggle from "@/components/layout/ThemeQuickToggle"
 import PeerzCounter from "@/components/peerz/PeerzCounter"
 
-// `mobile: true` keeps the icon visible on phones; secondary destinations are
-// hidden on small screens and reachable via the cmd-K search palette.
+// `mobile: true` keeps the icon visible on phones; the rest live in the bottom
+// tab bar (MobileTabBar) or the "You" tab there.
 // `tKey` looks up the translated label in the Nav namespace.
 const navItems = [
-  { href: "/feed",          icon: Home,             tKey: "feed",         mobile: true  },
+  { href: "/feed",          icon: Home,             tKey: "feed",         mobile: false },
   { href: "/messages",      icon: MessageCircle,    tKey: "messages",     mobile: true  },
   { href: "/notifications", icon: Bell,             tKey: "notifications", mobile: true },
   { href: "/workspace",     icon: CandlestickChart, tKey: "workspace",    mobile: false },
@@ -128,7 +128,7 @@ export default function Navbar({ user }: NavbarProps) {
         type="button"
         data-tour="search"
         onClick={openPalette}
-        className="flex-1 max-w-xs flex items-center gap-2 text-sm pl-3 pr-2 py-2 rounded-xl outline-none transition-colors hover:opacity-90"
+        className="flex-1 min-w-0 max-w-xs flex items-center gap-2 text-sm pl-3 pr-2 py-2 rounded-xl outline-none transition-colors hover:opacity-90"
         style={{
           background: "var(--bg-base)",
           border: "1px solid var(--border)",
@@ -150,7 +150,12 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="flex items-center gap-0.5">
         {navItems.map(({ href, icon: Icon, tKey, mobile }) => {
           if (href === "/messages") {
-            return <MessagesFlyout key={href} active={pathname.startsWith("/messages")} />
+            // Phones reach chats from the bottom tab bar.
+            return (
+              <div key={href} className="hidden md:block">
+                <MessagesFlyout active={pathname.startsWith("/messages")} />
+              </div>
+            )
           }
           if (href === "/notifications") {
             return <NotificationsFlyout key={href} active={pathname.startsWith("/notifications")} />
@@ -178,8 +183,11 @@ export default function Navbar({ user }: NavbarProps) {
         })}
       </div>
 
-      {/* Peerz balance */}
-      <PeerzCounter />
+      {/* Peerz balance — still mounted on phones (it runs the daily check-in);
+          the balance shows on the "You" tab there. */}
+      <div className="hidden md:flex">
+        <PeerzCounter />
+      </div>
 
       {/* Connection requests */}
       <div className="relative flex-shrink-0" ref={requestsRef}>
@@ -260,8 +268,8 @@ export default function Navbar({ user }: NavbarProps) {
         )}
       </div>
 
-      {/* Profile dropdown */}
-      <div className="relative flex-shrink-0" ref={dropdownRef}>
+      {/* Profile dropdown — on phones the "You" tab replaces it */}
+      <div className="relative flex-shrink-0 hidden md:block" ref={dropdownRef}>
         <button
           data-tour="profile"
           onClick={() => setShowDropdown((v) => !v)}

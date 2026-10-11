@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import Navbar from "@/components/layout/Navbar"
 import TickerTape from "@/components/layout/TickerTape"
+import MobileTabBar from "@/components/layout/MobileTabBar"
 import IncomingCallOverlay from "@/components/calls/IncomingCallOverlay"
 import ChatDock from "@/components/chat/ChatDock"
 import CommandPalette from "@/components/search/CommandPalette"
@@ -40,11 +41,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <div className="pz-backdrop" aria-hidden="true" />
       <Navbar user={navUser} />
       <TickerTape />
-      <main style={{ paddingTop: "var(--chrome-h)" }}>
+      {/* Bottom padding on phones keeps content clear of the floating tab bar. */}
+      <main className="pz-main" style={{ paddingTop: "var(--chrome-h)" }}>
         {needsVerification && fresh?.email && <VerifyEmailBanner email={fresh.email} />}
         {trialRef && <ProTrialEndedBanner trialRef={trialRef} />}
         {children}
       </main>
+      <MobileTabBar user={{ name: navUser.name, username: navUser.username, image: navUser.image }} />
       <IncomingCallOverlay />
       <ChatDock currentUserId={session.user.id} />
       <CommandPalette />

@@ -110,13 +110,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
   const serializedPinned = pinnedPosts.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() }))
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-4">
+    <div className="max-w-7xl mx-auto px-4 py-4 sm:py-6 space-y-4">
       {/* Cover + main profile card spans full width */}
       <div className="rounded-2xl overflow-hidden"
         style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
 
-        {/* Cover photo */}
-        <div className="h-48 relative overflow-hidden"
+        {/* Cover photo — shorter on phones */}
+        <div className="h-28 sm:h-48 relative overflow-hidden"
           style={
             user.coverImage
               ? { background: "var(--bg-base)" }
@@ -131,7 +131,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
         </div>
 
         {/* Profile info */}
-        <div className="px-6 pb-5">
+        <div className="px-4 sm:px-6 pb-5">
           {/* Avatar row */}
           <div className="flex items-end justify-between -mt-12 mb-4 relative z-10">
             <div

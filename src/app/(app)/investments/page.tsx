@@ -85,18 +85,18 @@ export default function InvestmentsPage() {
   }, [filter, allChallenges, mineChallenges]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl border border-emerald-500/20 mb-8 bg-gradient-to-br from-emerald-950/60 via-gray-950 to-indigo-950/40">
+    <div className="max-w-6xl mx-auto px-4 py-4 sm:py-8">
+      {/* Hero — compact on phones so the challenges start on the first screen */}
+      <section className="relative overflow-hidden rounded-3xl border border-emerald-500/20 mb-5 sm:mb-8 bg-gradient-to-br from-emerald-950/60 via-gray-950 to-indigo-950/40">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -top-24 -left-20 w-72 h-72 rounded-full bg-emerald-500/15 blur-3xl animate-[pz-blob_12s_ease-in-out_infinite]" />
           <div className="absolute top-10 right-10 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl animate-[pz-blob2_14s_ease-in-out_infinite]" />
           <div className="absolute bottom-0 left-1/3 w-64 h-64 rounded-full bg-amber-500/10 blur-3xl animate-[pz-blob3_16s_ease-in-out_infinite]" />
         </div>
 
-        <div className="relative p-8 sm:p-12">
+        <div className="relative p-5 sm:p-12">
           <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300">
+            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300">
               <Sparkles size={12} /> Pillar 2 — Live arena
             </span>
             <button
@@ -122,31 +122,31 @@ export default function InvestmentsPage() {
             </div>
           </div>
 
-          <p className="text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed mb-6">
+          <p className="hidden sm:block text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed mb-6">
             Trade against your friends with simulated capital. Pick your strategy, track your edge, climb the board.
           </p>
 
           {/* Stat strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
-            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-4 py-3 backdrop-blur-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 max-w-3xl mt-4 sm:mt-0">
+            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
               <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-gray-500 mb-1">
                 <Flame size={10} className="text-rose-400" /> Live now
               </div>
               <p className="text-xl font-black text-rose-400 tabular-nums">{counts.ACTIVE}</p>
             </div>
-            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-4 py-3 backdrop-blur-sm">
+            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
               <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-gray-500 mb-1">
                 <Calendar size={10} className="text-amber-400" /> Upcoming
               </div>
               <p className="text-xl font-black text-amber-300 tabular-nums">{counts.UPCOMING}</p>
             </div>
-            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-4 py-3 backdrop-blur-sm">
+            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
               <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-gray-500 mb-1">
                 <Users size={10} className="text-emerald-400" /> Players
               </div>
               <p className="text-xl font-black text-emerald-400 tabular-nums">{totalPlayers}</p>
             </div>
-            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-4 py-3 backdrop-blur-sm">
+            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
               <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-gray-500 mb-1">
                 <Trophy size={10} className="text-indigo-400" /> Your challenges
               </div>

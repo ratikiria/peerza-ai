@@ -6,6 +6,7 @@ import { Plus, User } from "lucide-react"
 import AvatarUploadModal from "@/components/shared/AvatarUploadModal"
 import StoryUploadModal from "./StoryUploadModal"
 import StoryViewerModal, { type ViewerStory } from "./StoryViewerModal"
+import { COMPOSE_EVENT, takeComposeParam, type ComposeMode } from "@/lib/compose"
 
 // Group of stories from a single author returned by GET /api/stories.
 interface AuthorGroup {
@@ -74,6 +75,16 @@ export default function StoriesBar({ currentUser }: StoriesBarProps) {
   }, [])
 
   useEffect(() => { loadStories() }, [loadStories])
+
+  // Phone Create sheet → "Story" opens the upload modal straight away.
+  useEffect(() => {
+    if (takeComposeParam(["story"])) setShowUploadModal(true)
+    function onCompose(e: Event) {
+      if ((e as CustomEvent<{ mode: ComposeMode }>).detail?.mode === "story") setShowUploadModal(true)
+    }
+    window.addEventListener(COMPOSE_EVENT, onCompose)
+    return () => window.removeEventListener(COMPOSE_EVENT, onCompose)
+  }, [])
 
   function handleYourStoryClick() {
     if (ownStories.length > 0) {

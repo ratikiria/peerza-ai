@@ -31,15 +31,15 @@ export default function ThemeToggle() {
   ]
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 gap-3">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4 py-3 gap-3">
       <div className="min-w-0">
         <p className="text-sm" style={{ color: "var(--text-primary)" }}>Theme</p>
-        <p className="text-[11px]" style={{ color: "var(--text-secondary)" }}>
+        <p className="text-xs sm:text-[11px]" style={{ color: "var(--text-secondary)" }}>
           Switch between dark, light, or follow your system setting.
         </p>
       </div>
       <div
-        className="flex items-center rounded-lg p-0.5 flex-shrink-0"
+        className="grid grid-cols-3 sm:flex items-center rounded-lg p-0.5 flex-shrink-0"
         style={{ background: "var(--bg-base)", border: "1px solid var(--border)" }}
       >
         {options.map((o) => {
@@ -49,7 +49,7 @@ export default function ThemeToggle() {
               key={o.key}
               onClick={() => pick(o.key)}
               disabled={!mounted}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2.5 sm:py-1.5 text-sm sm:text-xs rounded-md transition-colors"
               style={{
                 background: active ? "var(--bg-card)" : "transparent",
                 color: active ? "var(--text-primary)" : "var(--text-secondary)",

@@ -79,9 +79,9 @@ const comingSoon = [
 
 export default function GamesPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl border border-emerald-500/20 mb-8 bg-gradient-to-br from-emerald-950/60 via-gray-950 to-indigo-950/40">
+    <div className="max-w-6xl mx-auto px-4 py-4 sm:py-8">
+      {/* Hero — compact on phones so the games start on the first screen */}
+      <section className="relative overflow-hidden rounded-3xl border border-emerald-500/20 mb-5 sm:mb-8 bg-gradient-to-br from-emerald-950/60 via-gray-950 to-indigo-950/40">
         {/* Animated background blobs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -top-24 -left-20 w-72 h-72 rounded-full bg-emerald-500/15 blur-3xl animate-[pz-blob_12s_ease-in-out_infinite]" />
@@ -89,8 +89,8 @@ export default function GamesPage() {
           <div className="absolute bottom-0 left-1/3 w-64 h-64 rounded-full bg-amber-500/10 blur-3xl animate-[pz-blob3_16s_ease-in-out_infinite]" />
         </div>
 
-        <div className="relative p-8 sm:p-12">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="relative p-5 sm:p-12">
+          <div className="hidden sm:flex items-center gap-2 mb-4">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300">
               <Sparkles size={12} /> Pillar 4 — Now live
             </span>
@@ -109,21 +109,21 @@ export default function GamesPage() {
             </div>
           </div>
 
-          <p className="text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed mb-6">
+          <p className="hidden sm:block text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed mb-6">
             Step into real historical moments. Make the call. Find out instantly what the world actually did — and why.
           </p>
 
           {/* Stat strip */}
-          <div className="grid grid-cols-3 gap-3 max-w-xl">
-            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-4 py-3 backdrop-blur-sm">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-xl mt-4 sm:mt-0">
+            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
               <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Live games</p>
               <p className="text-xl font-black text-emerald-400 tabular-nums">{liveGames.length}</p>
             </div>
-            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-4 py-3 backdrop-blur-sm">
+            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
               <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Bankroll</p>
               <p className="text-xl font-black text-amber-300 tabular-nums">$10K</p>
             </div>
-            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-4 py-3 backdrop-blur-sm">
+            <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
               <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Round</p>
               <p className="text-xl font-black text-gray-100 tabular-nums">5 min</p>
             </div>

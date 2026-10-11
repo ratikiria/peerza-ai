@@ -109,13 +109,13 @@ export default function EconomicCalendar() {
       <section className="rounded-2xl p-5" style={cardStyle}>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide mb-2"
+            <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide mb-2"
               style={{ background: "rgba(99,102,241,0.12)", color: ink("#818cf8"), border: "1px solid rgba(99,102,241,0.4)" }}>
               <CalendarDays size={11} />
               Economic Calendar
             </div>
             <h1 className="text-2xl font-black" style={{ color: "var(--text-primary)" }}>Markets are listening</h1>
-            <p className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
+            <p className="hidden sm:block text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
               Upcoming releases, central bank decisions, and macro data — across the world&apos;s biggest economies.
             </p>
           </div>

@@ -319,7 +319,7 @@ function DockPill({ expanded, unread, onClick }: { expanded: boolean; unread: nu
       onClick={onClick}
       aria-label={expanded ? "Close chat" : "Open chat"}
       aria-expanded={expanded}
-      className="fixed bottom-4 right-4 w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+      className="fixed bottom-4 right-4 w-14 h-14 rounded-full hidden md:flex items-center justify-center transition-all hover:scale-105 active:scale-95"
       style={{
         zIndex: Z_DOCK,
         background: expanded ? "var(--bg-elevated)" : "#10b981",

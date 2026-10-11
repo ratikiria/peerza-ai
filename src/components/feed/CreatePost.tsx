@@ -9,6 +9,7 @@ import PollComposerDialog from "@/components/polls/PollComposerDialog"
 import { yahooToStooq, stooqToYahoo, flagForYahoo } from "@/lib/market"
 import RankedCallPicker, { type RankedAsset } from "@/components/feed/RankedCallPicker"
 import type { RankedTf } from "@/lib/ranked"
+import { COMPOSE_EVENT, takeComposeParam, type ComposeMode } from "@/lib/compose"
 
 const EmojiPicker = dynamic(
   () => import("@emoji-mart/react").then((m) => ({ default: m.default as any })),
@@ -285,6 +286,28 @@ export default function CreatePost({ user, onCreated }: CreatePostProps) {
     window.addEventListener("peerza:copy-idea", onCopy)
     return () => window.removeEventListener("peerza:copy-idea", onCopy)
   }, [selectAsset])
+
+  // Phone Create sheet: open the composer in the picked mode, either via the
+  // event (already on /feed) or ?compose= (navigated here from another page).
+  useEffect(() => {
+    const MODES = ["post", "idea", "ranked", "poll"] as const
+    function open(mode: ComposeMode) {
+      if (!(MODES as readonly string[]).includes(mode)) return
+      setFocused(true)
+      if (mode === "idea") { setShowAnalysis(true); setRankedOn(false) }
+      if (mode === "ranked") { setShowAnalysis(true); setRankedOn(true) }
+      if (mode === "poll") setShowPollDialog(true)
+      requestAnimationFrame(() => {
+        textareaRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+        if (mode !== "poll") textareaRef.current?.focus()
+      })
+    }
+    const pending = takeComposeParam(MODES)
+    if (pending) open(pending)
+    function onCompose(e: Event) { open((e as CustomEvent<{ mode: ComposeMode }>).detail?.mode) }
+    window.addEventListener(COMPOSE_EVENT, onCompose)
+    return () => window.removeEventListener(COMPOSE_EVENT, onCompose)
+  }, [])
 
   // Refresh live price every 15s while an asset is selected
   useEffect(() => {

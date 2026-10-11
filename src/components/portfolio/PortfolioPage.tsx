@@ -513,19 +513,20 @@ export default function PortfolioPage() {
               <table className="w-full text-xs">
                 <thead>
                   <tr className="text-[10px] uppercase tracking-wider" style={{ color: "var(--text-secondary)" }}>
-                    <th className="text-left font-semibold px-5 py-2">{t("col_symbol")}</th>
-                    <th className="text-right font-semibold px-3 py-2">{t("col_qty")}</th>
-                    <th className="text-right font-semibold px-3 py-2">{t("col_price")}</th>
-                    <th className="text-right font-semibold px-3 py-2">{t("col_value")}</th>
-                    <th className="text-right font-semibold px-3 py-2">{t("col_weight")}</th>
-                    <th className="text-right font-semibold px-3 py-2">{t("col_pnl")}</th>
-                    <th className="px-3 py-2" />
+                    {/* Phones drop Qty + Price (qty moves under the symbol) so the row fits. */}
+                    <th className="text-left font-semibold px-4 sm:px-5 py-2">{t("col_symbol")}</th>
+                    <th className="hidden sm:table-cell text-right font-semibold px-3 py-2">{t("col_qty")}</th>
+                    <th className="hidden sm:table-cell text-right font-semibold px-3 py-2">{t("col_price")}</th>
+                    <th className="text-right font-semibold px-2 sm:px-3 py-2">{t("col_value")}</th>
+                    <th className="text-right font-semibold px-2 sm:px-3 py-2">{t("col_weight")}</th>
+                    <th className="text-right font-semibold px-2 sm:px-3 py-2">{t("col_pnl")}</th>
+                    <th className="px-2 sm:px-3 py-2" />
                   </tr>
                 </thead>
                 <tbody>
                   {enriched.map((h) => (
                     <tr key={h.id} style={{ borderTop: "1px solid var(--border)" }}>
-                      <td className="px-5 py-3">
+                      <td className="px-4 sm:px-5 py-3">
                         <div className="flex items-center gap-2.5">
                           <div
                             className="w-8 h-8 rounded-md flex items-center justify-center text-[10px] font-bold flex-shrink-0"
@@ -540,23 +541,26 @@ export default function PortfolioPage() {
                                 <span className="text-xs" title={portfolios.find((x) => x.id === h.portfolioId)?.name}>{emojiOf[h.portfolioId]}</span>
                               )}
                             </p>
-                            <p className="text-[10px] truncate max-w-[180px]" style={{ color: "var(--text-secondary)" }}>{h.name}</p>
+                            <p className="hidden sm:block text-[10px] truncate max-w-[180px]" style={{ color: "var(--text-secondary)" }}>{h.name}</p>
+                            <p className="sm:hidden text-[11px] tabular-nums truncate max-w-[110px]" style={{ color: "var(--text-secondary)" }}>
+                              × {h.quantity.toLocaleString("en-US", { maximumFractionDigits: 6 })}
+                            </p>
                           </div>
                         </div>
                       </td>
-                      <td className="text-right tabular-nums px-3 py-3" style={{ color: "var(--text-primary)" }}>
+                      <td className="hidden sm:table-cell text-right tabular-nums px-3 py-3" style={{ color: "var(--text-primary)" }}>
                         {h.quantity.toLocaleString("en-US", { maximumFractionDigits: 6 })}
                       </td>
-                      <td className="text-right tabular-nums px-3 py-3" style={{ color: "var(--text-secondary)" }}>
+                      <td className="hidden sm:table-cell text-right tabular-nums px-3 py-3" style={{ color: "var(--text-secondary)" }}>
                         {h.livePrice > 0 ? fmtMoney(h.livePrice) : "—"}
                       </td>
-                      <td className="text-right tabular-nums font-semibold px-3 py-3" style={{ color: "var(--text-primary)" }}>
+                      <td className="text-right tabular-nums font-semibold px-2 sm:px-3 py-3" style={{ color: "var(--text-primary)" }}>
                         {fmtMoney(h.value)}
                       </td>
-                      <td className="text-right tabular-nums px-3 py-3" style={{ color: "var(--text-secondary)" }}>
+                      <td className="text-right tabular-nums px-2 sm:px-3 py-3" style={{ color: "var(--text-secondary)" }}>
                         {totalValue > 0 ? `${(h.value / totalValue * 100).toFixed(1)}%` : "—"}
                       </td>
-                      <td className="text-right tabular-nums px-3 py-3">
+                      <td className="text-right tabular-nums px-2 sm:px-3 py-3">
                         {h.pnl != null && h.pnlPct != null ? (
                           <span style={{ color: h.pnl >= 0 ? ink("#10b981") : ink("#f43f5e") }}>
                             {h.pnl >= 0 ? "+" : ""}{h.pnlPct.toFixed(1)}%
@@ -565,10 +569,10 @@ export default function PortfolioPage() {
                           <span style={{ color: "var(--text-secondary)", opacity: 0.5 }}>—</span>
                         )}
                       </td>
-                      <td className="px-3 py-3 text-right">
+                      <td className="px-1 sm:px-3 py-3 text-right">
                         <button
                           onClick={() => removeHolding(h.id)}
-                          className="w-7 h-7 inline-flex items-center justify-center rounded-md hover:bg-rose-500/15 hover:text-rose-400 transition-colors"
+                          className="w-9 h-9 sm:w-7 sm:h-7 inline-flex items-center justify-center rounded-md hover:bg-rose-500/15 hover:text-rose-400 transition-colors"
                           style={{ color: "var(--text-secondary)" }}
                           aria-label={t("remove_aria", { symbol: h.symbol })}
                         >
@@ -766,11 +770,11 @@ function IntroCard({ onDismiss }: { onDismiss: () => void }) {
     >
       <button
         onClick={onDismiss}
-        className="absolute top-3 right-3 w-7 h-7 inline-flex items-center justify-center rounded-md hover:bg-[var(--bg-base)] transition-colors"
+        className="absolute top-1 right-1 sm:top-3 sm:right-3 w-11 h-11 sm:w-7 sm:h-7 inline-flex items-center justify-center rounded-md hover:bg-[var(--bg-base)] transition-colors"
         style={{ color: "var(--text-secondary)" }}
         aria-label={t("intro_dismiss")}
       >
-        <X size={13} />
+        <X size={15} />
       </button>
 
       <div className="flex items-start gap-3 mb-3">
@@ -780,7 +784,7 @@ function IntroCard({ onDismiss }: { onDismiss: () => void }) {
         >
           <Briefcase size={18} className="text-white" />
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 pr-8 sm:pr-6">
           <h2 className="text-base font-bold" style={{ color: "var(--text-primary)" }}>
             {t("intro_title")}
           </h2>
@@ -792,7 +796,9 @@ function IntroCard({ onDismiss }: { onDismiss: () => void }) {
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-2 mt-3">
+      {/* Phones: the body already says "educational only"; the four bullets
+          would fill the whole first screen, so they show from sm up. */}
+      <div className="hidden sm:grid sm:grid-cols-2 gap-2 mt-3">
         <Bullet
           icon={<BarChart3 size={12} />}
           title={t("intro_bullet_concentration_title")}

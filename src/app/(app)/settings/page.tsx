@@ -41,8 +41,8 @@ export default async function SettingsPage() {
   })
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>{t("title")}</h1>
+    <div className="max-w-2xl mx-auto px-4 py-4 md:py-6 space-y-6">
+      <h1 className="text-[28px] md:text-xl font-bold" style={{ color: "var(--text-primary)" }}>{t("title")}</h1>
 
       <section className="rounded-2xl overflow-hidden"
         style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>

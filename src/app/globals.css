@@ -68,6 +68,19 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Phones: room under the page for the floating tab bar (68px + 10px gap),
+   and no text below 11px — the 9/10px desktop labels are unreadable there.
+   Unlayered, so it beats the Tailwind utilities. */
+@media (max-width: 767px) {
+  .pz-main {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+  .text-\[9px\],
+  .text-\[10px\] {
+    font-size: 11px;
+  }
+}
+
 body {
   background: var(--bg-base);
   color: var(--text-primary);

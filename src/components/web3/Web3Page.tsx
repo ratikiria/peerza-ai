@@ -20,7 +20,9 @@ export default function Web3Page() {
             <div className="absolute bottom-0 left-1/3 w-64 h-64 rounded-full bg-pink-500/10 blur-3xl animate-[w3-blob3_16s_ease-in-out_infinite]" />
           </div>
 
-          <div className="relative p-8 sm:p-10">
+          {/* Phones keep the badge + title; the pitch copy and the "why Solana"
+              strip show from sm up so the demos start on the first screen. */}
+          <div className="relative p-5 sm:p-10">
             <div className="flex items-center gap-2 mb-4">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-300">
                 <Sparkles size={12} /> Devnet preview
@@ -40,12 +42,12 @@ export default function Web3Page() {
               </div>
             </div>
 
-            <p className="text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed mb-6">
+            <p className="hidden sm:block text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed mb-6">
               Peerza already runs the social, simulation, and games layer for finance-curious users. We're adding non-custodial Solana rails so reputation, predictions, and tips settle on-chain.
             </p>
 
             {/* Why Solana strip */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
+            <div className="hidden sm:grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
               <div className="rounded-xl bg-gray-900/60 border border-gray-800 px-4 py-3 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={12} className="text-amber-400" />

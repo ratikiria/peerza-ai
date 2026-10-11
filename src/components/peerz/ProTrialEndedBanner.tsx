@@ -29,7 +29,8 @@ export default function ProTrialEndedBanner({ trialRef }: { trialRef: string }) 
       <div className="max-w-7xl mx-auto flex items-center gap-3 text-sm">
         <Gem size={16} className="flex-shrink-0" style={{ color: ink("#10b981") }} />
         <span className="flex-1" style={{ color: "var(--text-primary)" }}>
-          Your Pro week from Peerz has ended. Keep the badge and every Pro perk for $10/mo.
+          <span className="hidden sm:inline">Your Pro week from Peerz has ended. Keep the badge and every Pro perk for $10/mo.</span>
+          <span className="sm:hidden">Your Pro week ended. Keep it for $10/mo.</span>
         </span>
         <Link
           href="/pro"
